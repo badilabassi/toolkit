@@ -23,30 +23,54 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  */
 c::set(array(
   
-  // toolkit version
+  /**
+   * human readable toolkit version
+   */ 
   'toolkit.version.string' => '2.0',
+
+  /**
+   * numeric toolkit version
+   */ 
   'toolkit.version.number' => 2.0,
 
-  // set the default timezone
+  /**
+   * set the default timezone
+   */ 
   'timezone' => 'UTC',
 
-  // secret key
+  /**
+   * secret key
+   */ 
   'cookie.salt' => 'secretTokenForCookieHashes',
 
-  // permissions for new directories
+  /**
+   * permissions for new directories
+   */ 
   'dir.make.permissions' => 0755,
+
+  /**
+   * items/files, which should be ignored while scanning directories
+   */ 
   'dir.read.ignore' => array('.', '..', '.DS_Store', '.gitignore'),
   
-  // the default path for templates
+  /**
+   * the default path for templates
+   */ 
   'tpl.root' => '',
 
-  // upload settings
+  /**
+   * the maximum size for uploaded files
+   */ 
   'upload.maxsize' => false,
 
-  // banned visitor ips
+  /**
+   * banned visitor ips
+   */ 
   'visitor.banned' => array(),
 
-  // a list of detectable mime types, borrowed from Laravel
+  /**
+   * a list of detectable mime types
+   */ 
   'f.mimes' => array(
     'hqx'   => 'application/mac-binhex40',
     'cpt'   => 'application/mac-compactpro',
@@ -141,6 +165,9 @@ c::set(array(
     'json'  => array('application/json', 'text/json'),
   ),
 
+  /**
+   * file categorization
+   */ 
   'f.types' => array(
 
     'image' => array(

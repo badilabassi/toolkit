@@ -111,6 +111,8 @@ class CollectionTest extends PHPUnit_Framework_TestCase {
     
     // also check the alternative
     $this->assertEquals('My second element', $this->collection->without('first')->first());
+    $this->assertEquals(1, $this->collection->without('second')->not('third')->count());
+    $this->assertEquals(0, $this->collection->without('first', 'second', 'third')->count());
     
     $this->isUntouched();
     

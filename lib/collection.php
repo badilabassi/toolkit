@@ -416,8 +416,8 @@ class Collection implements Iterator {
    * @param args any number of keys, passed as individual arguments
    * @return object a new collection without the element(s)
    */      
-  public function without($uid) {
-    return $this->not($uid);
+  public function without() {
+    return call_user_func_array(array($this, 'not'), func_get_args());
   }
 
   /**
