@@ -597,7 +597,7 @@ class Collection implements Iterator {
   protected function filterByValue($item, $field) {
     if(is_array($item)) {
       return a::get($item, $field);
-    } else if(is_a($item, 'Object')) {
+    } else if(is_object($item)) {
       return $item->$field();
     } else {
       return false;
