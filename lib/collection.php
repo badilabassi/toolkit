@@ -417,7 +417,8 @@ class Collection implements Iterator {
    * @return object a new collection without the element(s)
    */      
   public function without() {
-    return call_user_func_array(array($this, 'not'), func_get_args());
+    $args = func_get_args();
+    return call_user_func_array(array($this, 'not'), $args);
   }
 
   /**
