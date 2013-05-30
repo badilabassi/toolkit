@@ -32,8 +32,12 @@ class Object {
    * @param array $data an optional array of data for the object
    * @return void
    */
-  public function __construct(array $data = array()) {
-    $this->set($data);
+  public function __construct($data = array()) {
+    // make sure that objects will be properly converted to arrays
+    if(is_array($data) or is_object($data)) {
+      if($data instanceof Object) $data = $data->toArray();
+      if(is_array($data)) $this->set($data);
+    }
     $this->init();
   }
 

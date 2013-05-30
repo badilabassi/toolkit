@@ -61,7 +61,7 @@ function get($key = false, $default = null) {
   * @return  mixed
  */
 function param($key = null, $default = null) {
-  return uri::current()->param($key, $default);
+  return (is_null($key))? uri::current()->params()->toArray() : uri::current()->param($key, $default);
 }
 
 /**

@@ -37,23 +37,10 @@ class Model extends Object {
       $this->allowedKeys[] = $this->primaryKeyName();    
     }
 
-    // call the custom init method
-    $this->init($data);  
+    parent::__construct($data);
   
   }
   
-  /**
-   * Init
-   * 
-   * Put your initializing code for the model here
-   * so you don't have to touch the constructor
-   * 
-   * @param array $data
-   */  
-  public function init($data = array()) {
-    $this->set($data);
-  }
-
   /**
    * Compares this model to another given model by type and primary key
    * 

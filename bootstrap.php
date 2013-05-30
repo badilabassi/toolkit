@@ -30,7 +30,17 @@ define('KIRBY_TOOLKIT_ROOT_LIB', KIRBY_TOOLKIT_ROOT . DS . 'lib');
  */
 function toolkitLoader($class) {
 
-  $file = KIRBY_TOOLKIT_ROOT_LIB . DS . strtolower($class) . '.php';
+  // load classes, which don't follow the
+  // naming and location conventions
+  $aliases = array(
+    'databasemodel' => KIRBY_TOOLKIT_ROOT_LIB . DS . 'model' . DS . 'database.php'
+  );
+
+  if(array_key_exists(strtolower($class), $aliases)) {
+    $file = $aliases[strtolower($class)];
+  } else {
+    $file = KIRBY_TOOLKIT_ROOT_LIB . DS . strtolower($class) . '.php';
+  }
 
   if(file_exists($file)) {
     require_once($file);
