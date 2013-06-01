@@ -91,12 +91,12 @@ class Remote {
     switch(strtolower($this->options['method'])) {
       case 'post':
         $params[CURLOPT_POST]       = true;
-        $params[CURLOPT_POSTFIELDS] = http_build_query($this->options['data']);
+        $params[CURLOPT_POSTFIELDS] = $this->postfields($this->options['data']);
         break;
       case 'put':
 
         $params[CURLOPT_PUT]        = true;
-        $params[CURLOPT_POSTFIELDS] = http_build_query($this->options['data']);
+        $params[CURLOPT_POSTFIELDS] = $this->postfields($this->options['data']);
 
         // put a file 
         if($this->options['file']) {
@@ -107,11 +107,11 @@ class Remote {
         break;
       case 'delete':
         $params[CURLOPT_CUSTOMREQUEST] = 'DELETE';
-        $params[CURLOPT_POSTFIELDS]    = http_build_query($this->options['data']);
+        $params[CURLOPT_POSTFIELDS]    = $this->postfields($this->options['data']);
         break;
       case 'head':
         $params[CURLOPT_CUSTOMREQUEST] = 'HEAD';
-        $params[CURLOPT_POSTFIELDS]    = http_build_query($this->options['data']);
+        $params[CURLOPT_POSTFIELDS]    = $this->postfields($this->options['data']);
         $params[CURLOPT_NOBODY]        = true;
         break;
     }
@@ -296,6 +296,22 @@ class Remote {
   static public function headers($url, $params = array()) {
     $request = self::head($url, $params);
     return $request->headers();
+  }
+
+  /**
+   * Internal method to handle post field data
+   * 
+   * @param mixed $data
+   * @return mixed
+   */
+  protected function postfields($data) {
+    
+    if(is_object($data) or is_array($data)) {
+      return http_build_query($data);
+    } else {
+      return $data;
+    }
+    
   }
 
 }
