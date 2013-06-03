@@ -176,7 +176,7 @@ class DbQuery {
    * @param string $type The join type. Uses an inner join by default
    * @return object
    */
-  public function join($table, $on, $type = 'inner') {
+  public function join($table, $on, $type = '') {
 
     $join = array(
       'table' => $table, 

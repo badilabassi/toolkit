@@ -7,6 +7,8 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
 require_once(dirname(__FILE__) . DS . 'value.php');
 
 /**
+ * Cache Driver Abstract
+ * 
  * Template for all cache drivers
  * 
  * @package   Kirby Toolkit 

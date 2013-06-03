@@ -36,7 +36,7 @@ class Cache {
   static public function connect($driver, $params = array()) {
 
     // driver class file
-    $file  = dirname(__FILE__) . DS . 'cache' . DS . 'cachedriver' . DS . $driver . '.php';
+    $file  = dirname(__FILE__) . DS . 'cache' . DS . 'driver' . DS . $driver . '.php';
     $class = $driver . 'CacheDriver';
 
     if(!file_exists($file)) throw new Exception('The cache driver does not exist: ' . $driver);

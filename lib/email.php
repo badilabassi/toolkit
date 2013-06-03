@@ -110,7 +110,7 @@ class Email {
     // validate the email 
     $this->validate();
 
-    $serviceFile  = dirname(__FILE__) . DS . 'email' . DS . 'emailservice' . DS . strtolower($this->service) . '.php';
+    $serviceFile  = dirname(__FILE__) . DS . 'email' . DS . 'service' . DS . strtolower($this->service) . '.php';
     $serviceClass = $this->service . 'EmailService';
 
     // check if the class file exists

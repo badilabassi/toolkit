@@ -53,7 +53,7 @@ class Sql {
 
     if(!empty($options['join'])) {
       foreach($options['join'] as $join) {
-        $query[] = strtoupper(a::get($join, 'type', 'inner')) . ' JOIN ' . $join['table'] . ' ON ' . $join['on'];
+        $query[] = ltrim(strtoupper(a::get($join, 'type', '')) . ' JOIN ') . $join['table'] . ' ON ' . $join['on'];
       }
     }
 

@@ -21,7 +21,7 @@ class SqlTest extends PHPUnit_Framework_TestCase {
       'limit'   => 10
     ));
 
-    $expected = "SELECT posts.id, posts.title, posts.text FROM posts INNER JOIN users ON posts.user = users.id WHERE posts.id > 5 ORDER BY posts.title desc LIMIT 5, 10";
+    $expected = "SELECT posts.id, posts.title, posts.text FROM posts JOIN users ON posts.user = users.id WHERE posts.id > 5 ORDER BY posts.title desc LIMIT 5, 10";
 
     $this->assertEquals($expected, $sql);
 
