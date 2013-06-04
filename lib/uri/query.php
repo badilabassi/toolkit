@@ -1,5 +1,9 @@
 <?php
 
+namespace Kirby\Toolkit\URI;
+
+use Kirby\Toolkit\Collection;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
@@ -16,7 +20,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * @copyright Bastian Allgeier
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class UriQuery extends Collection {
+class Query extends Collection {
   
   /**
    * Returns the query in a single string

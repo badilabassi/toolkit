@@ -1,10 +1,9 @@
 <?php 
 
+namespace Kirby\Toolkit\Cache;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
-
-// dependencies
-require_once(dirname(__FILE__) . DS . 'value.php');
 
 /**
  * Cache Driver Abstract
@@ -17,7 +16,7 @@ require_once(dirname(__FILE__) . DS . 'value.php');
  * @copyright Bastian Allgeier
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-abstract class CacheDriver {
+abstract class Driver {
 
   // stores all options for the driver
   protected $options = array();
@@ -52,7 +51,7 @@ abstract class CacheDriver {
    * This needs to be defined by the driver
    * 
    * @param string $key
-   * @return object CacheValue
+   * @return object Value
    */
   abstract function retrieve($key);
 
@@ -73,11 +72,11 @@ abstract class CacheDriver {
 	 */
   public function get($key, $default = null) {
 
-    // get the CacheValue
+    // get the Value
     $value = $this->retrieve($key);
 
     // check for a valid cache value
-    if(!is_a($value, 'CacheValue')) return $default;
+    if(!is_a($value, 'Kirby\\Toolkit\\Cache\\Value')) return $default;
      
     // remove the item if it is expired
     if(time() > $value->expires()) {
@@ -114,11 +113,11 @@ abstract class CacheDriver {
    * @return int
    */
   public function expires($key) {
-    // get the CacheValue object
+    // get the Value object
     $value = $this->retrieve($key);
 
-    // check for a valid CacheValue object
-    if(!is_a($value, 'CacheValue')) return false;
+    // check for a valid Value object
+    if(!is_a($value, 'Kirby\\Toolkit\\Cache\\Value')) return false;
 
     // return the expires timestamp
     return $value->expires();
@@ -141,11 +140,11 @@ abstract class CacheDriver {
    * @return int
    */
   public function created($key) {
-    // get the CacheValue object
+    // get the Value object
     $value = $this->retrieve($key);
 
-    // check for a valid CacheValue object
-    if(!is_a($value, 'CacheValue')) return false;
+    // check for a valid Value object
+    if(!is_a($value, 'Kirby\Toolkit\Cache\Value')) return false;
 
     // return the expires timestamp
     return $value->created();
@@ -159,7 +158,7 @@ abstract class CacheDriver {
    * @return array
    */
   protected function value($value, $minutes) {
-    return new CacheValue($value, $minutes);
+    return new Value($value, $minutes);
   }
 
 	/**

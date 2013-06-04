@@ -1,5 +1,11 @@
 <?php
 
+namespace Kirby\Toolkit\Remote;
+
+use Kirby\Toolkit\A;
+use Kirby\Toolkit\F;
+use Kirby\Toolkit\XML;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
@@ -15,7 +21,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * @copyright Bastian Allgeier
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class RemoteResponse {
+class Response {
 
   // the entire returned content 
   public $content = null;
@@ -106,7 +112,7 @@ class RemoteResponse {
    * @return array
    */
   public function xml() {
-    return x::parse($this->content);
+    return xml::parse($this->content);
   }
 
   /**

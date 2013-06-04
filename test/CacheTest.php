@@ -10,8 +10,8 @@ class CacheTest extends PHPUnit_Framework_TestCase {
       'root' => TEST_ROOT_TMP
     ));
   
-    $this->assertInstanceOf('CacheDriver', $cache);
-    $this->assertInstanceOf('FileCacheDriver', $cache);
+    $this->assertInstanceOf('Kirby\\Toolkit\\Cache\\Driver', $cache);
+    $this->assertInstanceOf('Kirby\\Toolkit\\Cache\\Driver\\File', $cache);
 
     $this->assertTrue(Cache::set('mykey', 'myvalue'));
     $this->assertEquals('myvalue', Cache::get('mykey'));
@@ -97,8 +97,8 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 
     $cache = Cache::connect('memcache');
   
-    $this->assertInstanceOf('CacheDriver', $cache);
-    $this->assertInstanceOf('MemcacheCacheDriver', $cache);
+    $this->assertInstanceOf('Kirby\\Toolkit\\Cache\\Driver', $cache);
+    $this->assertInstanceOf('Kirby\\Toolkit\\Cache\\Driver\\Memcache', $cache);
 
     $this->assertTrue(Cache::set('mykey', 'myvalue'));
     $this->assertEquals('myvalue', Cache::get('mykey'));

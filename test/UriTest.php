@@ -12,9 +12,9 @@ class URITest extends PHPUnit_Framework_TestCase {
   }
   
   public function testMethods() {
-    $this->assertInstanceOf('UriParams', $this->uri->params());
-    $this->assertInstanceOf('UriQuery', $this->uri->query());
-    $this->assertInstanceOf('UriPath', $this->uri->path());
+    $this->assertInstanceOf('Kirby\\Toolkit\\URI\\Params', $this->uri->params());
+    $this->assertInstanceOf('Kirby\\Toolkit\\URI\\Query', $this->uri->query());
+    $this->assertInstanceOf('Kirby\\Toolkit\\URI\\Path', $this->uri->path());
     
     $this->assertEquals($this->url, $this->uri->url());
     $this->assertEquals($this->subfolder, $this->uri->subfolder());

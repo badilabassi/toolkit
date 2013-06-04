@@ -1,5 +1,10 @@
 <?php
 
+namespace Kirby\Toolkit\Validator;
+
+use Kirby\Toolkit\V;
+use Kirby\Toolkit\Validator;
+
 /**
  * Alpha Validator
  * 
@@ -11,7 +16,7 @@
  * @copyright Bastian Allgeier
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class AlphaValidator extends Validator {
+class Alpha extends Validator {
 
   public $message = 'The :attribute may only contain letters.';
 

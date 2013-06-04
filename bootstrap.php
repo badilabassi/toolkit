@@ -28,19 +28,68 @@ define('KIRBY_TOOLKIT_ROOT_LIB', KIRBY_TOOLKIT_ROOT . DS . 'lib');
  * @param string $class The name of the missing class
  * @return void
  */
-function toolkitLoader($class) {
+function toolkitLoader($class) {  
 
   // load classes, which don't follow the
   // naming and location conventions
   $aliases = array(
-    'databasemodel' => KIRBY_TOOLKIT_ROOT_LIB . DS . 'model' . DS . 'database.php'
+    'a'          => 'Kirby\\Toolkit\\A',
+    'asset'      => 'Kirby\\Toolkit\\Asset',
+    'c'          => 'Kirby\\Toolkit\\C',
+    'cache'      => 'Kirby\\Toolkit\\Cache',
+    'collection' => 'Kirby\\Toolkit\\Collection',
+    'content'    => 'Kirby\\Toolkit\\Content',
+    'cookie'     => 'Kirby\\Toolkit\\Cookie',
+    'db'         => 'Kirby\\Toolkit\\DB',
+    'dimensions' => 'Kirby\\Toolkit\\Dimensions',
+    'dir'        => 'Kirby\\Toolkit\\Dir',
+    'email'      => 'Kirby\\Toolkit\\Email',
+    'embed'      => 'Kirby\\Toolkit\\Embed',
+    'event'      => 'Kirby\\Toolkit\\Event',
+    'exif'       => 'Kirby\\Toolkit\\Exif',
+    'f'          => 'Kirby\\Toolkit\\F',
+    'form'       => 'Kirby\\Toolkit\\Form',
+    'g'          => 'Kirby\\Toolkit\\G',
+    'html'       => 'Kirby\\Toolkit\\Html',
+    'l'          => 'Kirby\\Toolkit\\L',
+    'model'      => 'Kirby\\Toolkit\\Model',
+    'object'     => 'Kirby\\Toolkit\\Object',
+    'pagination' => 'Kirby\\Toolkit\\Pagination',
+    'password'   => 'Kirby\\Toolkit\\Password',
+    'r'          => 'Kirby\\Toolkit\\R',
+    'remote'     => 'Kirby\\Toolkit\\Remote',
+    'router'     => 'Kirby\\Toolkit\\Router',
+    's'          => 'Kirby\\Toolkit\\S',
+    'server'     => 'Kirby\\Toolkit\\Server',
+    'sql'        => 'Kirby\\Toolkit\\SQL',
+    'str'        => 'Kirby\\Toolkit\\Str',
+    'timer'      => 'Kirby\\Toolkit\\Timer',
+    'tpl'        => 'Kirby\\Toolkit\\Tpl',
+    'txtstore'   => 'Kirby\\Toolkit\\Txtstore',
+    'upload'     => 'Kirby\\Toolkit\\Upload',
+    'uri'        => 'Kirby\\Toolkit\\URI',
+    'url'        => 'Kirby\\Toolkit\\URL',
+    'v'          => 'Kirby\\Toolkit\\V',
+    'validator'  => 'Kirby\\Toolkit\\Validator',
+    'validation' => 'Kirby\\Toolkit\\Validation',
+    'visitor'    => 'Kirby\\Toolkit\\Visitor',
+    'xml'        => 'Kirby\\Toolkit\\XML',
   );
 
   if(array_key_exists(strtolower($class), $aliases)) {
-    $file = $aliases[strtolower($class)];
-  } else {
-    $file = KIRBY_TOOLKIT_ROOT_LIB . DS . strtolower($class) . '.php';
-  }
+    // create an alias for that class      
+    class_alias($aliases[strtolower($class)], $class);
+    $class = $aliases[strtolower($class)];
+    
+    // check if the class has already been loaded
+    if(class_exists($class)) return true;
+
+  } 
+
+  // create the path to the class file. 
+  $path = strtolower(str_replace('Kirby\\Toolkit\\', '', $class));
+  $path = str_replace('\\', DS, $path);
+  $file = KIRBY_TOOLKIT_ROOT_LIB . DS . $path . '.php';
 
   if(file_exists($file)) {
     require_once($file);

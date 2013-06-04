@@ -1,5 +1,10 @@
 <?php
 
+namespace Kirby\Toolkit\URI;
+
+use Kirby\Toolkit\Collection;
+use Kirby\Toolkit\URL;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
@@ -16,7 +21,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * @copyright Bastian Allgeier
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class UriParams extends Collection {
+class Params extends Collection {
 
   /**
    * Returns all params in a single string

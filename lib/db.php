@@ -1,11 +1,14 @@
 <?php
 
+namespace Kirby\Toolkit;
+
+use PDO;
+use Exception;
+use Kirby\Toolkit\DB\Connector;
+use Kirby\Toolkit\DB\Query;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
-
-// query class
-require_once(dirname(__FILE__) . DS . 'db' . DS . 'query.php');
-require_once(dirname(__FILE__) . DS . 'db' . DS . 'connector.php');
 
 /**
  * 
@@ -66,7 +69,7 @@ class Db {
   static public function connect($params = null) {
 
     // start the connector
-    self::$connector = new DbConnector($params);
+    self::$connector = new Connector($params);
 
     // store the type and prefix
     self::$type   = self::$connector->type();
@@ -245,8 +248,8 @@ class Db {
     $defaults = array(
       'flag'     => null,
       'method'   => 'fetchAll',
-      'fetch'    => 'Object',
-      'iterator' => 'Collection', 
+      'fetch'    => 'Kirby\Toolkit\Object',
+      'iterator' => 'Kirby\Toolkit\Collection', 
     );
 
     $options = array_merge($defaults, $params);
@@ -292,7 +295,7 @@ class Db {
    * @return object Returns a DBQuery object, which can be used to build a full query for that table
    */
   static public function table($table) {    
-    return new DbQuery(db::prefix() . $table);
+    return new Query(db::prefix() . $table);
   }
 
   /**

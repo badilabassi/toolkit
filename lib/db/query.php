@@ -1,5 +1,12 @@
 <?php
 
+namespace Kirby\Toolkit\DB;
+
+use Kirby\Toolkit\A;
+use Kirby\Toolkit\DB;
+use Kirby\Toolkit\SQL;
+use Kirby\Toolkit\Pagination;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
@@ -16,13 +23,13 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * @copyright Bastian Allgeier
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class DbQuery {
+class Query {
 
   // The object which should be fetched for each row
-  protected $fetch = 'Object';
+  protected $fetch = 'Kirby\\Toolkit\\Object';
 
   // The iterator class, which should be used for result sets
-  protected $iterator = 'Collection';
+  protected $iterator = 'Kirby\\Toolkit\\Collection';
   
   // An array of bindings for the final query
   protected $bindings = array();
@@ -300,7 +307,7 @@ class DbQuery {
 
         } else if(is_callable($args[0])) {
 
-          $query  = new static;
+          $query  = new Query;
           $result = call_user_func($args[0], $query);
           $where  = '(' . $query->where . ')'; 
 

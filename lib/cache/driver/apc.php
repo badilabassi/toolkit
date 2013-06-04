@@ -1,5 +1,9 @@
 <?php
 
+namespace Kirby\Toolkit\Cache\Driver;
+
+use Kirby\Toolkit\Cache\Driver;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
@@ -12,7 +16,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * @copyright Bastian Allgeier
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class ApcCacheDriver extends CacheDriver {
+class Apc extends Driver {
 
   /**
    * Write an item to the cache for a given number of minutes.

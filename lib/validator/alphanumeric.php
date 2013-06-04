@@ -1,5 +1,10 @@
 <?php
 
+namespace Kirby\Toolkit\Validator;
+
+use Kirby\Toolkit\V;
+use Kirby\Toolkit\Validator;
+
 /**
  * Alpha Numeric Validator
  * 
@@ -11,7 +16,7 @@
  * @copyright Bastian Allgeier
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class AlphaNumericValidator extends Validator {
+class AlphaNumeric extends Validator {
 
   public $message = 'The :attribute may only contain letters from a-z and numbers from 0-9.';
 

@@ -1,5 +1,11 @@
 <?php
 
+namespace Kirby\Toolkit\Email\Service;
+
+use Kirby\Toolkit\Email\Service;
+use Kirby\Toolkit\L;
+use Kirby\Toolkit\Remote;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
@@ -14,7 +20,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * @copyright Bastian Allgeier
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class AmazonEmailService extends EmailService {
+class Amazon extends Service {
 
   /**
    * Sends an email with Amazon SES

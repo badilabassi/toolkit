@@ -1,5 +1,9 @@
 <?php
 
+namespace Kirby\Toolkit\Email;
+
+use Kirby\Toolkit\Email;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
@@ -15,7 +19,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * @copyright Bastian Allgeier
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-abstract class EmailService {
+abstract class Service {
 
   // the parent email object
   protected $email = null;

@@ -1,10 +1,11 @@
 <?php
 
+namespace Kirby\Toolkit;
+
+use Exception;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
-
-// dependencies
-require_once(dirname(__FILE__) . DS . 'email' . DS . 'service.php');
 
 /**
  * Email
@@ -111,7 +112,7 @@ class Email {
     $this->validate();
 
     $serviceFile  = dirname(__FILE__) . DS . 'email' . DS . 'service' . DS . strtolower($this->service) . '.php';
-    $serviceClass = $this->service . 'EmailService';
+    $serviceClass = 'Kirby\\Toolkit\\Email\\Service\\' . $this->service;
 
     // check if the class file exists
     if(!file_exists($serviceFile)) $this->raise('service', l::get('email.error.service', 'The service is not available'));

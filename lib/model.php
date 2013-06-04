@@ -1,5 +1,7 @@
 <?php
 
+namespace Kirby\Toolkit;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
@@ -57,6 +59,9 @@ class Model extends Object {
    * @return boolean
    */
   public function save() {
+
+    // reset errors
+    $this->errors = array();
 
     // set timestamps
     $this->timestamps();
@@ -209,7 +214,7 @@ class Model extends Object {
   protected function raise($key, $message = null) {
   
     // auto-pass all errors from a validation object
-    if(is_a($key, 'Validation') && $key->failed()) {
+    if(is_a($key, 'Kirby\\Toolkit\\Validation') && $key->failed()) {
       foreach($key->errors() as $k => $error) {
         $this->errors[$k] = $error->message();
       }

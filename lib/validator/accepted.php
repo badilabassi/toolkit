@@ -1,5 +1,10 @@
 <?php
 
+namespace Kirby\Toolkit\Validator;
+
+use Kirby\Toolkit\V;
+use Kirby\Toolkit\Validator;
+
 /**
  * Accepted Validator
  * 
@@ -11,7 +16,7 @@
  * @copyright Bastian Allgeier
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class AcceptedValidator extends Validator {
+class Accepted extends Validator {
 
   public $message = 'The :attribute must be accepted';
 

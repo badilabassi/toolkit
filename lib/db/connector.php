@@ -1,5 +1,12 @@
 <?php
 
+namespace Kirby\Toolkit\DB;
+
+use Exception;
+use PDO;
+use Kirby\Toolkit\A;
+use Kirby\Toolkit\C;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
@@ -16,7 +23,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * @copyright Bastian Allgeier
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class DbConnector {
+class Connector {
 
   // the PDO connection
   protected $connection;

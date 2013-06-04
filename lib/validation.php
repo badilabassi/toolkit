@@ -1,11 +1,11 @@
 <?php
 
+namespace Kirby\Toolkit;
+
+use Kirby\Toolkit\Validation\Errors;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
-
-// dependencies
-require_once(dirname(__FILE__) . DS . 'validator.php');
-require_once(dirname(__FILE__) . DS . 'errors.php');
 
 /**
  * 
@@ -62,11 +62,15 @@ class Validation {
           $options = false;
         }
 
-        // create a new validator and run the validation
-        $validator = Validator::create($method, $data, $attribute, $options);
+        if(!empty($data[$attribute]) or $method == 'required') {
+          
+          // create a new validator and run the validation
+          $validator = Validator::create($method, $data, $attribute, $options);
 
-        // add a new error for this validator
-        if($validator->failed()) $this->raise($validator);
+          // add a new error for this validator
+          if($validator->failed()) $this->raise($validator);
+
+        }
 
       }
 
@@ -142,7 +146,7 @@ class Validation {
 
     if(!isset($this->errors->$attributeName)) {
       // create a new set of errors if no error exists so far
-      $this->errors->$attributeName = new ValidationErrors();
+      $this->errors->$attributeName = new Errors();
       $this->errors->$attributeName->$method = $error;
     } else {
       // add a new message to the existing list of errors

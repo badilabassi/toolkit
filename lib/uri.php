@@ -1,12 +1,13 @@
 <?php
 
+namespace Kirby\Toolkit;
+
+use Kirby\Toolkit\URI\Params;
+use Kirby\Toolkit\URI\Path;
+use Kirby\Toolkit\URI\Query;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
-
-// dependencies
-require(dirname(__FILE__) . DS . 'uri' . DS . 'params.php');
-require(dirname(__FILE__) . DS . 'uri' . DS . 'path.php');
-require(dirname(__FILE__) . DS . 'uri' . DS . 'query.php');
 
 /**
  * URI
@@ -232,9 +233,9 @@ class Uri {
     }    
 
     // create a new params and path array    
-    $this->params = new UriParams($params);
-    $this->path   = new UriPath($path);
-    $this->query  = new UriQuery($this->parsed->query);
+    $this->params = new Params($params);
+    $this->path   = new Path($path);
+    $this->query  = new Query($this->parsed->query);
                 
     return $this->path;
                 
@@ -444,7 +445,7 @@ class Uri {
    * @return $this
    */
   public function stripPath() {
-    $this->path = new UriPath();
+    $this->path = new Path();
     return $this;
   }
 
@@ -477,7 +478,7 @@ class Uri {
    * @return $this
    */
   public function stripParams() {
-    $this->params = new UriParams();
+    $this->params = new Params();
     return $this;
   }
 
@@ -521,7 +522,7 @@ class Uri {
    * @return object $this
    */
   public function stripQuery() {
-    $this->query = new UriQuery();
+    $this->query = new Query();
     return $this;
   }
 

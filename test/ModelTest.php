@@ -25,7 +25,7 @@ class UserModel extends Model {
 
   protected function validate() {
     $this->v(array(
-      'email' => 'email'  
+      'email' => array('required', 'email')
     ));    
   }
 
@@ -83,14 +83,21 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 
   public function testValidate() {
 
-    $this->model->name  = 'Bastian Allgeier';
+    $this->model->name = 'Bastian Allgeier';
     $this->model->save();
 
     $this->assertTrue($this->model->invalid());
     $this->assertFalse($this->model->valid());
     $this->assertTrue(is_array($this->model->errors()));
 
-    $this->assertEquals('The email must be a valid email', $this->model->error('email'));
+    $this->assertEquals('The email is required', $this->model->error('email'));
+
+    $this->model->email = 'bastian@getkirby.com';
+    $this->model->save();
+
+    $this->assertTrue($this->model->valid());
+    $this->assertFalse($this->model->invalid());
+    $this->assertTrue(count($this->model->errors()) == 0);
 
   }
 

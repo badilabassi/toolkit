@@ -141,7 +141,7 @@ class DbTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testTable() {
-    $this->assertInstanceOf('DbQuery', db::table('users'));
+    $this->assertInstanceOf('Kirby\\Toolkit\\DB\\Query', db::table('users'));
   }
 
   public function testSelect() {

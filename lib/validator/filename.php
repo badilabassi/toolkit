@@ -1,12 +1,17 @@
 <?php
 
+namespace Kirby\Toolkit\Validator;
+
+use Kirby\Toolkit\V;
+use Kirby\Toolkit\Validator;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
 /**
- * Integer Validator
+ * Filename Validator
  * 
- * Checks for a valid integer
+ * Checks for a valid filename format
  * 
  * @package   Kirby Toolkit 
  * @author    Bastian Allgeier <bastian@getkirby.com>
@@ -14,12 +19,12 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * @copyright Bastian Allgeier
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class IntegerValidator extends Validator {
+class Filename extends Validator {
 
-  public $message = 'The :attribute may only contain integers.';
+  public $message = 'The :attribute must be a valid filename';
 
   public function validate() {
-    return filter_var($this->value, FILTER_VALIDATE_INT) !== false;    
+    return v::match($this->value, '/^[a-z0-9@._-]+$/i') and v::min($this->value, 2);
   }
 
 }

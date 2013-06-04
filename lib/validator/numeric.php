@@ -1,12 +1,17 @@
 <?php
 
+namespace Kirby\Toolkit\Validator;
+
+use Kirby\Toolkit\V;
+use Kirby\Toolkit\Validator;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
 /**
- * IP Validator
+ * Numeric Validator
  * 
- * Checks for a valid ip
+ * Checks for a valid numeric value
  * 
  * @package   Kirby Toolkit 
  * @author    Bastian Allgeier <bastian@getkirby.com>
@@ -14,12 +19,12 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * @copyright Bastian Allgeier
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class IpValidator extends Validator {
+class Numeric extends Validator {
 
-  public $message = 'The :attribute must be a valid IP';
+  public $message = 'The :attribute must be a number';
 
   public function validate() {
-    return filter_var($this->value, FILTER_VALIDATE_IP) !== false;
+    return is_numeric($this->value);
   }
 
 }

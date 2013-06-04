@@ -36,7 +36,7 @@ class RouterTest extends PHPUnit_Framework_TestCase {
         
     $route = router::match();
     
-    $this->assertInstanceOf('Route', $route);
+    $this->assertInstanceOf('Kirby\\Toolkit\\Router\\Route', $route);
     $this->assertEquals('GET', $route->method());
     $this->assertEquals('blog', $route->pattern());
     $this->assertEquals(array(), $route->options());

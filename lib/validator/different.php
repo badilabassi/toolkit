@@ -1,12 +1,17 @@
 <?php
 
+namespace Kirby\Toolkit\Validator;
+
+use Kirby\Toolkit\V;
+use Kirby\Toolkit\Validator;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
 /**
- * In Validator
+ * Different Validator
  * 
- * Checks for a value contained in a list of values
+ * Checks for two different values
  * 
  * @package   Kirby Toolkit 
  * @author    Bastian Allgeier <bastian@getkirby.com>
@@ -14,18 +19,18 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * @copyright Bastian Allgeier
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class InValidator extends Validator {
+class Different extends Validator {
 
-  public $message = 'The :attribute must be in: :in';
+  public $message = 'The :attribute and :other must be different';
 
   public function vars() {
     return array(
-      'in' => implode(', ', $this->options)
+      'other' => $this->options
     );
   }
 
-  public function validate() {    
-    return in_array($this->value, $this->options);
+  public function validate() {
+    return $this->value != $this->options;  
   }
 
 }

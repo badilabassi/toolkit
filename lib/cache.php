@@ -1,10 +1,9 @@
 <?php
 
+namespace Kirby\Toolkit;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
-
-// dependencies
-require_once(dirname(__FILE__) . DS . 'cache' . DS . 'driver.php');
 
 /**
  * 
@@ -37,7 +36,7 @@ class Cache {
 
     // driver class file
     $file  = dirname(__FILE__) . DS . 'cache' . DS . 'driver' . DS . $driver . '.php';
-    $class = $driver . 'CacheDriver';
+    $class = 'Kirby\\Toolkit\\Cache\\Driver\\' . $driver;
 
     if(!file_exists($file)) throw new Exception('The cache driver does not exist: ' . $driver);
 

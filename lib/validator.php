@@ -1,5 +1,9 @@
 <?php
 
+namespace Kirby\Toolkit;
+
+use Exception;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
@@ -89,7 +93,7 @@ class Validator {
 
     $method = strtolower($method);
     $file   = isset(self::$installed[$method]) ? self::$installed[$method] : dirname(__FILE__) . DS . 'validator' . DS . $method . '.php';
-    $class  = $method . 'Validator'; 
+    $class  = 'Kirby\\Toolkit\\Validator\\' . $method; 
 
     // check for an existing validator
     if(!file_exists($file)) throw new Exception('invalid validator: ' . $method);

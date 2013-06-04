@@ -1,5 +1,7 @@
 <?php 
 
+namespace Kirby\Toolkit\Exif;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
@@ -12,7 +14,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * @copyright Bastian Allgeier
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class ExifCamera {
+class Camera {
 
   protected $make;
   protected $model;

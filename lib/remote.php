@@ -1,10 +1,11 @@
 <?php
 
+namespace Kirby\Toolkit;
+
+use Kirby\Toolkit\Remote\Response;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
-
-// dependencies
-require_once(dirname(__FILE__) . DS . 'remote' . DS . 'response.php');
 
 /**
  * Remote
@@ -59,7 +60,7 @@ class Remote {
   /**
    * Sets up all curl options and sends the request
    *
-   * @return object RemoteResponse 
+   * @return object Response 
    */
   protected function send() {
 
@@ -125,7 +126,7 @@ class Remote {
 
     curl_close($curl);
 
-    $this->response = new RemoteResponse();
+    $this->response = new Response();
     $this->response->headers = $this->headers;
     $this->response->error   = $error;
     $this->response->message = $message;
@@ -169,7 +170,7 @@ class Remote {
    * Returns the response object for 
    * the current request
    * 
-   * @return object RemoteResponse
+   * @return object Response
    */
   public function response() {
     return $this->response;
@@ -180,7 +181,7 @@ class Remote {
    * 
    * @param string $url
    * @param array $params
-   * @return object RemoteResponse
+   * @return object Response
    */
   static public function request($url, $params = array()) {
     $request = new self($url, $params);
@@ -192,7 +193,7 @@ class Remote {
    * 
    * @param string $url
    * @param array $params
-   * @return object RemoteResponse
+   * @return object Response
    */
   static public function get($url, $params = array()) {
 
@@ -218,7 +219,7 @@ class Remote {
    * 
    * @param string $url
    * @param array $params
-   * @return object RemoteResponse
+   * @return object Response
    */
   static public function post($url, $params = array()) {
 
@@ -236,7 +237,7 @@ class Remote {
    * 
    * @param string $url
    * @param array $params
-   * @return object RemoteResponse
+   * @return object Response
    */
   static public function put($url, $params = array()) {
 
@@ -254,7 +255,7 @@ class Remote {
    * 
    * @param string $url
    * @param array $params
-   * @return object RemoteResponse
+   * @return object Response
    */
   static public function delete($url, $params = array()) {
 
@@ -272,7 +273,7 @@ class Remote {
    * 
    * @param string $url
    * @param array $params
-   * @return object RemoteResponse
+   * @return object Response
    */
   static public function head($url, $params = array()) {
 

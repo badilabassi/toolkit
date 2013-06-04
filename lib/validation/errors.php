@@ -1,5 +1,10 @@
 <?php
 
+namespace Kirby\Toolkit\Validation;
+
+use Kirby\Toolkit\Collection;
+use Kirby\Toolkit\URL;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
@@ -15,7 +20,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * @copyright Bastian Allgeier
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class ValidationErrors extends Collection {
+class Errors extends Collection {
 
   /**
    * Returns all available error 

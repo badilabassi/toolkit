@@ -1,16 +1,15 @@
 <?php
 
+namespace Kirby\Toolkit;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
-// dependencies
-require_once(dirname(__FILE__) . DS . 'v' . DS . 'validation.php');
-
 /**
  * 
- * Validator
+ * V
  * 
- * Makes input validation easier
+ * Validation shortcuts
  * 
  * @package   Kirby Toolkit 
  * @author    Bastian Allgeier <bastian@getkirby.com>

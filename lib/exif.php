@@ -1,11 +1,9 @@
 <?php 
 
+namespace Kirby\Toolkit;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
-
-// Dependencies
-require_once(dirname(__FILE__) . DS . 'exif' . DS . 'location.php');
-require_once(dirname(__FILE__) . DS . 'exif' . DS . 'camera.php');
 
 /**
  * Exif

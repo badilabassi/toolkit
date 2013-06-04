@@ -1,5 +1,10 @@
 <?php
 
+namespace Kirby\Toolkit\Model;
+
+use Kirby\Toolkit\Model;
+use Kirby\Toolkit\DB;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
@@ -14,7 +19,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * @copyright Bastian Allgeier
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class DatabaseModel extends Model {
+class Database extends Model {
   
   protected $table = null;
 

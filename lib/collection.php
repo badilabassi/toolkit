@@ -1,5 +1,9 @@
 <?php
 
+namespace Kirby\Toolkit;
+
+use Iterator;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 

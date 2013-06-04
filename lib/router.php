@@ -1,10 +1,11 @@
 <?php
 
+namespace Kirby\Toolkit;
+
+use Kirby\Toolkit\Router\Route;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
-
-// dependencies
-require_once(dirname(__FILE__) . DS . 'router' . DS . 'route.php');
 
 /**
  * Router

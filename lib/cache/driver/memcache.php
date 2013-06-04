@@ -1,5 +1,10 @@
 <?php
 
+namespace Kirby\Toolkit\Cache\Driver;
+
+use Kirby\Toolkit\Cache\Driver;
+use Memcache as MC;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
@@ -12,7 +17,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * @copyright Bastian Allgeier
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class MemcacheCacheDriver extends CacheDriver {
+class Memcache extends Driver {
 
   // store for the memache connection
   protected $connection = null;
@@ -33,7 +38,7 @@ class MemcacheCacheDriver extends CacheDriver {
     );
 
     $this->options    = array_merge($defaults, $params);
-    $this->connection = new Memcache();
+    $this->connection = new MC();
     $this->connection->connect($this->options['host'], $this->options['port'], $this->options['timeout']);
 
   }
