@@ -237,3 +237,22 @@ function raise($message, $exception = 'Exception') {
 function options($defaults = array(), $params = array()) {
   return new Collection(array_merge($defaults, $params));
 }
+
+
+/**
+ * Checks / returns a csfr token
+ * 
+ * @param string $check Pass a token here to compare it to the one in the session
+ * @return mixed Either the token or a boolean check result
+ */
+function csfr($check = null) {
+
+  if(is_null($check)) {
+    $token = str::random(64);
+    s::set('csfr', $token);
+    return $token;
+  }
+
+  return ($check === s::get('csfr')) ? true : false;
+
+}
