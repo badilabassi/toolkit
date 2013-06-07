@@ -18,9 +18,10 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  */
 class Autoloader {
 
-  public $aliases   = array();
-  public $root      = null;
-  public $namespace = null;
+  public $aliases     = array();
+  public $root        = null;
+  public $namespace   = null;
+  public $classfolder = false;
 
   /**
    * Registers the autoloader function 
@@ -54,9 +55,15 @@ class Autoloader {
 
       // create the path to the class file. 
       $path = strtolower(str_replace($replace, $with, $class));
-      $file = $autoloader->root . DS . $path . '.php';
-
-      if(file_exists($file)) require_once($file);
+      
+      foreach((array)$autoloader->root as $root) {
+        $file = ($this->classfolder) ? $root . DS . $path . DS . basename($path) . '.php' : $root . DS . $path . '.php';
+        
+        if(file_exists($file)) {
+          require_once($file);
+          break;
+        }
+      }
 
     });
 
