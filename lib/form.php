@@ -254,6 +254,13 @@ class Form {
   }
 
   /**
+   * Builds a hidden field with a csfr token
+   */
+  static public function csfr($name = 'csfr') {
+    return self::hidden($name, csfr());    
+  }
+
+  /**
    * Generates a textarea
    * 
    * @param string $name The name attribute for the field
