@@ -223,3 +223,17 @@ function gravatar($email, $size = 256, $default = 'mm') {
 function raise($message, $exception = 'Exception') {
   throw new $exception($message);
 }
+
+/**
+ * Merges default options with passed parameters and
+ * returns a Collection of those options. 
+ * This is perfect to be used with classes, which 
+ * need fancy option handling
+ * 
+ * @param array $defaults An array of default options
+ * @param array $params An array of params, which should overwrite the defaults
+ * @return object Collection
+ */
+function options($defaults = array(), $params = array()) {
+  return new Collection(array_merge($defaults, $params));
+}
