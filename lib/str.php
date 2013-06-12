@@ -637,6 +637,20 @@ class Str {
   }
 
   /**
+   * A super simple string template engine, 
+   * which replaces tags like {mytag} with any other string
+   * 
+   * @param  string $string
+   * @param  array  $replace An associative array with keys, which should be replaced and values.
+   * @return string
+   */
+  static public function template($string, $data = array()) {  
+    $replace = array();
+    foreach($data as $key => $value) $replace['{' . $key . '}'] = $value;    
+    return str_replace(array_keys($replace), array_values($replace), $string);
+  }
+
+  /**
    * Convert a string to 7-bit ASCII.
    *
    * @param  string  $string
@@ -731,7 +745,7 @@ class Str {
    * @param  boolean $array 
    * @return string
    */
-  static function pool($type, $array = true) {
+  static public function pool($type, $array = true) {
 
     $pool = array();
     

@@ -199,15 +199,13 @@ class Upload {
   
     if(is_null($file)) return $this->file;
 
-    $replace = array(
-      ':name'         => $this->name(),
-      ':filename'     => $this->filename(),
-      ':safeName'     => $this->safeName(),
-      ':safeFilename' => $this->safeName() . '.' . $this->extension(),
-      ':extension'    => $this->extension(),
-    );
-
-    return str_replace(array_keys($replace), array_values($replace), $file);
+    return str::template($file, array(
+      'name'         => $this->name(),
+      'filename'     => $this->filename(),
+      'safeName'     => $this->safeName(),
+      'safeFilename' => $this->safeName() . '.' . $this->extension(),
+      'extension'    => $this->extension(),
+    ));
 
   }
 

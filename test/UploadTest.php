@@ -23,7 +23,7 @@ class UploadTest extends PHPUnit_Framework_TestCase {
 
     $this->upload();
 
-    $upload = new Upload('file', TEST_ROOT_ETC . DS . 'images' . DS . ':safeName.:extension');
+    $upload = new Upload('file', TEST_ROOT_ETC . DS . 'images' . DS . '{safeName}.{extension}');
 
     $this->assertFalse($upload->failed());
     $this->assertEquals(null, $upload->error());

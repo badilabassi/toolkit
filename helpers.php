@@ -256,3 +256,14 @@ function csfr($check = null) {
   return ($check === s::get('csfr')) ? true : false;
 
 }
+
+/**
+ * Shortcut to create a new thumb object
+ * 
+ * @param mixed Either a file path or an Asset object
+ * @param array An array of additional params for the thumb
+ * @return object Thumb
+ */
+function thumb($image, $params = array()) {
+  return new Thumb($image, $params);
+}

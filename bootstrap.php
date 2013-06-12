@@ -66,6 +66,7 @@ $autoloader->aliases = array(
   'server'     => 'Kirby\\Toolkit\\Server',
   'sql'        => 'Kirby\\Toolkit\\SQL',
   'str'        => 'Kirby\\Toolkit\\Str',
+  'thumb'      => 'Kirby\\Toolkit\\Thumb',
   'timer'      => 'Kirby\\Toolkit\\Timer',
   'tpl'        => 'Kirby\\Toolkit\\Tpl',
   'txtstore'   => 'Kirby\\Toolkit\\Txtstore',
