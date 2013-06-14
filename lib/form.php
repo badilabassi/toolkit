@@ -214,7 +214,10 @@ class Form {
    * @return The generated html
    */
   static public function button($name, $value, $attr = array()) {
-    return self::input('button', $name, $value, $attr);
+    $attr = array_merge(array(
+      'name' => $name
+    ), $attr);
+    return html::tag('button', $value, $attr);
   }
 
   /**

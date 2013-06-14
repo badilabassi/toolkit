@@ -248,7 +248,7 @@ class Collection implements Iterator {
     * @param mixed $value
     * @return object returns the current object to make it chainable
     */  
-  function add($key, $value) {
+  public function add($key, $value) {
     return $this->set($key, $value);
   }
   
@@ -261,7 +261,7 @@ class Collection implements Iterator {
     * @param mixed $value
     * @return object returns the current object to make it chainable
     */  
-  function replace($key, $value) {
+  public function replace($key, $value) {
     return $this->set($key, $value);
   }
 
@@ -273,14 +273,14 @@ class Collection implements Iterator {
     * @param string $key
     * @return object returns the current object to make it chainable
     */  
-  function remove($key = null) {
+  public function remove($key = null) {
 
     if(is_null($key)) { 
       $this->reset();
       return $this;
     }
 
-    unset($this->$key);
+    unset($this->data['_' . $key]);
     return $this;
   }
   
@@ -485,7 +485,7 @@ class Collection implements Iterator {
   
     $operators = array('!=', '==', '*=', '>', '<', '>=', '<=');
 
-    if(in_array($value, $operators)) {
+    if(is_string($value) && in_array($value, $operators)) {
       $operator = $value;
       $value    = a::get($args, 2);
       $split    = a::get($args, 3);
@@ -577,7 +577,7 @@ class Collection implements Iterator {
           if($split) {
             $values = str::split((string)$this->filterByValue($item, $field), $split);
             if(!in_array($value, $values)) $collection->remove($key);
-          } else if($this->filterByValue($item, $field) != $value) {
+          } else if($this->filterByValue($item, $field) != $value) {            
             $collection->remove($key);
           }
         

@@ -38,7 +38,7 @@ abstract class Creator {
     }
 
     // check if the image is writable at all
-    if(!$this->thumb->isWritable()) raise('The image file is not writable');
+    if(!$this->thumb->isWritable()) raise('The image file is not writable: ' . $this->thumb->root());
     
     // check if everything else is fine
     $this->check();

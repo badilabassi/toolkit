@@ -134,9 +134,15 @@ class CollectionTest extends PHPUnit_Framework_TestCase {
     $this->isUntouched();
     
     // unset
-    unset($this->collection->first);
-    
+    $this->collection->remove('first');    
     $this->assertFalse(isset($this->collection->first));
+
+    $this->collection->set('index', 'test');    
+    $this->assertTrue(isset($this->collection->index));
+
+    $this->collection->remove('index');    
+    $this->assertFalse(isset($this->collection->index));
+
   }
   
   public function testGroup() {

@@ -47,7 +47,7 @@ class Thumb {
    */
   public function __construct($image, $options = array()) {
 
-    if(!is_a($image, 'Asset')) {
+    if(!is_object($image)) {
       if(!f::exists($image)) raise('The given image does not exist');
       $image = new Asset($image);
     } 
