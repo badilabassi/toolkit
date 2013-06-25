@@ -643,7 +643,7 @@ class Collection implements Iterator {
    */
   public function paginate($limit, $options = array()) {
 
-    if(is_a($limit, 'Pagination')) {
+    if(is_a($limit, 'Kirby\\Toolkit\\Pagination')) {
       $this->pagination = $limit;
       return $this;
     }

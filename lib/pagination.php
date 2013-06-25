@@ -61,7 +61,7 @@ class Pagination {
     );
 
     // You can still pass an entire collection
-    if(is_a($count, 'Collection')) {
+    if($count instanceof \Kirby\Toolkit\Collection) {
       $count = $count->count();
     }
       
