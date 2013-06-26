@@ -319,7 +319,9 @@ class Pagination {
    * @return int
    */
   public function numEnd() {
-    return $this->offset+$this->limit;
+    $end = $this->offset+$this->limit;
+    if($end > $this->items()) $end = $this->items();
+    return $end;
   }
 
   /**
