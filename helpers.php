@@ -49,7 +49,7 @@ function go($url = false, $code = false, $send = true) {
   * @param   mixed    $default Optional default value, which should be returned if no element has been found
   * @return  mixed
   */  
-function get($key = false, $default = null) {
+function get($key = null, $default = null) {
   return r::data($key, $default);
 }
 
