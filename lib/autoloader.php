@@ -57,7 +57,7 @@ class Autoloader {
       $path = strtolower(str_replace($replace, $with, $class));
       
       foreach((array)$autoloader->root as $root) {
-        $file = ($this->classfolder) ? $root . DS . $path . DS . basename($path) . '.php' : $root . DS . $path . '.php';
+        $file = ($autoloader->classfolder) ? $root . DS . $path . DS . basename($path) . '.php' : $root . DS . $path . '.php';
         
         if(file_exists($file)) {
           require_once($file);
