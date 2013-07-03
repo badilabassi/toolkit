@@ -18,6 +18,9 @@ if(!defined('KIRBY'))     define('KIRBY',     true);
 if(!defined('DS'))        define('DS',        DIRECTORY_SEPARATOR);
 if(!defined('MB_STRING')) define('MB_STRING', (int)function_exists('mb_get_info'));
 
+// stop loading the toolkit if another toolkit has already been loaded
+if(defined('KIRBY_TOOLKIT_ROOT')) return;
+
 // define toolkit roots
 define('KIRBY_TOOLKIT_ROOT',     __DIR__);
 define('KIRBY_TOOLKIT_ROOT_LIB', KIRBY_TOOLKIT_ROOT . DS . 'lib');
