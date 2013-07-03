@@ -123,4 +123,86 @@ class Search {
 
   }
 
+  /**
+   * Shortens strings but keeps words
+   * Can be used to shorten strings starting from the beginning or the end
+   * 
+   * @param string $text
+   * @param int $size The maximum character length for the final string
+   * @param boolean $reverse If true, the string will be started from the end. 
+   * @return string
+   */
+  protected function subwords($text, $size = 50, $reverse = false) {
+
+    if($reverse) $text = strrev($text);
+
+    $wrap = wordwrap($text, $size, '@@@@');
+    $text = str::substr($text, 0, strpos($wrap,'@@@@'));
+
+    if($reverse) $text = strrev($text);
+
+    return $text;
+
+  }
+
+  /**
+   * Generates a smart Googlish search excerpt with highlighted search words
+   * Shortens parts between search words intelligently. 
+   * 
+   * @param string $text
+   * @param int $size The max length of strings before and after search words
+   * @return string
+   */
+  public function excerpt($text, $size = 20) {
+
+    $tokens     = array();
+    $text       = trim(strip_tags($text));
+    $text       = preg_replace('!\s+!m', ' ', $text);
+    $textlength = str::length($text);
+
+    $words = array();
+
+    foreach($this->words() as $word) {
+      $words[] = '!\b(' . preg_quote($word) . ')\b!i';
+    }
+
+    $text   = preg_replace($words, '@@@@$1@@@@', $text, 1);
+    $parts  = (preg_split('!(@@@@.*?@@@@)!i', $text, -1, PREG_SPLIT_DELIM_CAPTURE));
+    $result = array();
+    $count  = 0;
+
+    foreach($parts as $part) {
+
+      if(str::contains($part, '@@@@')) {
+        // search word
+        $result[] = preg_replace('!@@@@(.*?)@@@@!i', '<strong>$1</strong>', $part);
+      } else {
+        
+        $length = str::length($part);
+
+        if($length > $size * 2) {
+    
+          if($count == 0) {
+            $part = '…' . $this->subwords($part, $size * 2, true);
+          } else if($count == count($parts)-1) {
+            $part = $this->subwords($part, $size * 2) . '…';
+          } else {
+            $part = $this->subwords($part, $size) . '…' . $this->subwords($part, $size, true);            
+          }
+        
+        }
+
+        // in between
+        $result[] = $part;
+  
+      }
+
+      $count++;
+
+    }
+
+    return implode($result);
+
+  }
+
 }
