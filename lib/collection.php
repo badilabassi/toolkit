@@ -368,7 +368,7 @@ class Collection implements Iterator {
    * @return mixed the name of the key or false
    */      
   public function indexOf($needle) {
-    return $this->cleankey(array_search($needle, array_values($this->data)));
+    return array_search($needle, array_values($this->data));
   }
 
   // Methods which clone the current object
