@@ -199,7 +199,7 @@ class Thumb {
       'class'  => $this->options['class'],
     ), $attr);
 
-    return html::img($this->thumb->url(), $attr);
+    return html::img($this->url(), $attr);
     
   }
   
