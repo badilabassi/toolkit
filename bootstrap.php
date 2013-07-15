@@ -59,6 +59,7 @@ $autoloader->aliases = array(
   'html'       => 'Kirby\\Toolkit\\Html',
   'l'          => 'Kirby\\Toolkit\\L',
   'model'      => 'Kirby\\Toolkit\\Model',
+  'obj'        => 'Kirby\\Toolkit\\Object',
   'object'     => 'Kirby\\Toolkit\\Object',
   'pagination' => 'Kirby\\Toolkit\\Pagination',
   'password'   => 'Kirby\\Toolkit\\Password',
