@@ -211,7 +211,7 @@ class Model extends Object {
    * @param mixed $key Pass a string, array or an entire Validation object
    * @param mixed $message If you pass a string for the key, pass the message for that key here
    */
-  protected function raise($key, $message = null) {
+  public function raise($key, $message = null) {
   
     // auto-pass all errors from a validation object
     if(is_a($key, 'Kirby\\Toolkit\\Validation') && $key->failed()) {
