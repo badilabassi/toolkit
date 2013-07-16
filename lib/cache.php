@@ -2,6 +2,8 @@
 
 namespace Kirby\Toolkit;
 
+use Exception;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
@@ -121,6 +123,16 @@ class Cache {
    */
   static public function created($key) {
     return self::driver()->created($key);
+  }  
+
+  /**
+   * Alternate version for cache::created($key);
+   * 
+   * @param string $key
+   * @return int UNIX timestamp
+   */
+  static public function modified($key) {
+    return self::driver()->modified($key);
   }  
 
   /**

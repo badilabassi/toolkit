@@ -151,6 +151,13 @@ abstract class Driver {
   }
 
   /**
+   * Alternate version for cache::created($key)
+   */
+  public function modified($key) {
+    return static::created($key);
+  }
+
+  /**
    * An array with value, created timestamp and expires timestamp
    * 
    * @param mixed $value The value, which should be cached

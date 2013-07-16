@@ -536,4 +536,25 @@ class Uri {
     return $this->toUrl();    
   }
 
+  /**
+   * Returns a more readable dump array for the dump() helper
+   * 
+   * @return array
+   */
+  public function __toDump() {
+
+    return array(
+      'scheme'    => $this->scheme(),
+      'host'      => $this->host(),
+      'baseurl'   => $this->baseurl(),
+      'file'      => $this->file(),
+      'extension' => $this->extension(),
+      'subfolder' => $this->subfolder(),
+      'path'      => (string)$this->path(),
+      'params'    => (string)$this->params(),
+      'query'     => (string)$this->query(),
+    );
+
+  }
+
 } 

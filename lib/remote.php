@@ -46,7 +46,8 @@ class Remote {
       'timeout'  => 10,
       'headers'  => array(),
       'encoding' => 'utf-8',
-      'agent'    => null
+      'agent'    => null, 
+      'body'     => true,
     );
     
     // set all options
@@ -74,7 +75,7 @@ class Remote {
       CURLOPT_CONNECTTIMEOUT  => $this->options['timeout'],
       CURLOPT_TIMEOUT         => $this->options['timeout'],
       CURLOPT_AUTOREFERER     => true,
-      CURLOPT_RETURNTRANSFER  => true,
+      CURLOPT_RETURNTRANSFER  => $this->options['body'],
       CURLOPT_FOLLOWLOCATION  => true,
       CURLOPT_MAXREDIRS       => 10,
       CURLOPT_SSL_VERIFYPEER  => false,
@@ -204,7 +205,10 @@ class Remote {
 
     $options = array_merge($defaults, $params);
     $query   = http_build_query($options['data']);    
-    $url     = (!empty($query) && url::hasQuery($url)) ? $url . '&' . $query : $url . '?' . $query;
+
+    if(!empty($query)) {
+      $url = (url::hasQuery($url)) ? $url . '&' . $query : $url . '?' . $query;      
+    }
 
     // remove the data array from the options
     unset($options['data']);
@@ -296,7 +300,7 @@ class Remote {
    */
   static public function headers($url, $params = array()) {
     $request = self::head($url, $params);
-    return $request->headers();
+    return array_merge($request->headers(), $request->info());
   }
 
   /**

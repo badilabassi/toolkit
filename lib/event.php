@@ -44,7 +44,7 @@ class Event {
    * @param string $event The name of the event, that should be triggered
    * @param array $arguments An optional array of arguments, which should be passed to the event
    */
-  public function trigger($event, $arguments = array()) {
+  static public function trigger($event, $arguments = array()) {
     if(empty(self::$events[$event])) return false;
     
     foreach(self::$events[$event] as $callback) {
