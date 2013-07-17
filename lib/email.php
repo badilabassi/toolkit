@@ -58,14 +58,18 @@ class Email {
 
       if(is_null($params)) {
         // get the default service which should be used
-        $params = c::get('email.service');
+        $params = c::get('email.service', 'mail');
       }
 
       // try to load service options from the config
       $options = a::get(c::get('email.services', array()), $params);
 
-      // raise an exception on missing options
-      if(!$options) raise('Invalid setup for the email class');
+      // last resort
+      if(!$options) {
+        $options = array(
+          'service' => 'mail'
+        );
+      }
 
     }
 

@@ -273,3 +273,43 @@ function csfr($check = null) {
 function thumb($image, $params = array()) {
   return new Thumb($image, $params);
 }
+
+
+/**
+ * The most simple way to send emails 
+ * This helper is using the Kirby email class
+ * 
+ * <code>
+ * 
+ * $email = email(array(
+ *   'to'      => 'bastian@getkirby.com',
+ *   'from'    => 'john@doe.com',
+ *   'subject' => 'Hello',
+ *   'body'    => 'Hello world!'
+ * ));
+ * 
+ * if($email->failed()) die('The email could not be sent');
+ * 
+ * <code>
+ * 
+ * @param array $params
+ * @return 
+ */
+function email($params = array()) {
+  $email = new Email();
+  $email->send($params);
+  return $email;
+}
+
+/**
+ * Runs a full validation for an entire set of data and rules
+ * 
+ * @param array $data
+ * @param array $rules specify a set of rules for validation
+ * @param array $messages Overwrite default validation messages for each method here
+ * @param array $attributes Overwrite default attribute names
+ * @return object Validation
+ */
+function v($data, $rules = array(), $messages = array(), $attributes = array()) {
+  return v::all($data, $rules, $messages, $attributes);
+}
