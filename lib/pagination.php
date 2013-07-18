@@ -49,9 +49,9 @@ class Pagination {
    * 
    * @param object $data The collection with all data (KirbyFiles or KirbyPages)
    * @param int $limit The number of items per page
-   * @param array $options Additional parameters to control the pagination object
+   * @param array $params Additional parameters to control the pagination object
    */
-  public function __construct($count, $limit, $options=array()) {
+  public function __construct($count, $limit, $params = array()) {
 
     $defaults = array(
       'variable' => c::get('pagination.variable', 'page'),
@@ -65,7 +65,7 @@ class Pagination {
       $count = $count->count();
     }
       
-    $this->options = array_merge($defaults, $options);
+    $this->options = array_merge($defaults, $params);
     $this->count   = $count;
     $this->limit   = $limit;
     $this->pages   = ceil($this->count / $this->limit);

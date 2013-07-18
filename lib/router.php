@@ -90,7 +90,7 @@ class Router {
    */
   static public function register($methods, $pattern, $action) {
     foreach((array)$methods as $method) {
-      self::$routes[$method][$pattern] = $action;
+      self::$routes[$method][ltrim($pattern, '/')] = $action;
     }
   }
 

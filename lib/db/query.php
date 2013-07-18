@@ -354,7 +354,7 @@ class Query {
           
           // ->where('username', 'like', 'myuser'); 
           } else {
-            $where = $args[0] . ' ' . trim($args[1]) . ' ' . db::escape($args[2]);    
+            $where = $args[0] . ' ' . trim($args[1]) . ' "' . db::escape($args[2]) . '"';    
           }      
         
         }

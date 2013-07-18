@@ -114,7 +114,9 @@ class Uri {
   public function set($url = null, $options = array()) {
 
     $defaults = array(
+      'file'      => null,
       'subfolder' => null,
+      'strip'     => null
     );
 
     // reset all attributes
@@ -156,7 +158,7 @@ class Uri {
     );
     
     // build the full url if not given
-    if(!$url) {
+    if(!$url or $url == 'this') {
       $url = $defaults['scheme'] . '://' . $defaults['host'] . server::get('request_uri');
     }
 
@@ -169,30 +171,28 @@ class Uri {
             
     // parse the query string into an array
     @parse_str($this->parsed->query, $this->parsed->query);
-    
-    // add the subfolder from the options array
-    $this->subfolder = $this->options['subfolder'];
 
-    // detect the file
-    $this->file = $this->file = basename($_SERVER['SCRIPT_NAME']);
-    
+    // attach the subfolder object
+    $this->subfolder = $this->options['subfolder'];    
+
     // get the path    
-    $path = $this->parsed->path;
-    
-    // strip the filename from the path
-    if($this->file) $path = trim(str_replace($this->file, '', $path), '/');
+    $path = trim($this->parsed->path, '/\\');
 
-    // strip subfolders from uri    
-    if($this->subfolder) {
-        
-      // subfolder autodetection
-      if($this->subfolder == '__autodetect') $this->subfolder = trim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
-      
-      // make sure to clean the passed subfolder to avoid errors
-      $path = trim(preg_replace('!^' . preg_quote($this->subfolder) . '(\/|)!i', '/', $path), '/');
-
+    // auto-detect the subfolder
+    if($this->subfolder == '@auto') {
+      $this->subfolder = trim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
     }
-    
+
+    // make sure to clean the passed subfolder to avoid errors
+    if($this->subfolder) {
+      $path = trim(preg_replace('!^' . preg_quote($this->subfolder) . '!i', '/', $path), '/');
+    }
+
+    // strip additional stuff off the uri
+    if($this->options['strip']) {
+      $path = trim(preg_replace('!^' . preg_quote($this->options['strip']) . '!i', '/', $path), '/');
+    }
+
     // split the path
     $parts = (array)str::split($path, '/');
 
@@ -221,16 +221,10 @@ class Uri {
 
     // handle the extension on the last element    
     if($this->extension) {
-      // remove the last part of the path
-      $last = array_pop($path);
-      // add it again to the path array without extension
-      $path[] = f::name($last);
-
-      $this->file = $last;
-
+      $this->file = a::last($path);
     } else {
       $this->extension = f::extension($this->file);
-    }    
+    } 
 
     // create a new params and path array    
     $this->params = new Params($params);
@@ -239,6 +233,15 @@ class Uri {
                 
     return $this->path;
                 
+  }
+
+  /**
+   * Returns the parsed information
+   * 
+   * @return array
+   */
+  public function parsed() {
+    return $this->parsed;
   }
 
   /**
@@ -419,7 +422,7 @@ class Uri {
    * @param boolean $includeQuery true: the query will be appended, false: this will only return the path 
    * @return string
    */
-  public function toUrl($includeQuery=true) {
+  public function toUrl($includeQuery = true) {
     
     $parts = array();
     $parts[] = $this->baseurl();
