@@ -91,7 +91,9 @@ class Embed {
       'frameborder'           => '0',
       'webkitAllowFullScreen' => 'true',
       'mozAllowFullScreen'    => 'true',
-      'allowFullScreen'       => 'true'
+      'allowFullScreen'       => 'true', 
+      'width'                 => '100%',
+      'height'                => '100%',
     ), $attr);
 
     return Html::iframe($url, $attr);
@@ -121,7 +123,9 @@ class Embed {
       'frameborder'           => '0',
       'webkitAllowFullScreen' => 'true',
       'mozAllowFullScreen'    => 'true',
-      'allowFullScreen'       => 'true'
+      'allowFullScreen'       => 'true',
+      'width'                 => '100%',
+      'height'                => '100%',
     ), $attr);
 
     return Html::iframe($url, $attr);

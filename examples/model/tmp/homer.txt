@@ -1,0 +1,9 @@
+﻿Username: homer
+----
+Fname: Homer
+----
+Lname: Simpson
+----
+Password: Marge sucks
+----
+Email: home@simpsons.com
