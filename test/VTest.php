@@ -31,7 +31,7 @@ class VTest extends PHPUnit_Framework_TestCase {
       'password_confirmation' => 'password confirmation'
     );
 
-    $validation = v::all($data, $rules, $messages, $attributes);
+    $validation = v::all($data, $rules, $attributes, $messages);
 
     $this->assertTrue($validation->passed());
     $this->assertFalse($validation->failed());
@@ -39,7 +39,7 @@ class VTest extends PHPUnit_Framework_TestCase {
     // inject an invalid email
     $data['email'] = 'invalid email address';
 
-    $validation = v::all($data, $rules, $messages, $attributes);
+    $validation = v::all($data, $rules, $attributes, $messages);
 
     $this->assertFalse($validation->passed());
     $this->assertTrue($validation->failed());

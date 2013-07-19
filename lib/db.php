@@ -69,14 +69,14 @@ class Db {
   static public function connect($params = null) {
 
     // start the connector
-    self::$connector = new Connector($params);
+    static::$connector = new Connector($params);
 
     // store the type and prefix
-    self::$type   = self::$connector->type();
-    self::$prefix = self::$connector->prefix();
+    static::$type   = static::$connector->type();
+    static::$prefix = static::$connector->prefix();
         
     // return the established connection
-    return self::$connection = self::$connector->connection();
+    return static::$connection = static::$connector->connection();
   
   }
   
@@ -86,7 +86,7 @@ class Db {
    * @return object
    */
   static public function connection() {
-    return (!is_null(self::$connection)) ? self::$connection : self::connect();
+    return (!is_null(static::$connection)) ? static::$connection : static::connect();
   }
 
   /**
@@ -95,7 +95,7 @@ class Db {
    * @param boolean $fail
    */
   static public function fail($fail = true) {
-    self::$fail = $fail;
+    static::$fail = $fail;
   }
 
   /**
@@ -104,8 +104,8 @@ class Db {
    * @return string
    */
   static public function type() {
-    self::connection();
-    return self::$type;
+    static::connection();
+    return static::$type;
   }
 
   /**
@@ -114,8 +114,8 @@ class Db {
    * @return string
    */
   static public function prefix() {
-    self::connection();
-    return self::$prefix;
+    static::connection();
+    return static::$prefix;
   }
 
   /**
@@ -125,7 +125,7 @@ class Db {
    * @return string
    */
   static public function escape($value) {
-    return substr(self::connection()->quote($value), 1, -1);
+    return substr(static::connection()->quote($value), 1, -1);
   }
 
   /**
@@ -135,8 +135,8 @@ class Db {
    * @return array
    */
   static public function trace($data = null) {
-    if(is_null($data)) return self::$trace;  
-    self::$trace[] = $data;
+    if(is_null($data)) return static::$trace;  
+    static::$trace[] = $data;
   }
 
   /**
@@ -145,7 +145,7 @@ class Db {
    * @return int
    */
   static public function affected() {
-    return self::$affected;
+    return static::$affected;
   }
 
   /**
@@ -154,7 +154,7 @@ class Db {
    * @return int
    */
   static public function lastId() {
-    return self::$lastId;
+    return static::$lastId;
   }
 
   /**
@@ -163,7 +163,7 @@ class Db {
    * @return string
    */
   static public function lastQuery() {
-    return self::$lastQuery;
+    return static::$lastQuery;
   }
 
   /**
@@ -172,7 +172,7 @@ class Db {
    * @return mixed
    */
   static public function lastResult() {
-    return self::$lastResult;
+    return static::$lastResult;
   }
 
   /**
@@ -181,7 +181,7 @@ class Db {
    * @return object
    */
   static public function lastError() {
-    return self::$lastError;
+    return static::$lastError;
   }
 
   /**
@@ -197,41 +197,41 @@ class Db {
     // try to prepare and execute the sql
     try {                                  
   
-      self::$statement = self::connection()->prepare($query);        
-      self::$statement->execute($bindings);  
+      static::$statement = static::connection()->prepare($query);        
+      static::$statement->execute($bindings);  
       
-      self::$affected  = self::$statement->rowCount();  
-      self::$lastId    = self::connection()->lastInsertId();
-      self::$lastError = null;
+      static::$affected  = static::$statement->rowCount();  
+      static::$lastId    = static::connection()->lastInsertId();
+      static::$lastError = null;
       
       // store the final sql to add it to the trace later
-      self::$lastQuery = self::$statement->queryString;
+      static::$lastQuery = static::$statement->queryString;
 
     } catch(Exception $e) {
 
       // store the error
-      self::$affected  = 0;
-      self::$lastError = $e;                  
-      self::$lastId    = null;
-      self::$lastQuery = $query;
+      static::$affected  = 0;
+      static::$lastError = $e;                  
+      static::$lastId    = null;
+      static::$lastQuery = $query;
 
       // only throw the extension if failing is allowed
-      if(self::$fail == true) throw $e;
+      if(static::$fail == true) throw $e;
 
     }
 
     // add a new entry to the singleton trace array    
-    self::trace(array(
-      'query'    => self::$lastQuery, 
+    static::trace(array(
+      'query'    => static::$lastQuery, 
       'bindings' => $bindings,
-      'error'    => self::$lastError
+      'error'    => static::$lastError
     ));
 
     // reset some stuff
-    self::$fail = false;
+    static::$fail = false;
 
     // return true or false on success or failure
-    return is_null(self::$lastError);
+    return is_null(static::$lastError);
                 
   }
 
@@ -254,7 +254,7 @@ class Db {
 
     $options = array_merge($defaults, $params);
 
-    if(!self::hit($query, $bindings)) return false;
+    if(!static::hit($query, $bindings)) return false;
 
     // define the default flag for the fetch method
     $flags = $options['fetch'] == 'array' ? PDO::FETCH_ASSOC : PDO::FETCH_CLASS; 
@@ -264,16 +264,16 @@ class Db {
     
     // set the fetch mode
     if($options['fetch'] == 'array') {
-      self::$statement->setFetchMode($flags);
+      static::$statement->setFetchMode($flags);
     } else {
-      self::$statement->setFetchMode($flags, $options['fetch']);
+      static::$statement->setFetchMode($flags, $options['fetch']);
     }
 
     // fetch that stuff
-    $results = self::$statement->$options['method']();
+    $results = static::$statement->$options['method']();
     
-    if($options['iterator'] == 'array') return self::$lastResult = $results;
-    return self::$lastResult = new $options['iterator']($results);
+    if($options['iterator'] == 'array') return static::$lastResult = $results;
+    return static::$lastResult = new $options['iterator']($results);
   
   }
 
@@ -285,7 +285,7 @@ class Db {
    * @return boolean
    */
   static public function execute($query, $bindings = array()) {
-    return self::$lastResult = self::hit($query, $bindings);
+    return static::$lastResult = static::hit($query, $bindings);
   }
 
   /**
@@ -310,7 +310,7 @@ class Db {
    * @return mixed
    */
   static public function select($table, $columns = '*', $where = null, $order = null, $offset = 0, $limit = null) {
-    return self::table($table)->select($columns)->where($where)->order($order)->offset($offset)->limit($limit)->all();
+    return static::table($table)->select($columns)->where($where)->order($order)->offset($offset)->limit($limit)->all();
   }
 
   /**
@@ -325,25 +325,25 @@ class Db {
    * @return mixed
    */
   static public function first($table, $columns = '*', $where = null, $order = null) {
-    return self::table($table)->select($columns)->where($where)->order($order)->first();    
+    return static::table($table)->select($columns)->where($where)->order($order)->first();    
   }
 
   /**
    * Shortcut for selecting a single row in a table
    * 
-   * @see self::first()
+   * @see static::first()
    */
   static public function row($table, $columns = '*', $where = null, $order = null) {
-    return self::first($table, $columns, $where, $order);
+    return static::first($table, $columns, $where, $order);
   }
 
   /**
    * Shortcut for selecting a single row in a table
    * 
-   * @see self::first()
+   * @see static::first()
    */
   static public function one($table, $columns = '*', $where = null, $order = null) {
-    return self::first($table, $columns, $where, $order);
+    return static::first($table, $columns, $where, $order);
   }
 
   /**
@@ -358,7 +358,7 @@ class Db {
    * @return mixed
    */
   static public function column($table, $column, $where = null, $order = null, $offset = 0, $limit = null) {
-    return self::table($table)->where($where)->order($order)->offset($offset)->limit($limit)->column($column);
+    return static::table($table)->where($where)->order($order)->offset($offset)->limit($limit)->column($column);
   }
 
   /**
@@ -369,7 +369,7 @@ class Db {
    * @return boolean 
    */
   static public function insert($table, $values) {
-    return self::table($table)->insert($values);
+    return static::table($table)->insert($values);
   }
 
   /**
@@ -381,7 +381,7 @@ class Db {
    * @return boolean 
    */
   static public function update($table, $values, $where = null) {
-    return self::table($table)->where($where)->update($values);
+    return static::table($table)->where($where)->update($values);
   }
 
   /**
@@ -392,7 +392,7 @@ class Db {
    * @return boolean
    */
   static public function delete($table, $where = null) {
-    return self::table($table)->where($where)->delete();
+    return static::table($table)->where($where)->delete();
   }
 
   /**
@@ -403,7 +403,7 @@ class Db {
    * @return int
    */
   static public function count($table, $where = null) {
-    return self::table($table)->where($where)->count();    
+    return static::table($table)->where($where)->count();    
   }
 
   /**
@@ -415,7 +415,7 @@ class Db {
    * @return mixed
    */
   static public function min($table, $column, $where = null) {
-    return self::table($table)->where($where)->min($column);    
+    return static::table($table)->where($where)->min($column);    
   }
 
   /**
@@ -427,7 +427,7 @@ class Db {
    * @return mixed
    */
   static public function max($table, $column, $where = null) {
-    return self::table($table)->where($where)->max($column);    
+    return static::table($table)->where($where)->max($column);    
   }
 
   /**
@@ -439,7 +439,7 @@ class Db {
    * @return mixed
    */
   static public function avg($table, $column, $where = null) {
-    return self::table($table)->where($where)->avg($column);    
+    return static::table($table)->where($where)->avg($column);    
   }
 
   /**
@@ -451,7 +451,7 @@ class Db {
    * @return mixed
    */
   static public function sum($table, $column, $where = null) {
-    return self::table($table)->where($where)->sum($column);    
+    return static::table($table)->where($where)->sum($column);    
   }
 
 }

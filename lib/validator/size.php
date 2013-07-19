@@ -22,10 +22,10 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
 class Size extends Validator {
 
   public $message = array(
-    'numeric' => 'The :attribute must be :size.',
-    'file'    => 'The :attribute must be :size kilobyte.',
-    'string'  => 'The :attribute must be :size characters.',
-    'array'   => 'The :attribute must be :size elements.',
+    'numeric' => 'The {attribute} must be {size}.',
+    'file'    => 'The {attribute} must be {size} kilobyte.',
+    'string'  => 'The {attribute} must be {size} characters.',
+    'array'   => 'The {attribute} must be {size} elements.',
   );
 
   public function vars() {

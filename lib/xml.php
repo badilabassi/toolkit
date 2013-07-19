@@ -62,7 +62,7 @@ class Xml {
    */  
   static public function decode($string) {
     // convert xml entities to html entities
-    $string = strtr($string, self::entities());
+    $string = strtr($string, static::entities());
     return html::decode($string);
   }  
 

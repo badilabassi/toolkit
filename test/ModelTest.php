@@ -88,7 +88,7 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 
     $this->assertTrue($this->model->invalid());
     $this->assertFalse($this->model->valid());
-    $this->assertTrue(is_array($this->model->errors()));
+    $this->assertTrue(is_a($this->model->errors(), 'Kirby\\Toolkit\\Errors'));
 
     $this->assertEquals('The email is required', $this->model->error('email'));
 
@@ -97,7 +97,7 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 
     $this->assertTrue($this->model->valid());
     $this->assertFalse($this->model->invalid());
-    $this->assertTrue(count($this->model->errors()) == 0);
+    $this->assertTrue($this->model->errors()->count() == 0);
 
   }
 

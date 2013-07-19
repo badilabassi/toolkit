@@ -96,7 +96,7 @@ class Form {
    * @return The generated html
    */
   static public function text($name, $value, $attr = array()) {
-    return self::input('text', $name, $value, $attr);
+    return static::input('text', $name, $value, $attr);
   }
 
   /**
@@ -108,7 +108,7 @@ class Form {
    * @return The generated html
    */
   static public function password($name, $value, $attr = array()) {
-    return self::input('password', $name, $value, $attr);
+    return static::input('password', $name, $value, $attr);
   }
 
   /**
@@ -120,7 +120,7 @@ class Form {
    * @return The generated html
    */
   static public function url($name, $value, $attr = array()) {
-    return self::input('url', $name, $value, $attr);
+    return static::input('url', $name, $value, $attr);
   }
 
   /**
@@ -132,7 +132,7 @@ class Form {
    * @return The generated html
    */
   static public function email($name, $value, $attr = array()) {
-    return self::input('email', $name, $value, $attr);
+    return static::input('email', $name, $value, $attr);
   }
 
   /**
@@ -144,7 +144,7 @@ class Form {
    * @return The generated html
    */
   static public function search($name, $value, $attr = array()) {
-    return self::input('search', $name, $value, $attr);
+    return static::input('search', $name, $value, $attr);
   }
 
   /**
@@ -156,7 +156,7 @@ class Form {
    * @return The generated html
    */
   static public function tel($name, $value, $attr = array()) {
-    return self::input('tel', $name, $value, $attr);
+    return static::input('tel', $name, $value, $attr);
   }
 
   /**
@@ -167,7 +167,7 @@ class Form {
    * @return The generated html
    */
   static public function file($name, $attr = array()) {
-    return self::input('file', $name, null, $attr);
+    return static::input('file', $name, null, $attr);
   }
 
   /**
@@ -185,7 +185,7 @@ class Form {
       'checked' => r($checked, 'checked')
     ), $attr);
 
-    return self::input('radio', $name, $value, $attr);
+    return static::input('radio', $name, $value, $attr);
   }
 
   /**
@@ -202,7 +202,7 @@ class Form {
       'checked' => r($checked, 'checked')
     ), $attr);
     
-    return self::input('checkbox', $name, false, $attr);
+    return static::input('checkbox', $name, false, $attr);
   }
 
   /**
@@ -229,7 +229,7 @@ class Form {
    * @return The generated html
    */
   static public function submit($name, $value, $attr = array()) {
-    return self::input('submit', $name, $value, $attr);
+    return static::input('submit', $name, $value, $attr);
   }
 
   /**
@@ -241,7 +241,7 @@ class Form {
    * @return The generated html
    */
   static public function reset($name, $value, $attr = array()) {
-    return self::input('reset', $name, $value, $attr);
+    return static::input('reset', $name, $value, $attr);
   }
 
   /**
@@ -253,14 +253,14 @@ class Form {
    * @return The generated html
    */
   static public function hidden($name, $value, $attr = array()) {
-    return self::input('hidden', $name, $value, $attr);    
+    return static::input('hidden', $name, $value, $attr);    
   }
 
   /**
    * Builds a hidden field with a csfr token
    */
   static public function csfr($name = 'csfr') {
-    return self::hidden($name, csfr());    
+    return static::hidden($name, csfr());    
   }
 
   /**
@@ -298,7 +298,7 @@ class Form {
 
     $content   = array();
     $content[] = false;
-    foreach($options as $key => $value) $content[] = self::option($key, $value, r($selected == $key, true));
+    foreach($options as $key => $value) $content[] = static::option($key, $value, r($selected == $key, true));
     $content[] = false;
 
     return Html::tag('select', implode(PHP_EOL, $content), $attr);

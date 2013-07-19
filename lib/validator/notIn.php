@@ -21,7 +21,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  */
 class NotIn extends Validator {
 
-  public $message = 'The :attribute must not be in: :in';
+  public $message = 'The {attribute} must not be in: :in';
 
   public function vars() {
     return array(

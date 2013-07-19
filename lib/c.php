@@ -53,9 +53,9 @@ class C {
   static public function set($key, $value = null) {
     if(is_array($key)) {
       // set all new values
-      self::$config = array_merge(self::$config, $key);
+      static::$config = array_merge(static::$config, $key);
     } else {
-      self::$config[$key] = $value;
+      static::$config[$key] = $value;
     }
   }
   
@@ -80,8 +80,8 @@ class C {
    * @return mixed   The found config value
    */  
   static public function get($key = null, $default = null) {
-    if(empty($key)) return self::$config;
-    return a::get(self::$config, $key, $default);
+    if(empty($key)) return static::$config;
+    return a::get(static::$config, $key, $default);
   }
 
   /**
@@ -102,11 +102,11 @@ class C {
    */
   static public function remove($key = null) {
     // reset the entire array
-    if(is_null($key)) return self::$config = array();
+    if(is_null($key)) return static::$config = array();
     // unset a single key
-    unset(self::$config[$key]);
+    unset(static::$config[$key]);
     // return the array without the removed key
-    return self::$config;
+    return static::$config;
   }
 
 }

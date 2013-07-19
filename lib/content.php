@@ -78,10 +78,10 @@ class Content {
    * @return mixed
    */
   static public function load($file, $data = array(), $return = true) {
-    self::start();
+    static::start();
     extract($data);
     require($file);
-    $content = self::stop();
+    $content = static::stop();
     if($return) return $content;
     echo $content;        
   }

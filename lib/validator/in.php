@@ -21,7 +21,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  */
 class In extends Validator {
 
-  public $message = 'The :attribute must be in: :in';
+  public $message = 'The {attribute} must be in: :in';
 
   public function vars() {
     return array(

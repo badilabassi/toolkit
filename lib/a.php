@@ -85,7 +85,7 @@ class A {
     // get an array of keys
     if(is_array($key)) {
       $result = array();
-      foreach($key as $k) $result[$k] = self::get($array, $k);
+      foreach($key as $k) $result[$k] = static::get($array, $k);
       return $result;
 
     // get a single 
@@ -158,7 +158,7 @@ class A {
    * @see a::remove() 
    */
   static public function removeKey($array, $search) {
-    self::remove($array, $search, true);
+    static::remove($array, $search, true);
   }
 
   /**
@@ -167,7 +167,7 @@ class A {
    * @see a::remove() 
    */
   static public function removeValue($array, $search) {
-    self::remove($array, $search, false);
+    static::remove($array, $search, false);
   }
 
   /**

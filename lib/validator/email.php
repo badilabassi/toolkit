@@ -21,7 +21,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  */
 class Email extends Validator {
 
-  public $message = 'The :attribute must be a valid email';
+  public $message = 'The {attribute} must be a valid email';
 
   public function validate() {
     return filter_var($this->value, FILTER_VALIDATE_EMAIL) !== false;

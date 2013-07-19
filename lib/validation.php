@@ -2,8 +2,6 @@
 
 namespace Kirby\Toolkit;
 
-use Kirby\Toolkit\Validation\Errors;
-
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
@@ -41,16 +39,16 @@ class Validation {
    * 
    * @param array $data A set of data to be validated
    * @param array $rules A set of rules for the validation
-   * @param array $messages A set of custom error messages
    * @param array $attributes A set of attribute translations
+   * @param array $messages A set of custom error messages
    */
-  public function __construct($data, $rules, $messages = array(), $attributes = array()) {
+  public function __construct($data, $rules, $attributes = array(), $messages = array()) {
 
     $this->data       = $data;
     $this->rules      = $rules;
     $this->messages   = $messages;
     $this->attributes = $attributes;
-    $this->errors     = new Collection;
+    $this->errors     = new Errors;
 
     foreach($rules as $attribute => $methods) {
 
@@ -88,10 +86,10 @@ class Validation {
   }
 
   /**
-   * Returns a specific set of errors for a given attribute
+   * Returns a specific error for a given attribute
    * 
    * @param string $attribute if not specified the first error will be returned
-   * @return object ValidationErrors
+   * @return object Error
    */
   public function error($attribute = null) {
     return (is_null($attribute)) ? $this->errors->first() : $this->errors->get($attribute);
@@ -142,16 +140,10 @@ class Validation {
     $message = a::get($this->messages, $method);
     
     // pass custom message and attribute to the validator
-    $error = $validator->error($message, $attributeValue); 
+    $error = $validator->error($attributeValue, $message); 
 
-    if(!isset($this->errors->$attributeName)) {
-      // create a new set of errors if no error exists so far
-      $this->errors->$attributeName = new Errors();
-      $this->errors->$attributeName->$method = $error;
-    } else {
-      // add a new message to the existing list of errors
-      $this->errors->$attributeName->$method = $error;
-    }
+    // store the error in the errors collection
+    $this->errors->$attributeName = $error;
 
   }
 

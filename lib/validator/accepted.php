@@ -18,7 +18,7 @@ use Kirby\Toolkit\Validator;
  */
 class Accepted extends Validator {
 
-  public $message = 'The :attribute must be accepted';
+  public $message = 'The {attribute} must be accepted';
 
   public function validate() {
     return v::in($this->value, array('yes', '1', 'on'));

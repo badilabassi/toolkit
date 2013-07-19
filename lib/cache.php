@@ -45,7 +45,7 @@ class Cache {
     // load the driver class
     require_once($file);
 
-    return self::$driver = new $class($params);
+    return static::$driver = new $class($params);
 
   }
 
@@ -55,8 +55,8 @@ class Cache {
    * @return object
    */
   static public function driver() {
-    if(is_null(self::$driver)) throw new Exception('No cache driver connected yet');
-    return self::$driver;
+    if(is_null(static::$driver)) throw new Exception('No cache driver connected yet');
+    return static::$driver;
   }
 
   /**
@@ -73,7 +73,7 @@ class Cache {
    * @return void
    */
   static public function set($key, $value, $minutes = null) {
-    return self::driver()->set($key, $value, $minutes);
+    return static::driver()->set($key, $value, $minutes);
   }
 
   /**
@@ -92,7 +92,7 @@ class Cache {
    * @return mixed
    */
   static public function get($key, $default = null) {
-    return self::driver()->get($key, $default);
+    return static::driver()->get($key, $default);
   }
 
   /**
@@ -102,7 +102,7 @@ class Cache {
    * @return int
    */
   static public function expires($key) {
-    return self::driver()->expires($key);
+    return static::driver()->expires($key);
   }
 
   /**
@@ -112,7 +112,7 @@ class Cache {
    * @return int
    */
   static public function expired($key) {
-    return self::driver()->expired($key);
+    return static::driver()->expired($key);
   }
 
   /**
@@ -122,7 +122,7 @@ class Cache {
    * @return int UNIX timestamp
    */
   static public function created($key) {
-    return self::driver()->created($key);
+    return static::driver()->created($key);
   }  
 
   /**
@@ -132,7 +132,7 @@ class Cache {
    * @return int UNIX timestamp
    */
   static public function modified($key) {
-    return self::driver()->modified($key);
+    return static::driver()->modified($key);
   }  
 
   /**
@@ -142,7 +142,7 @@ class Cache {
    * @return boolean
    */
   static public function exists($key) {
-    return self::driver()->exists($key);
+    return static::driver()->exists($key);
   }
 
   /**
@@ -152,7 +152,7 @@ class Cache {
    * @return boolean
    */
   static public function remove($key) {
-    return self::driver()->remove($key);
+    return static::driver()->remove($key);
   }
 
   /**
@@ -161,7 +161,7 @@ class Cache {
    * @return boolean
    */
   static public function flush() {
-    return self::driver()->flush();
+    return static::driver()->flush();
   }
 
 }

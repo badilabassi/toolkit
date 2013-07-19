@@ -306,10 +306,10 @@ function email($params = array()) {
  * 
  * @param array $data
  * @param array $rules specify a set of rules for validation
- * @param array $messages Overwrite default validation messages for each method here
  * @param array $attributes Overwrite default attribute names
+ * @param array $messages Overwrite default validation messages for each method here
  * @return object Validation
  */
-function v($data, $rules = array(), $messages = array(), $attributes = array()) {
-  return v::all($data, $rules, $messages, $attributes);
+function v($data, $rules = array(), $attributes = array(), $messages = array()) {
+  return v::all($data, $rules, $attributes, $messages);
 }

@@ -47,11 +47,11 @@ class R {
    */
   static public function data($key = null, $default = null) {
     
-    if(!is_null(self::$data)) {
-      $data = self::$data;
+    if(!is_null(static::$data)) {
+      $data = static::$data;
     } else {
       $_REQUEST = array_merge($_GET, $_POST);
-      $data = self::$data = (self::is('GET')) ? self::sanitize($_REQUEST) : array_merge(self::body(), self::sanitize($_REQUEST));
+      $data = static::$data = (static::is('GET')) ? static::sanitize($_REQUEST) : array_merge(static::body(), static::sanitize($_REQUEST));
     }
     
     return a::get($data, $key, $default);
@@ -71,7 +71,7 @@ class R {
     }
 
     foreach($data as $key => $value) {
-      $value = self::sanitize($value);
+      $value = static::sanitize($value);
       $data[$key] = $value;    
     }      
 
@@ -103,20 +103,20 @@ class R {
     
     // set multiple values at once
     if(is_array($key)) {
-      foreach($key as $k => $v) self::set($k, $v);
-      return self::$data;
+      foreach($key as $k => $v) static::set($k, $v);
+      return static::$data;
     }
 
     // make sure the data array is actually an array
-    if(is_null(self::$data)) self::$data = array();
+    if(is_null(static::$data)) static::$data = array();
 
-    self::$data[$key] = $_REQUEST[$key] = self::sanitize($value);
-    return self::$data;
+    static::$data[$key] = $_REQUEST[$key] = static::sanitize($value);
+    return static::$data;
 
   }
 
   /**
-   * Alternative to self::data($key, $default)
+   * Alternative to static::data($key, $default)
    * 
    * <code>
    * 
@@ -133,7 +133,7 @@ class R {
    * @param mixed
    */
   static public function get($key = null, $default = null) {
-    return self::data($key, $default);  
+    return static::data($key, $default);  
   }
 
   /**
@@ -143,7 +143,7 @@ class R {
    */
   static public function remove($key) {
     unset($_REQUEST[$key]);
-    unset(self::$data[$key]);
+    unset(static::$data[$key]);
   }
 
   /**
@@ -162,9 +162,9 @@ class R {
    * @return array
    */    
   static public function body() {
-    if(!is_null(self::$body)) return self::$body; 
-    @parse_str(@file_get_contents('php://input'), self::$body); 
-    return self::$body = self::sanitize((array)self::$body);
+    if(!is_null(static::$body)) return static::$body; 
+    @parse_str(@file_get_contents('php://input'), static::$body); 
+    return static::$body = static::sanitize((array)static::$body);
   }
 
   /**
@@ -180,9 +180,9 @@ class R {
    */
   static public function is($method) {
     if($method == 'ajax') {
-      return self::ajax();
+      return static::ajax();
     } else {
-      return (strtoupper($method) == self::method()) ? true : false;
+      return (strtoupper($method) == static::method()) ? true : false;
     }
   }
 
@@ -218,7 +218,7 @@ class R {
    * @return string
    */
   static public function referrer($default = nullg) {
-    return self::referer($default);    
+    return static::referer($default);    
   }
 
   /**
@@ -270,16 +270,16 @@ class R {
    * @return boolean
    */
   static public function ssl() {
-    return (self::scheme() == 'https') ? true : false;
+    return (static::scheme() == 'https') ? true : false;
   }
 
   /**
-   * Alternative for self::ssl()
+   * Alternative for static::ssl()
    * 
    * @return boolean
    */
   static public function secure() {
-    return self::ssl();
+    return static::ssl();
   }
 
 }

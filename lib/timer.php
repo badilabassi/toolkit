@@ -42,10 +42,10 @@ class Timer {
 		
 		if(is_null($key)) {
 			// global timer
-			self::$timer = $time;
+			static::$timer = $time;
 		} else {
 			// sub timer
-			self::$timers[$key] = $time;	
+			static::$timers[$key] = $time;	
 		}
 		
 		// return the start time
@@ -66,7 +66,7 @@ class Timer {
 		
 		$time  = explode(' ', microtime());
 		$time  = (double)$time[1] + (double)$time[0];
-		$timer = (is_null($key)) ? self::$timer : a::get(self::$timers, $key);
+		$timer = (is_null($key)) ? static::$timer : a::get(static::$timers, $key);
 	
 		return round(($time-$timer), 5);
 	

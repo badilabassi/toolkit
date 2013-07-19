@@ -21,7 +21,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  */
 class Required extends Validator {
 
-  public $message = 'The :attribute is required';
+  public $message = 'The {attribute} is required';
 
   public function validate() {
     return !empty($this->data[$this->attribute]);

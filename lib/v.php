@@ -24,12 +24,12 @@ class V {
    * 
    * @param array $data
    * @param array $rules specify a set of rules for validation
-   * @param array $messages Overwrite default validation messages for each method here
    * @param array $attributes Overwrite default attribute names
+   * @param array $messages Overwrite default validation messages for each method here
    * @return object Validation
    */
-  static public function all($data, $rules = array(), $messages = array(), $attributes = array()) {
-    return new Validation($data, $rules, $messages, $attributes);
+  static public function all($data, $rules = array(), $attributes = array(), $messages = array()) {
+    return new Validation($data, $rules, $attributes, $messages);
   }
 
   /** 

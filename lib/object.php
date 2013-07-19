@@ -336,6 +336,15 @@ class Object {
   }
 
   /**
+   * Alternate version of toJSON()
+   * 
+   * @return string
+   */
+  public function json() {
+    return $this->toJSON();
+  }
+
+  /**
    * Converts the object to a simple 
    * string with all keys and values from the 
    * internal array to make it easier

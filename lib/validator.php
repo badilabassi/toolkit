@@ -39,7 +39,7 @@ class Validator {
   protected $result = false;
   
   // the default message
-  protected $message = 'The :attribute is invalid';
+  protected $message = 'The {attribute} is invalid';
   
   // a set of variables, which should be replaced in the error message
   protected $vars = array();
@@ -61,7 +61,7 @@ class Validator {
     
     // install an array of validators
     if(is_array($key)) {
-      foreach($key as $k => $f) self::install($k, $f);
+      foreach($key as $k => $f) static::install($k, $f);
       return true;
     }  
 
@@ -71,12 +71,12 @@ class Validator {
       $files = dir::read($dir);
       foreach($files as $file) {
         $key = f::name($file);
-        self::install($key, $dir . DS . $file);
+        static::install($key, $dir . DS . $file);
       }
       return true;
     }
 
-    self::$installed[strtolower($key)] = $file;
+    static::$installed[strtolower($key)] = $file;
 
   }
 
@@ -92,7 +92,7 @@ class Validator {
   static public function create($method, $data, $attribute = null, $options = array()) {
 
     $method = strtolower($method);
-    $file   = isset(self::$installed[$method]) ? self::$installed[$method] : dirname(__FILE__) . DS . 'validator' . DS . $method . '.php';
+    $file   = isset(static::$installed[$method]) ? static::$installed[$method] : dirname(__FILE__) . DS . 'validator' . DS . $method . '.php';
     $class  = 'Kirby\\Toolkit\\Validator\\' . $method; 
 
     // check for an existing validator
@@ -201,11 +201,11 @@ class Validator {
   /**
    * Returns the error message
    * 
-   * @param string $message Optional custom message to overwrite the default message
    * @param string $attribute Optional custom attribute name to overwrite the default attribute
+   * @param string $message Optional custom message to overwrite the default message
    * @return string
    */
-  public function message($message = null, $attribute = null) {
+  public function message($attribute = null, $message = null) {
 
     if(!$this->failed()) return null;
 
@@ -238,7 +238,7 @@ class Validator {
     }
 
     // replace all vars in the text with available keys
-    foreach($vars as $key => $value) $message = str_replace(':' . $key, $value, $message);
+    $message = str::template($message, $vars);
 
     // return the full message
     return $message;
@@ -250,10 +250,10 @@ class Validator {
    * 
    * @param string $message Optional custom message to overwrite the default message
    * @param string $attribute Optional custom attribute name to overwrite the default attribute
-   * @return string
+   * @return object Error object
    */
   public function error($message = null, $attribute = null) {
-    return $this->message($message, $attribute);
+    return error::raise($this->attribute, $this->message($message, $attribute));
   }
 
 }

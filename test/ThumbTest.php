@@ -21,7 +21,7 @@ class ThumbTest extends PHPUnit_Framework_TestCase {
       )
     ));
 
-    $this->assertFalse($thumb->error());
+    $this->assertNull($thumb->error());
     $this->assertEquals('screen-shot-2013-04-15-at-13-04.33-100-100-0-1-100.jpg', $thumb->filename());
     $this->assertEquals(100, $thumb->width());
     $this->assertEquals(100, $thumb->height());

@@ -72,7 +72,7 @@ class Html {
   static public function tag($name, $content = null, $attr = array()) {
 
     $html = '<' . $name;
-    $attr = self::attr($attr);
+    $attr = static::attr($attr);
 
     if(!empty($attr)) $html .= ' ' . $attr;
     if(!is_null($content)) {
@@ -96,7 +96,7 @@ class Html {
     if(is_array($name)) {
       $attributes = array();
       foreach($name as $key => $val) {
-        $a = self::attr($key, $val);
+        $a = static::attr($key, $val);
         if($a) $attributes[] = $a;
       }
       return implode(' ', $attributes);
@@ -117,7 +117,7 @@ class Html {
   static public function a($href, $text = null, $attr = array()) {
     $attr = array_merge(array('href' => $href), $attr);
     if(empty($text)) $text = $href;
-    return self::tag('a', $text, $attr);
+    return static::tag('a', $text, $attr);
   }
 
   /**
@@ -132,7 +132,7 @@ class Html {
     $email = str::encode($email, 3);
     $attr  = array_merge(array('href' => 'mailto:' . $email), $attr);
     if(empty($text)) $text = $email;
-    return self::tag('a', $text, $attr);
+    return static::tag('a', $text, $attr);
   }
 
 
@@ -145,7 +145,7 @@ class Html {
    * @return string the generated html
    */
   static public function div($content, $attr = array()) {
-    return self::tag('div', $content, $attr);
+    return static::tag('div', $content, $attr);
   }
 
   /**
@@ -156,7 +156,7 @@ class Html {
    * @return string the generated html
    */
   static public function p($content, $attr = array()) {
-    return self::tag('p', $content, $attr);
+    return static::tag('p', $content, $attr);
   }
 
   /**
@@ -167,7 +167,7 @@ class Html {
    * @return string the generated html
    */
   static public function span($content, $attr = array()) {
-    return self::tag('span', $content, $attr);
+    return static::tag('span', $content, $attr);
   }
 
   /**
@@ -179,7 +179,7 @@ class Html {
    */
   static public function img($src, $attr = array()) {
     $attr = array_merge(array('src' => $src, 'alt' => f::filename($src)), $attr);
-    return self::tag('img', null, $attr);
+    return static::tag('img', null, $attr);
   }
 
   /**
@@ -192,7 +192,7 @@ class Html {
    */
   static public function stylesheet($href, $media = null, $attr = array()) {
     $attr = array_merge(array('rel' => 'stylesheet', 'href' => $href, 'media' => $media), $attr);
-    return self::tag('link', null, $attr);
+    return static::tag('link', null, $attr);
   }
 
   /**
@@ -205,7 +205,7 @@ class Html {
    */
   static public function script($src, $async = false, $attr = array()) {
     $attr = array_merge(array('src' => $src, 'async' => r($async, 'async')), $attr);
-    return self::tag('script', '', $attr);
+    return static::tag('script', '', $attr);
   }
 
   /**
@@ -217,7 +217,7 @@ class Html {
    */
   static public function favicon($href, $attr = array()) {
     $attr = array_merge(array('rel' => 'shortcut icon', 'href' => $href), $attr);
-    return self::tag('link', null, $attr);
+    return static::tag('link', null, $attr);
 
   }
 
@@ -231,7 +231,7 @@ class Html {
    */
   static public function iframe($src, $attr = array(), $placeholder = '') {
     $attr = array_merge(array('src' => $src), $attr);    
-    return self::tag('iframe', $placeholder, $attr);
+    return static::tag('iframe', $placeholder, $attr);
   }
 
   /**
@@ -262,7 +262,7 @@ class Html {
    */
   static public function canonical($href, $attr = array()) {
     $attr = array_merge(array('href' => $href, 'rel' => 'canonical'), $attr);    
-    return self::tag('link', null, $attr);
+    return static::tag('link', null, $attr);
   }
 
   /**
@@ -286,7 +286,7 @@ class Html {
    */
   static public function description($description, $attr = array()) {
     $attr = array_merge(array('name' => 'description', 'content' => $description), $attr);    
-    return self::tag('meta', null, $attr);
+    return static::tag('meta', null, $attr);
   }
 
   /**
@@ -298,7 +298,7 @@ class Html {
    */
   static public function keywords($keywords, $attr = array()) {
     $attr = array_merge(array('name' => 'keywords', 'content' => $keywords), $attr);    
-    return self::tag('meta', null, $attr);
+    return static::tag('meta', null, $attr);
   }
 
   /**

@@ -18,7 +18,7 @@ use Kirby\Toolkit\Validator;
  */
 class AlphaNumeric extends Validator {
 
-  public $message = 'The :attribute may only contain letters from a-z and numbers from 0-9.';
+  public $message = 'The {attribute} may only contain letters from a-z and numbers from 0-9.';
 
   public function validate() {
     return v::match($this->value, '/^[a-z0-9]+$/i');

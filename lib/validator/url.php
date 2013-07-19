@@ -21,7 +21,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  */
 class Url extends Validator {
 
-  public $message = 'The :attribute must be a valid URL';
+  public $message = 'The {attribute} must be a valid URL';
 
   public function validate() {
     return filter_var($this->value, FILTER_VALIDATE_URL) !== false;

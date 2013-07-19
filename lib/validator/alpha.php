@@ -18,7 +18,7 @@ use Kirby\Toolkit\Validator;
  */
 class Alpha extends Validator {
 
-  public $message = 'The :attribute may only contain letters.';
+  public $message = 'The {attribute} may only contain letters.';
 
   public function validate() {
     return v::match($this->value, '/^([a-z])+$/i');    

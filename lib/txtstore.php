@@ -86,7 +86,7 @@ class TxtStore {
    */
   static public function write($file, $data = array()) {
     // write the structure to the destination file and prepend a BOM to make sure it's UTF-8
-    return f::write($file, "\xEF\xBB\xBF" . self::structure($data));      
+    return f::write($file, "\xEF\xBB\xBF" . static::structure($data));      
   }
 
 }

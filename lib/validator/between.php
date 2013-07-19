@@ -22,10 +22,10 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
 class Between extends Validator {
 
   public $message = array(
-    'numeric' => 'The :attribute must be at least :min and less than :max.',
-    'string'  => 'The :attribute must be at least :min and less than :max characters.',
-    'file'    => 'The :attribute must be at least :min and less than :max kilobytes',
-    'array'   => 'The :attribute must be at least :min and less than :max elements'
+    'numeric' => 'The {attribute} must be at least {min} and less than {max}.',
+    'string'  => 'The {attribute} must be at least {min} and less than {max} characters.',
+    'file'    => 'The {attribute} must be at least {min} and less than {max} kilobytes',
+    'array'   => 'The {attribute} must be at least {min} and less than {max} elements'
   );
 
   public function vars() {

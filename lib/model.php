@@ -25,7 +25,7 @@ class Model extends Object {
   protected $primaryKeyName = false;
 
   // an array of errors after validation
-  public $errors = array();
+  public $errors = null;
   
   /**
    * Constructor
@@ -38,6 +38,9 @@ class Model extends Object {
     if(is_array($this->allowedKeys)) {
       $this->allowedKeys[] = $this->primaryKeyName();    
     }
+
+    // add the internal errors collection
+    $this->errors = new Errors;
 
     parent::__construct($data);
   
@@ -61,7 +64,7 @@ class Model extends Object {
   public function save() {
 
     // reset errors
-    $this->errors = array();
+    $this->errors = new Errors;
 
     // set timestamps
     $this->timestamps();
@@ -70,7 +73,7 @@ class Model extends Object {
     $this->validate();
                        
     // stop saving process when errors occurred
-    if(count($this->errors) > 0) return false;
+    if($this->invalid()) return false;
 
     return ($this->isNew()) ? $this->insert() : $this->update();
 
@@ -100,11 +103,11 @@ class Model extends Object {
    * Check v::all for all available options
    * 
    * @param array $rules A set of rules to validate the model by
-   * @param array $messages An optional set of error messages for each used validation method
    * @param array $attributes An optional set of attribute names to be used in error messages
+   * @param array $messages An optional set of error messages for each used validation method
    */
-  protected function v($rules, $messages = array(), $attributes = array()) {
-    $this->raise(v::all($this->get(), $rules, $messages, $attributes));
+  protected function v($rules, $attributes = array(), $messages = array()) {
+    $this->raise(v::all($this->get(), $rules, $attributes, $messages));
   }
 
   /**
@@ -211,23 +214,8 @@ class Model extends Object {
    * @param mixed $key Pass a string, array or an entire Validation object
    * @param mixed $message If you pass a string for the key, pass the message for that key here
    */
-  public function raise($key, $message = null) {
-  
-    // auto-pass all errors from a validation object
-    if(is_a($key, 'Kirby\\Toolkit\\Validation') && $key->failed()) {
-      foreach($key->errors() as $k => $error) {
-        $this->errors[$k] = $error->message();
-      }
-      return true;
-    } else if(is_array($key)) {
-      foreach($key as $k => $m) {
-        $this->raise($k, $m);
-      }
-      return true;
-    } else if(!is_null($message)) {
-      return $this->errors[$key] = $message;
-    }
-
+  public function raise($key, $message = null) {  
+    $this->errors->raise($key, $message);
   }
 
   /**
@@ -246,7 +234,7 @@ class Model extends Object {
    * @return string
    */
   public function error($key = null) {
-    return (is_null($key)) ? a::first($this->errors) : a::get($this->errors, $key);
+    return is_null($key) ? $this->errors->first() : $this->errors->get($key);
   }
   
   /**
@@ -255,7 +243,7 @@ class Model extends Object {
    * @return boolean
    */        
   public function invalid() {
-    return !empty($this->errors) ? true : false;    
+    return $this->errors->count() > 0;    
   }
 
   /**

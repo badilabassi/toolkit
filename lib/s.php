@@ -120,9 +120,9 @@ class S {
    * 
    */  
   static public function start() {
-    if(self::$started) return true;
+    if(static::$started) return true;
     session_start();
-    self::$started = true;
+    static::$started = true;
   }
 
   /**
@@ -140,10 +140,10 @@ class S {
    *
    */  
   static public function destroy() {
-    if(self::$started){
+    if(static::$started){
       session_destroy();
       unset($_SESSION);
-      self::$started = false;
+      static::$started = false;
     }
   }
 
@@ -158,8 +158,8 @@ class S {
    * Destroys a session first and then starts it again
    */  
   static public function restart() {
-    self::destroy();
-    self::start();
+    static::destroy();
+    static::start();
   }
 
 }

@@ -21,7 +21,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  */
 class Array extends Validator {
 
-  public $message = 'The :attribute must be an array';
+  public $message = 'The {attribute} must be an array';
 
   public function validate() {
     return is_array($this->value);

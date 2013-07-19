@@ -299,7 +299,7 @@ class Remote {
    * @return array
    */
   static public function headers($url, $params = array()) {
-    $request = self::head($url, $params);
+    $request = static::head($url, $params);
     return array_merge($request->headers(), $request->info());
   }
 

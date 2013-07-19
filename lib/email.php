@@ -33,8 +33,8 @@ class Email {
   public $subject = null;
   public $body    = null;
 
-  // internal array of errors
-  protected $errors = array();
+  // internal collection of errors
+  protected $errors = null;
 
   // optional store for services responses
   protected $response = array();
@@ -75,6 +75,7 @@ class Email {
 
     $this->service = $options['service'];
     $this->options = (array)$options;
+    $this->errors  = new Errors;
 
   }
 
@@ -155,22 +156,34 @@ class Email {
 
     if(c::get('email.disabled')) $this->raise('disabled', l::get('email.error.disabled', 'Email has been disabled'));
   
-    // validate the from address
-    if(!v::email($this->extractAddress($this->from))) $this->raise('from', l::get('email.error.sender', 'Invalid sender'));
+    $data = array(
+      'to'      => $this->extractAddress($this->to),
+      'from'    => $this->extractAddress($this->from),
+      'replyTo' => $this->extractAddress($this->replyTo),
+      'subject' => $this->subject,
+      'body'    => $this->body
+    );
 
-    // validate the to address
-    if(!v::email($this->extractAddress($this->to))) $this->raise('to', l::get('email.error.recipient', 'Invalid recipient'));
+    dump($data);
+  
+    $validation = v($data, array(
+      'to'      => array('required', 'email'),
+      'from'    => array('required', 'email'),
+      'replyTo' => array('email'), 
+      'subject' => array('required'),
+      'body'    => array('required')
+    ), array(
+      'from'    => 'sender address', 
+      'to'      => 'recipient address',
+      'replyTo' => 'reply address',
+    ));
 
-    // validate the reply to address
-    if(!v::email($this->extractAddress($this->replyTo))) $this->raise('replyTo', l::get('email.error.replyto', 'Invalid reply-to address'));
-    
-    // validate the subject
-    if(!v::min($this->subject, 1)) $this->raise('subject', l::get('email.error.subject', 'The subject is missing'));
+    if($validation->failed()) $this->raise($validation);
 
   }
 
   /**
-   * Returns all errors as an array
+   * Returns all errors
    * 
    * @return array
    */
@@ -184,8 +197,14 @@ class Email {
    * @param string $key
    */
   public function error($key = null) {
-    if(is_null($key)) return $this->errors;
-    return a::get($this->errors, $key);
+    return is_null($key) ? $this->errors->first() : $this->errors->get($key);
+  }
+
+  /**
+   * Raises an internal error
+   */
+  protected function raise($key, $message = null) {
+    $this->errors->raise($key, $message);
   }
   
   /**
@@ -203,7 +222,7 @@ class Email {
    * @return boolean
    */
   public function failed() {
-    return !empty($this->errors);
+    return $this->errors->count() > 0;
   }
 
   /**
@@ -216,13 +235,6 @@ class Email {
   }
 
   /**
-   * Raises an internal error
-   */
-  protected function raise($key, $message) {
-    $this->errors[$key] = $message;
-  }
-
-  /**
    * Extracts the email address from an address string
    * 
    * @return string
@@ -230,8 +242,7 @@ class Email {
   protected function extractAddress($string) {
     if(v::email($string)) return $string;
     preg_match('/<(.*?)>/i', $string, $array);
-    $address = @$array[1];
-    return (v::email($address)) ? $address : false;
+    return (empty($array[1])) ? $string : $array[1];
   }
 
 }

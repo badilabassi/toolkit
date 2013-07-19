@@ -28,13 +28,13 @@ class Event {
    * @param func $callback The callback function
    */
   static public function on($event, $callback) {
-    if(!isset(self::$events[$event])) self::$events[$event] = array();
+    if(!isset(static::$events[$event])) static::$events[$event] = array();
     if(is_array($callback)) {
       // attach all passed events at once
-      self::$events[$event] = array_merge(self::$events[$event], $callback);
+      static::$events[$event] = array_merge(static::$events[$event], $callback);
     } else {
       // attach a single new event
-      self::$events[$event][] = $callback;
+      static::$events[$event][] = $callback;
     }
   }
 
@@ -45,9 +45,9 @@ class Event {
    * @param array $arguments An optional array of arguments, which should be passed to the event
    */
   static public function trigger($event, $arguments = array()) {
-    if(empty(self::$events[$event])) return false;
+    if(empty(static::$events[$event])) return false;
     
-    foreach(self::$events[$event] as $callback) {
+    foreach(static::$events[$event] as $callback) {
       if(!is_callable($callback)) continue;
       call_user_func_array($callback, $arguments);
     }

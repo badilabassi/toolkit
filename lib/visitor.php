@@ -34,8 +34,8 @@ class Visitor {
    * @return string
    */
   static public function ip() {
-    if(!is_null(self::$ip)) return self::$ip;
-    return self::$ip = r::ip();
+    if(!is_null(static::$ip)) return static::$ip;
+    return static::$ip = r::ip();
   }
 
   /**
@@ -44,8 +44,8 @@ class Visitor {
    * @return string
    */
   static public function ua() {
-    if(!is_null(self::$ua)) return self::$ua;
-    return self::$ua = server::get('HTTP_USER_AGENT');
+    if(!is_null(static::$ua)) return static::$ua;
+    return static::$ua = server::get('HTTP_USER_AGENT');
   }
 
   /**
@@ -54,7 +54,7 @@ class Visitor {
    * @return string
    */
   static public function userAgent() {
-    return self::ua();
+    return static::ua();
   }
 
   /**
@@ -72,12 +72,12 @@ class Visitor {
    * @return string
    */
   static public function acceptedLanguageCode() {
-    if(!is_null(self::$acceptedLanguageCode)) return self::$acceptedLanguageCode;
-    $detected = str::split(self::acceptedLanguage(), ',');
+    if(!is_null(static::$acceptedLanguageCode)) return static::$acceptedLanguageCode;
+    $detected = str::split(static::acceptedLanguage(), ',');
     $detected = a::first($detected);
     $detected = str::split($detected, '-');
     $detected = str::lower(a::first($detected));
-    return self::$acceptedLanguageCode = $detected;
+    return static::$acceptedLanguageCode = $detected;
   }
 
   /**
@@ -104,7 +104,7 @@ class Visitor {
    * @return boolean
    */
   static public function banned() {
-    return (in_array(self::ip(), c::get('visitor.banned')));
+    return (in_array(static::ip(), c::get('visitor.banned')));
   }
 
   /**
@@ -114,7 +114,7 @@ class Visitor {
    * @return string
    */
   public function __toString() {
-    return self::ip();
+    return static::ip();
   }
 
 }

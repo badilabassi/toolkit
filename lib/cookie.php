@@ -46,7 +46,7 @@ class Cookie {
     if(is_array($value)) $value = a::json($value);
 
     // hash the value
-    $value = self::hash($value) . '+' . $value;
+    $value = static::hash($value) . '+' . $value;
 
     // store that thing in the cookie global 
     $_COOKIE[$key] = $value;
@@ -74,7 +74,7 @@ class Cookie {
    * @return boolean true: the cookie has been created, false: cookie creation failed
    */
   static public function forever($key, $value, $path = '/', $domain = null, $secure = false) {
-    return self::set($key, $value, 2628000, $path, $domain, $secure);
+    return static::set($key, $value, 2628000, $path, $domain, $secure);
   }
 
   /**
@@ -94,7 +94,7 @@ class Cookie {
   static public function get($key = null, $default = null) {
     if(is_null($key)) return $_COOKIE;
     $value = a::get($_COOKIE, $key);
-    return (empty($value)) ? $default : self::parse($value);
+    return (empty($value)) ? $default : static::parse($value);
   }
 
   /**
@@ -103,7 +103,7 @@ class Cookie {
    * @return boolean
    */
   static public function exists($key) {
-    return !is_null(self::get($key));
+    return !is_null(static::get($key));
   }
 
   /**
@@ -135,7 +135,7 @@ class Cookie {
     if(empty($hash) || empty($value)) return null;
 
     // compare the extracted hash with the hashed value
-    if($hash !== self::hash($value)) return null;
+    if($hash !== static::hash($value)) return null;
 
     return $value;
 

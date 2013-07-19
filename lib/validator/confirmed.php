@@ -21,7 +21,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  */
 class Confirmed extends Validator {
 
-  public $message = 'The :attribute must be confirmed';
+  public $message = 'The {attribute} must be confirmed';
 
   public function validate() {
     // check for an existing confirmation field and make sure it matches the current value

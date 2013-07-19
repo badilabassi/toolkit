@@ -49,8 +49,8 @@ class L {
    * @return mixed
    */
   static public function get($key = null, $default = null) {
-    if(empty($key)) return self::$lang;
-    return a::get(self::$lang, $key, $default);
+    if(empty($key)) return static::$lang;
+    return a::get(static::$lang, $key, $default);
   }
 
   /** 
@@ -77,9 +77,9 @@ class L {
    */  
   static public function set($key, $value=null) {
     if(is_array($key)) {
-      self::$lang = array_merge(self::$lang, $key);
+      static::$lang = array_merge(static::$lang, $key);
     } else {
-      self::$lang[$key] = $value;
+      static::$lang[$key] = $value;
     }
   }
 
@@ -89,7 +89,7 @@ class L {
    * @param string $key
    */
   static public function remove($key) {
-    unset(self::$lang[$key]);
+    unset(static::$lang[$key]);
   }
   
 }

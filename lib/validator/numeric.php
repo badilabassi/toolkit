@@ -21,7 +21,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  */
 class Numeric extends Validator {
 
-  public $message = 'The :attribute must be a number';
+  public $message = 'The {attribute} must be a number';
 
   public function validate() {
     return is_numeric($this->value);

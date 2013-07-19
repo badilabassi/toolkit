@@ -67,7 +67,7 @@ class Url {
    * @return string
    */
   static public function scheme($url, $default = null) {
-    return a::get(self::parse($url), 'scheme', $default);
+    return a::get(static::parse($url), 'scheme', $default);
   }
 
   /**
@@ -78,7 +78,7 @@ class Url {
    * @return string
    */
   static public function host($url, $default = null) {
-    return a::get(self::parse($url), 'host', $default);
+    return a::get(static::parse($url), 'host', $default);
   }
 
   /**
@@ -89,7 +89,7 @@ class Url {
    * @return string
    */
   static public function port($url, $default = null) {
-    return a::get(self::parse($url), 'port', $default);
+    return a::get(static::parse($url), 'port', $default);
   }
 
   /**
@@ -100,7 +100,7 @@ class Url {
    * @return string
    */
   static public function query($url, $default = null) {
-    return a::get(self::parse($url), 'query', $default);
+    return a::get(static::parse($url), 'query', $default);
   }
 
   /**
@@ -130,7 +130,7 @@ class Url {
    * @return string
    */
   static public function path($url, $default = null) {
-    return a::get(self::parse($url), 'path', $default); 
+    return a::get(static::parse($url), 'path', $default); 
   }
 
   /**
@@ -151,7 +151,7 @@ class Url {
    */
   static public function params($url) {
     
-    $path   = self::path($url);
+    $path   = static::path($url);
     $parts  = str::split($path, '/');
     $params = array();
     
@@ -188,7 +188,7 @@ class Url {
    * @return string
    */
   static public function base($url) {
-    $parsed = self::parse($url);
+    $parsed = static::parse($url);
     if(!$parsed || empty($parsed['host'])) return false;
     return a::get($parsed, 'scheme', 'http') . '://' . $parsed['host'];
   }
@@ -212,7 +212,7 @@ class Url {
    */  
   static public function short($url, $length = false, $base = false, $rep = '…') {
     
-    if($base) $url = self::base($url);
+    if($base) $url = static::base($url);
 
     // replace all the nasty stuff from the url
     $url = str_replace(array('http://', 'https://', 'ftp://', 'www.'), '', $url);

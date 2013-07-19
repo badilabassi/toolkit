@@ -21,7 +21,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  */
 class Ip extends Validator {
 
-  public $message = 'The :attribute must be a valid IP';
+  public $message = 'The {attribute} must be a valid IP';
 
   public function validate() {
     return filter_var($this->value, FILTER_VALIDATE_IP) !== false;

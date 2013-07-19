@@ -37,7 +37,7 @@ class Thumb {
   public $options = array();
 
   // stores the internal error message
-  public $error = false;
+  public $error = null;
 
   /**
    * Constructor
@@ -191,6 +191,9 @@ class Thumb {
    * @return string
    */
   public function tag($attr = array()) {
+
+    // don't return the tag if the url is not available
+    if(!$this->url()) return false;
   
     $attr = array_merge(array(
       'width'  => $this->result->width(),
@@ -263,7 +266,7 @@ class Thumb {
    * @return string
    */
   public function url() {
-    return $this->exists() ? $this->options['location']['url'] . '/' . $this->path() : $this->image->url();
+    return $this->exists() ? @$this->options['location']['url'] . '/' . $this->path() : $this->image->url();
   }
 
   /**
@@ -441,21 +444,22 @@ class Thumb {
    */
   protected function create() {
     
-    $class  = '\\Kirby\\Toolkit\\Thumb\\Creator\\' . $this->options['creator'];
-    $object = new $class($this); 
-
     // if the thumb already exists and the source hasn't been updated 
     // we don't need to generate a new thumbnail
     if($this->exists() && !$this->isModified()) return true;
 
     // reset a possible previous error 
-    $this->error = false;
+    $this->error = null;
     
     // run the creator
     try {
+
+      $class  = '\\Kirby\\Toolkit\\Thumb\\Creator\\' . $this->options['creator'];
+      $object = new $class($this); 
+
       $object->run();
     } catch(Exception $e) {
-      $this->error = $e->getMessage();
+      $this->error = new Error('create', $e->getMessage());
     }
 
   }

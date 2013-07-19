@@ -104,7 +104,7 @@ class Dir {
 
     while($item = @readdir($handle)) {
       if(is_dir($dir . DS . $item) && !in_array($item, $skip)) {
-        self::remove($dir . DS . $item);
+        static::remove($dir . DS . $item);
       } else if(!in_array($item, $skip)) {
         f::remove($dir . DS . $item);
       }
@@ -123,7 +123,7 @@ class Dir {
    * @return  boolean  True: the directory has been flushed, false: flushing failed
    */  
   static public function clean($dir) {
-    return self::remove($dir, true);
+    return static::remove($dir, true);
   }
 
   /**
@@ -141,7 +141,7 @@ class Dir {
     
     foreach(dir::read($dir) AS $file) {
       if(is_dir($dir . DS . $file) && $recursive) {
-        $size += self::size($dir . DS . $file, true);
+        $size += static::size($dir . DS . $file, true);
       } else {
         $size += f::size($dir . DS . $file);
       }
@@ -157,7 +157,7 @@ class Dir {
    * @return mixed
    */
   static public function niceSize($dir, $recursive = true) {
-    return self::size($dir, $recursive, true);
+    return static::size($dir, $recursive, true);
   } 
 
   /**
@@ -170,12 +170,12 @@ class Dir {
    */  
   static public function modified($dir, $modified = false) {
     if($modified === false) $modified = filemtime($dir);
-    $files = self::read($dir);
+    $files = static::read($dir);
     foreach($files AS $file) {
       if(!is_dir($dir . DS . $file)) continue;
       $filectime = filemtime($dir . DS . $file);
       $modified  = ($filectime > $modified) ? $filectime : $modified;
-      $modified  = self::modified($dir . DS . $file, $modified);
+      $modified  = static::modified($dir . DS . $file, $modified);
     }
     return $modified;
   }

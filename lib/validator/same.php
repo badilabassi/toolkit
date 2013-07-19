@@ -21,7 +21,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  */
 class Same extends Validator {
 
-  public $message = 'The :attribute and :other must be the same';
+  public $message = 'The {attribute} and {other} must be the same';
 
   public function vars() {
     return array(

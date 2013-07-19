@@ -21,7 +21,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  */
 class String extends Validator {
 
-  public $message = 'The :attribute must be a string';
+  public $message = 'The {attribute} must be a string';
 
   public function validate() {
     return is_string($this->value);

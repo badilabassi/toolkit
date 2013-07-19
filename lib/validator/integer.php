@@ -21,7 +21,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  */
 class Integer extends Validator {
 
-  public $message = 'The :attribute may only contain integers.';
+  public $message = 'The {attribute} may only contain integers.';
 
   public function validate() {
     return filter_var($this->value, FILTER_VALIDATE_INT) !== false;    

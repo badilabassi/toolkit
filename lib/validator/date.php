@@ -21,7 +21,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  */
 class Date extends Validator {
 
-  public $message = 'The :attribute must be a valid date';
+  public $message = 'The {attribute} must be a valid date';
 
   public function validate() {
 

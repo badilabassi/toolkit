@@ -70,7 +70,7 @@ class F {
    * @return boolean 
    */  
   static public function append($file, $content) {
-    return self::write($file,$content,true);
+    return static::write($file,$content,true);
   }
   
   /**
@@ -112,8 +112,8 @@ class F {
    * @return string
    */
   static public function uri($file) {
-    $mime = self::mime($file);
-    return ($mime) ? 'data:' . $mime . ';base64,' . self::base64($file) : false;
+    $mime = static::mime($file);
+    return ($mime) ? 'data:' . $mime . ';base64,' . static::base64($file) : false;
   }
 
   /**
@@ -181,7 +181,7 @@ class F {
   static public function extension($file, $extension = false) {
 
     // overwrite the current extension
-    if($extension) return self::name($file) . '.' . $extension;
+    if($extension) return static::name($file) . '.' . $extension;
 
     // return the current extension
     return strtolower(pathinfo($file, PATHINFO_EXTENSION));
@@ -235,7 +235,7 @@ class F {
    * @return string 
    */  
   static public function name($name) {
-    $name = self::filename($name);
+    $name = static::filename($name);
     $dot  = strrpos($name, '.');
     return ($dot) ? substr($name, 0, $dot) : $name;
   }
@@ -277,7 +277,7 @@ class F {
   static public function size($file, $nice = false) {
     clearstatcache();
     $size = filesize($file);
-    return ($nice) ? self::niceSize($size) : $size;
+    return ($nice) ? static::niceSize($size) : $size;
   }
 
   /**
@@ -300,7 +300,7 @@ class F {
     
     // file mode
     if(!is_int($size) && file_exists($size)) {
-      $size = self::size($size);
+      $size = static::size($size);
     }
 
     // make sure it's an int
@@ -413,7 +413,7 @@ class F {
    */
   static public function is($file, $value) {
     
-    if(in_array($value, self::extensions())) {
+    if(in_array($value, static::extensions())) {
       // check for the extension
       return f::extension($file) == $value;
     } else if(str::contains($value, '/')) {

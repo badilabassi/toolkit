@@ -22,10 +22,10 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
 class Min extends Validator {
 
   public $message = array(
-    'numeric' => 'The :attribute must be at least :min.',
-    'string'  => 'The :attribute must be at least :min characters.',
-    'file'    => 'The :attribute must be at least :min kilobytes',
-    'array'   => 'The :attribute must be at least :min elements'
+    'numeric' => 'The {attribute} must be at least {min}.',
+    'string'  => 'The {attribute} must be at least {min} characters.',
+    'file'    => 'The {attribute} must be at least {min} kilobytes',
+    'array'   => 'The {attribute} must be at least {min} elements'
   );
 
   public function vars() {

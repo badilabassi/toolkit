@@ -31,9 +31,9 @@ class Tpl {
    */
   static public function set($key, $value = false) {
     if(is_array($key)) {
-      self::$data = array_merge(self::$data, $key);
+      static::$data = array_merge(static::$data, $key);
     } else {
-      self::$data[$key] = $value;
+      static::$data[$key] = $value;
     }
   }
 
@@ -45,8 +45,8 @@ class Tpl {
    * @return mixed
    */
   static public function get($key = null, $default = null) {
-    if(is_null($key)) return (array)self::$data;
-    return a::get(self::$data, $key, $default);       
+    if(is_null($key)) return (array)static::$data;
+    return a::get(static::$data, $key, $default);       
   }
 
   /**
@@ -56,7 +56,7 @@ class Tpl {
    * @return void
    */
   static public function remove($key) {
-    unset(self::$data[$key]);
+    unset(static::$data[$key]);
   }
 
   /**
@@ -69,7 +69,7 @@ class Tpl {
    */
   static public function load($template = 'default', $data = array(), $return = false) {    
     $file = c::get('tpl.root') . DS . $template . '.php';
-    return self::loadFile($file, $data, $return);
+    return static::loadFile($file, $data, $return);
   }
   
   /**
@@ -88,7 +88,7 @@ class Tpl {
     // always make sure to work with an array
     if(!is_array($data)) $data = array();
 
-    return content::load($file, array_merge(self::$data, $data), $return);
+    return content::load($file, array_merge(static::$data, $data), $return);
 
   }
 
