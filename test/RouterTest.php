@@ -6,10 +6,10 @@ class RouterTest extends PHPUnit_Framework_TestCase {
  
   public function testRegister() {
 
-    router::register('GET', 'uri', array());
-    router::register('POST', 'uri', array());
-    router::register('PUT', 'uri', array());
-    router::register('DELETE', 'uri', array());
+    route::get('uri', array());
+    route::post('uri', array());
+    route::put('uri', array());
+    route::delete('uri', array());
 
     $routes = router::routes();
 
@@ -18,7 +18,7 @@ class RouterTest extends PHPUnit_Framework_TestCase {
     $this->assertTrue(isset($routes['PUT']['uri']));
     $this->assertTrue(isset($routes['DELETE']['uri']));
 
-    router::register(array('GET', 'POST'), 'anotheruri', array());
+    route::register('anotheruri', 'action', array('method' => 'GET|POST'));
 
     $routes = router::routes();
 
@@ -32,34 +32,34 @@ class RouterTest extends PHPUnit_Framework_TestCase {
     uri::current('blog');
 
     // exact matches
-    router::register('GET', 'blog', array());    
+    route::register('blog', 'action', array('method' => 'GET'));    
         
-    $route = router::match();
+    $route = router::run();
     
     $this->assertInstanceOf('Kirby\\Toolkit\\Router\\Route', $route);
-    $this->assertEquals('GET', $route->method());
+    $this->assertEquals(array('GET'), $route->method());
     $this->assertEquals('blog', $route->pattern());
-    $this->assertEquals(array(), $route->options());
-    $this->assertEquals(array(), $route->action());
+    $this->assertEquals(array(), $route->arguments());
+    $this->assertEquals('action', $route->action());
 
     uri::current('blog/2012/12/12');
 
     // (:all) wildcard
-    router::register('GET', 'blog/(:all)', array());    
+    route::get('blog/(:all)', 'action');    
 
-    $route = router::match();
+    $route = router::run();
 
-    $this->assertEquals(array('2012/12/12'), $route->options());
+    $this->assertEquals(array('2012/12/12'), $route->arguments());
 
     // remove all existing routes
     router::reset();
 
     // (:num) wildcard
-    router::register('GET', 'blog/(:num)/(:num)/(:num)', array());    
+    route::get('blog/(:num)/(:num)/(:num)', 'action');    
 
-    $route = router::match();
+    $route = router::run();
 
-    $this->assertEquals(array('2012', '12', '12'), $route->options());
+    $this->assertEquals(array('2012', '12', '12'), $route->arguments());
 
     // remove all existing routes
     router::reset();
@@ -67,11 +67,11 @@ class RouterTest extends PHPUnit_Framework_TestCase {
     uri::current('blog/2012/12');
 
     // (:num?) wildcard
-    router::register('GET', 'blog/(:num?)/(:num?)/(:num?)', array());    
+    route::get('blog/(:num?)/(:num?)/(:num?)', 'action');    
 
-    $route = router::match();
+    $route = router::run();
 
-    $this->assertEquals(array('2012', '12'), $route->options());
+    $this->assertEquals(array('2012', '12'), $route->arguments());
 
     // remove all existing routes
     router::reset();
@@ -79,30 +79,30 @@ class RouterTest extends PHPUnit_Framework_TestCase {
     uri::current('blog/category/design');
 
     // (:alpha) wildcard
-    router::register('GET', 'blog/category/(:alpha)', array());    
+    route::get('blog/category/(:alpha)', 'action');    
 
-    $route = router::match();
+    $route = router::run();
 
-    $this->assertEquals(array('design'), $route->options());
+    $this->assertEquals(array('design'), $route->arguments());
 
     // remove all existing routes
     router::reset();
 
     // (:alpha) wildcard
-    router::register('GET', 'blog/category/(:alpha)', array());    
+    route::get('blog/category/(:alpha)', 'action');    
 
     // full url
-    $route = router::match('http://mydomain.com/blog/category/design');
+    $route = router::run('http://mydomain.com/blog/category/design');
 
-    $this->assertEquals(array('design'), $route->options());
+    $this->assertEquals(array('design'), $route->arguments());
 
     // relative url
-    $route = router::match('/blog/category/design');
+    $route = router::run('/blog/category/design');
 
-    $this->assertEquals(array('design'), $route->options());
+    $this->assertEquals(array('design'), $route->arguments());
 
     $this->assertEquals(router::route(), $route);
-    $this->assertEquals(array('design'), router::options());
+    $this->assertEquals(array('design'), router::arguments());
 
   }
 
