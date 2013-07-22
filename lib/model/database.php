@@ -2,8 +2,10 @@
 
 namespace Kirby\Toolkit\Model;
 
-use Kirby\Toolkit\Model;
+use Kirby\Toolkit\A;
 use Kirby\Toolkit\DB;
+use Kirby\Toolkit\Model;
+use Kirby\Toolkit\Str;
 
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
@@ -33,8 +35,16 @@ class Database extends Model {
     $class = get_called_class();
 
     if(is_null(static::$table)) {
+
       // auto-guess the table name
       $table = strtolower($class) . 's';
+
+      // strip the namespace
+      if(str::contains($table, '\\')) {
+        $table = str::split($table, '\\');
+        $table = a::last($table);
+      }
+
     } else {
       $table = static::$table;
     }
