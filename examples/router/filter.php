@@ -12,18 +12,26 @@ router::filter('auth', function() {
   dump('authenticated');
 });
 
-// register a new GET route 
-router::get('api/users/(:any)', function($username) {
-  dump('user profile for: ' . $username);
-}, 'auth');
-
-// register another GET route
-router::get('api/users/(:any)/posts', function($username) {
-  dump('posts for user: ' . $username . '...');
-}, 'auth');
+// register all routes in a single call
+route::register(array(
+  'api/users/(:any)' => array(
+    'action' => function($username) {
+      dump('user profile for: ' . $username);
+    },
+    'method' => 'GET',
+    'filter' => 'auth'
+  ),
+  'api/users/(:any)/posts' => array(
+    'action' => function($username) {
+      dump('posts for user: ' . $username);
+    },
+    'method' => 'GET',
+    'filter' => 'auth'
+  ),
+));
 
 // check for a matching route 
-if($route = router::match($currentURL)) {
+if($route = router::run($currentURL)) {
   // call the route action and pass all variables from the url
-  router::call($route);
+  $route->call();
 }
