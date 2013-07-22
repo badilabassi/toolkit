@@ -46,7 +46,10 @@ class Event {
    */
   static public function trigger($event, $arguments = array()) {
     if(empty(static::$events[$event])) return false;
-    
+
+    // always pass the arguments as array, even if it's just one    
+    if(!is_array($arguments)) $arguments = array($arguments);
+
     foreach(static::$events[$event] as $callback) {
       if(!is_callable($callback)) continue;
       call_user_func_array($callback, $arguments);

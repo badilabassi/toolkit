@@ -4,7 +4,7 @@ require_once('lib/bootstrap.php');
 
 class UserModel extends Model {
 
-  protected $timestamps  = true;
+  static protected $timestamps = true;
   protected $allowedKeys = array('name', 'email', 'admin', 'group');
   
   protected function insert() {
@@ -24,7 +24,7 @@ class UserModel extends Model {
   }
 
   protected function validate() {
-    $this->v(array(
+    return v($this, array(
       'email' => array('required', 'email')
     ));    
   }

@@ -22,6 +22,9 @@ class Validation {
   // the input data
   protected $data = array();
   
+  // optional model, which can be passed as $data
+  protected $model = null;
+
   // an array of rules, which should be validated
   protected $rules = array();
   
@@ -44,7 +47,21 @@ class Validation {
    */
   public function __construct($data, $rules, $attributes = array(), $messages = array()) {
 
-    $this->data       = $data;
+    // you can pass an entire model and all validation 
+    // errors will automatically passed to the model after validation
+    if(is_a($data, 'Kirby\\Toolkit\\Model')) {
+      $this->model = $data;
+      $this->data  = $this->model->get();
+    
+    // you can also pass a kirby object and all data will be validated correctly
+    } else if(is_a($data, 'Kirby\\Toolkit\\Object')) {
+      $this->data = $data->get();
+    
+    // at lease you can of course simply pass an array
+    } else {
+      $this->data = $data;      
+    }
+
     $this->rules      = $rules;
     $this->messages   = $messages;
     $this->attributes = $attributes;
@@ -60,10 +77,10 @@ class Validation {
           $options = false;
         }
 
-        if(!empty($data[$attribute]) or $method == 'required') {
+        if(!empty($this->data[$attribute]) or $method == 'required') {
           
           // create a new validator and run the validation
-          $validator = Validator::create($method, $data, $attribute, $options);
+          $validator = Validator::create($method, $this->data, $attribute, $options);
 
           // add a new error for this validator
           if($validator->failed()) $this->raise($validator);
@@ -72,6 +89,11 @@ class Validation {
 
       }
 
+    }
+
+    // pass the validation errors to the model
+    if(!is_null($this->model)) {
+      $this->model->raise($this->errors);
     }
 
   }

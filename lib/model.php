@@ -19,10 +19,10 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
 class Model extends Object {
 
   // activate/deactivate automatic created and modified timestamps
-  protected $timestamps = false;
+  static protected $timestamps = false;
     
   // the key name for the primary key
-  protected $primaryKeyName = false;
+  static protected $primaryKeyName = false;
 
   // an array of errors after validation
   public $errors = null;
@@ -99,18 +99,6 @@ class Model extends Object {
   }
 
   /**
-   * Validation helper
-   * Check v::all for all available options
-   * 
-   * @param array $rules A set of rules to validate the model by
-   * @param array $attributes An optional set of attribute names to be used in error messages
-   * @param array $messages An optional set of error messages for each used validation method
-   */
-  protected function v($rules, $attributes = array(), $messages = array()) {
-    $this->raise(v::all($this->get(), $rules, $attributes, $messages));
-  }
-
-  /**
    * Define this function in your model 
    * to insert the model for the first time
    * 
@@ -145,8 +133,8 @@ class Model extends Object {
    * 
    * @return string
    */
-  public function primaryKeyName() {
-    return $this->primaryKeyName ? $this->primaryKeyName : c::get('model.primaryKeyName', 'id');  
+  static public function primaryKeyName() {
+    return static::$primaryKeyName ? static::$primaryKeyName : c::get('model.primaryKeyName', 'id');  
   }
 
   /**

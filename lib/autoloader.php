@@ -31,7 +31,6 @@ class Autoloader {
   public function start() {
     
     if(is_null($this->root))      raise('Please specify a root directory for the autoloader');
-    if(is_null($this->namespace)) raise('Please specify a namespace for the autoloader');
     if(!is_array($this->aliases)) raise('Aliases for the autloader must be defined as associative array');
 
     $autoloader = $this;

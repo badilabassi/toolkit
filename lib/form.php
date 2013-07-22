@@ -57,7 +57,7 @@ class Form {
    * @param array $attr Additional attributes for the input tag
    * @return The generated html
    */
-  static public function input($type, $name, $value, $attr = array()) {
+  static public function input($type, $name, $value = null, $attr = array()) {
     
     $attr = array_merge(array(
       'type'  => $type,
@@ -95,7 +95,7 @@ class Form {
    * @param array $attr Additional attributes for the input tag
    * @return The generated html
    */
-  static public function text($name, $value, $attr = array()) {
+  static public function text($name, $value = null, $attr = array()) {
     return static::input('text', $name, $value, $attr);
   }
 
@@ -107,7 +107,7 @@ class Form {
    * @param array $attr Additional attributes for the input tag
    * @return The generated html
    */
-  static public function password($name, $value, $attr = array()) {
+  static public function password($name, $value = null, $attr = array()) {
     return static::input('password', $name, $value, $attr);
   }
 
@@ -119,7 +119,7 @@ class Form {
    * @param array $attr Additional attributes for the input tag
    * @return The generated html
    */
-  static public function url($name, $value, $attr = array()) {
+  static public function url($name, $value = null, $attr = array()) {
     return static::input('url', $name, $value, $attr);
   }
 
@@ -131,7 +131,7 @@ class Form {
    * @param array $attr Additional attributes for the input tag
    * @return The generated html
    */
-  static public function email($name, $value, $attr = array()) {
+  static public function email($name, $value = null, $attr = array()) {
     return static::input('email', $name, $value, $attr);
   }
 
@@ -143,7 +143,7 @@ class Form {
    * @param array $attr Additional attributes for the input tag
    * @return The generated html
    */
-  static public function search($name, $value, $attr = array()) {
+  static public function search($name, $value = null, $attr = array()) {
     return static::input('search', $name, $value, $attr);
   }
 
@@ -155,7 +155,7 @@ class Form {
    * @param array $attr Additional attributes for the input tag
    * @return The generated html
    */
-  static public function tel($name, $value, $attr = array()) {
+  static public function tel($name, $value = null, $attr = array()) {
     return static::input('tel', $name, $value, $attr);
   }
 
@@ -271,7 +271,7 @@ class Form {
    * @param array $attr Additional attributes for the textarea
    * @return The generated html
    */
-  static public function textarea($name, $value, $attr = array()) {
+  static public function textarea($name, $value = null, $attr = array()) {
  
     $attr = array_merge(array(
       'name'  => $name,

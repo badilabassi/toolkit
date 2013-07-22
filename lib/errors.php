@@ -33,9 +33,13 @@ class Errors extends Collection {
     if(is_a($key, 'Kirby\\Toolkit\\Error')) {
       $this->set($key->key(), $key);
     
+    // pass an entire errors object
+    } else if(is_a($key, 'Kirby\\Toolkit\\Errors')) {
+      $this->data = array_merge($this->data, $key->get());
+
     // pass an entire set of  errors
     } else if(is_object($key) and method_exists($key, 'errors') and is_a($key->errors(), 'Kirby\\Toolkit\\Errors')) {
-      $this->data = $key->errors()->get();
+      $this->data = array_merge($this->data, $key->errors()->get());
 
     // raise multiple errors at once    
     } else if(is_array($key)) {

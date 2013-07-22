@@ -22,7 +22,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class Router {
-  
+
   // the matched route if found
   static protected $route = null;
 
@@ -64,7 +64,8 @@ class Router {
       'PUT'    => array(),
       'DELETE' => array()
     );    
-  }
+    static::$filters = array();
+  }  
 
   /**
    * Returns the found route
@@ -76,42 +77,37 @@ class Router {
   }
 
   /**
-   * Returns the options array from the current route
+   * Returns the arguments array from the current route
    * 
    * @return array
    */
-  static public function options() {
-    if($route = static::route()) return $route->options();
+  static public function arguments() {
+    if($route = static::route()) return $route->arguments();
   }
 
   /**
    * Adds a new route
    * 
-   * @param string|array $methods GET, POST, PUT, DELETE
-   * @param string $uri The url pattern, which should be matched
-   * @param mixed $action An array of parameters for this route
-   * @param mixed $filters Either a single name of a filter or an array of filter names
+   * @param object $route
+   * @return object
    */
-  static public function register($methods, $pattern, $action, $filters = null) {
-    foreach((array)$methods as $method) {
-      static::$routes[$method][ltrim($pattern, '/')] = array('action' => $action, 'filters' => $filters);
+  static public function register(Route $route) {
+
+    // convert single methods or methods separated by | to arrays    
+    if(is_string($route->method)) {
+
+      if(str::contains($route->method, '|')) {
+        $route->method = str::split($route->method, '|');
+      } else {
+        $route->method = array($route->method);
+      }
+
     }
-  }
 
-  static public function get($pattern, $action, $filters = null) {
-    static::register('GET', $pattern, $action, $filters);
-  }
-
-  static public function post($pattern, $action, $filters = null) {
-    static::register('POST', $pattern, $action, $filters);
-  }
-
-  static public function put($pattern, $action, $filters = null) {
-    static::register('PUT', $pattern, $action, $filters);
-  }
-
-  static public function delete($pattern, $action, $filters = null) {
-    static::register('DELETE', $pattern, $action, $filters);
+    foreach($route->method as $method) {
+      static::$routes[strtoupper($method)][$route->pattern] = $route;
+    }
+    return $route;
   }
 
   /**
@@ -134,61 +130,6 @@ class Router {
   }
 
   /**
-   * Returns all added routes
-   * 
-   * @param string $method
-   * @return array
-   */
-  static public function routes($method = null) {
-    return is_null($method) ? static::$routes : static::$routes[$method];
-  }
-
-  /**
-   * Iterate through every route to find a matching route.
-   *
-   * @param  string  $url Optional url to match against
-   * @return Route
-   */
-  static public function match($url = null) {
-
-    $url    = is_null($url) ? uri::current()->path()->toString() : trim(url::path($url), '/');
-    $method = r::method();
-    $routes = static::$routes[$method];
-
-    // empty urls should never happen
-    if(empty($url)) $url = '/';
-
-    foreach($routes as $pattern => $route) {
-
-      $action  = $route['action'];
-      $filters = $route['filters']; 
-
-      // handle exact matches
-      if($pattern == $url) {
-        static::filterer($filters);
-        return static::$route = new Route($method, $pattern, $action, array());
-      }
-
-      // We only need to check routes with regular expression since all others
-      // would have been able to be matched by the search for literal matches
-      // we just did before we started searching.
-      if(!str::contains($pattern, '(')) continue;
-      
-      $preg = '#^'. static::wildcards($pattern) . '$#u';
-
-      // If we get a match we'll return the route and slice off the first
-      // parameter match, as preg_match sets the first array item to the
-      // full-text match of the pattern.
-      if(preg_match($preg, $url, $parameters)) {
-        static::filterer($filters);
-        return static::$route = new Route($method, $pattern, $action, array_slice($parameters, 1));
-      }    
-    
-    }
-  
-  }
-
-  /**
    * Call all matching filters
    * 
    * @param mixed $filters
@@ -202,15 +143,69 @@ class Router {
   }
 
   /**
-   * Call the action of a route if callable
+   * Returns all added routes
    * 
-   * @param object $route;
-   * @return mixed
+   * @param string $method
+   * @return array
    */
-  static public function call($route) {
-    if(is_callable($route->action())) {
-      return call_user_func_array($route->action(), $route->options());
+  static public function routes($method = null) {
+    return is_null($method) ? static::$routes : static::$routes[strtoupper($method)];
+  }
+
+  /**
+   * Iterate through every route to find a matching route.
+   *
+   * @param  string $url Optional url to match against
+   * @return Route
+   */
+  static public function run($url = null) {
+
+    $uri    = is_null($url) ? uri::current() : new URI($url);
+    $path   = $uri->path()->toString();
+    $method = r::method();
+    $ajax   = r::ajax();
+    $https  = r::ssl();
+    $routes = static::$routes[$method];
+
+    // empty urls should never happen
+    if(empty($path)) $path = '/';
+
+    foreach($routes as $route) {
+      
+      if($route->https and !$https) continue;
+      if($route->ajax  and !$ajax)  continue;
+
+      // handle exact matches
+      if($route->pattern == $path) {       
+        static::$route = $route;
+        break;
+      }
+
+      // We only need to check routes with regular expression since all others
+      // would have been able to be matched by the search for literal matches
+      // we just did before we started searching.
+      if(!str::contains($route->pattern, '(')) continue;
+      
+      $preg = '#^'. static::wildcards($route->pattern) . '$#u';
+
+      // If we get a match we'll return the route and slice off the first
+      // parameter match, as preg_match sets the first array item to the
+      // full-text match of the pattern.
+      if(preg_match($preg, $path, $parameters)) {
+        static::$route = $route;
+        static::$route->arguments = array_slice($parameters, 1);
+        break;
+      }    
+    
     }
+
+    if(static::$route) {
+      static::filterer(static::$route->filter);
+      return static::$route;
+    } else {
+      return null;
+    }
+
   }
 
   /**

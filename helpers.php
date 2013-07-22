@@ -253,6 +253,9 @@ function options($defaults = array(), $params = array()) {
  */
 function csfr($check = null) {
 
+  // make sure a session is started
+  s::start();
+
   if(is_null($check)) {
     $token = str::random(64);
     s::set('csfr', $token);

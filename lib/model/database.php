@@ -21,15 +21,26 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  */
 class Database extends Model {
   
-  protected $table = null;
+  static protected $table = null;
 
   /**
    * Returns the DbQuery object with the table prefilled
    * 
    * @return object DbQuery
    */
-  protected function table() {
-    return db::table($this->table);    
+  static public function table() {  
+
+    $class = get_called_class();
+
+    if(is_null(static::$table)) {
+      // auto-guess the table name
+      $table = strtolower($class) . 's';
+    } else {
+      $table = static::$table;
+    }
+
+    return db::table($table)->fetch($class);    
+
   }
 
   /**
@@ -38,7 +49,7 @@ class Database extends Model {
    * @return boolean
    */
   protected function insert() {
-    $insert = $this->table()->insert($this->get());
+    $insert = static::table()->insert($this->get());
     
     if($insert) {
       $this->id = $insert;
@@ -56,7 +67,7 @@ class Database extends Model {
    * @return boolean
    */
   protected function update() {
-    return $this->table()
+    return static::table()
                 ->where(array($this->primaryKeyName() => $this->primaryKey()))
                 ->update($this->get());  
   }
@@ -68,9 +79,42 @@ class Database extends Model {
    * @return boolean
    */
   public function delete() {
-    return $this->table()
+    return static::table()
                 ->where(array($this->primaryKeyName() => $this->primaryKey()))
                 ->delete();  
   }
   
+  /**
+   * Find a model by its primary key
+   * 
+   * @param mixed $primaryKey
+   * @return object
+   */
+  static public function find($primaryKey) {
+    return static::table()
+                ->where(array(static::primaryKeyName() => $primaryKey))
+                ->first();
+  }
+
+  /**
+   * Makes it possible to call all DB/Query methods statically
+   * for the model and thus get access to the full DB/Query functionality
+   * within the model class. 
+   * 
+   * @param string $method
+   * @param array $arguments
+   * @return mixed
+   */
+  static public function __callStatic($method, $arguments = array()) {
+
+    $table = static::table();
+
+    if(method_exists($table, $method)) {
+      return call_user_func_array(array(static::table(), $method), $arguments);
+    } else {
+      raise('Invalid model method: ' . $method);
+    }
+
+  }
+
 }
