@@ -5,41 +5,12 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
 
 /**
  * Redirects the user to a new URL
- *
- * @param   string    $url The URL to redirect to
- * @param   boolean   $code The HTTP status code, which should be sent (301, 302 or 303)
- * @param   boolean   $send If true, headers will be sent and redirection will take effect
+ * This uses the URL::to() method and can be super
+ * smart with the custom url::to() handler. Check out
+ * the URL class for more information
  */
-function go($url = false, $code = false, $send = true) {
-
-  if(empty($url)) $url = c::get('url', '/');
-
-  $header = false;
-
-  // send an appropriate header
-  if($code) {
-    switch($code) {
-      case 301:
-        $header = 'HTTP/1.1 301 Moved Permanently';
-        break;
-      case 302:
-        $header = 'HTTP/1.1 302 Found';
-        break;
-      case 303:
-        $header = 'HTTP/1.1 303 See Other';
-        break;
-    }
-  }
-  
-  if($send) {
-    // send to new page
-    if($header) header($header);
-    header('Location:' . $url);
-    exit();
-  } else {
-    return $header;
-  }
-
+function go() {
+  call_user_func_array(array('redirect', 'to'), func_get_args());
 }
 
 /**
@@ -51,6 +22,15 @@ function go($url = false, $code = false, $send = true) {
   */  
 function get($key = null, $default = null) {
   return r::data($key, $default);
+}
+
+/**
+ * Get all params in a single array
+ * 
+ * @return array
+ */
+function params() {
+  return uri::current()->params()->toArray();
 }
 
 /**
@@ -315,4 +295,22 @@ function email($params = array()) {
  */
 function v($data, $rules = array(), $attributes = array(), $messages = array()) {
   return v::all($data, $rules, $attributes, $messages);
+}
+
+/**
+ * Shorter version of url::to()
+ * 
+ * @return string
+ */
+function url() {
+  return call_user_func_array(array('url', 'to'), func_get_args());  
+}
+
+/**
+ * Another shorter version of url::to()
+ * 
+ * @return string
+ */
+function u() {
+  return call_user_func_array(array('url', 'to'), func_get_args());  
 }
