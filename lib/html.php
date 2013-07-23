@@ -115,6 +115,7 @@ class Html {
    * @return string the generated html
    */
   static public function a($href, $text = null, $attr = array()) {
+    $href = url::to($href);
     $attr = array_merge(array('href' => $href), $attr);
     if(empty($text)) $text = $href;
     return static::tag('a', $text, $attr);

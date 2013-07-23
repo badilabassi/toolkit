@@ -17,8 +17,14 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * @copyright Bastian Allgeier
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class Url {
-  
+class URL {
+    
+  // the home url of our project
+  static public $home = null;
+
+  // optional custom handler for the to() method
+  static public $to = null;
+
   /** 
    * Returns the current URL
    * 
@@ -284,6 +290,62 @@ class Url {
    */
   static public function valid($url) {
     return v::url($url);
+  }
+
+  /**
+   * Returns the home url if set
+   * use url::$home = 'http://mydomain.com' to set the home page
+   * 
+   * @return string
+   */
+  static public function home() {
+    return rtrim(static::$home, '/');
+  }
+
+  /**
+   * Tries to fix a broken url without protocol
+   * 
+   * @param string $url
+   * @return string
+   */
+  static public function fix($url) {
+    // make sure to not touch absolute urls
+    return (!preg_match('!^(https|http|ftp)\:\/\/!i', $url)) ? 'http://' . $url : $url;
+  }
+
+  /**
+   * A smart way to build urls
+   * Define your own custom handler for building urls with 
+   * url::$to = function($uri) { ... }
+   * 
+   * @param $uri
+   * @return string
+   */
+  static public function to($uri = '/') {
+
+    // make sure to not touch absolute urls
+    if(preg_match('!^(https|http|ftp)\:\/\/!i', $uri)) return $uri;
+
+    // use the custom handler if available
+    if(is_callable(static::$to)) {
+      return call_user_func_array(static::$to, func_get_args());
+    } 
+
+    // clean the uri
+    $uri = ltrim($uri, '/');
+
+    // return the absolute url for the given uri by prepending the home url
+    return empty($uri) ? static::home() : static::$home . '/' . $uri;
+
+  }
+
+  /**
+   * Return the last url the user has been on if detectable
+   * 
+   * @return string
+   */
+  static public function last() {
+    return visitor::referer();
   }
 
 }

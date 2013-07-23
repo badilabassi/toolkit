@@ -4,26 +4,6 @@ require_once('lib/bootstrap.php');
 
 class HelpersTest extends PHPUnit_Framework_TestCase {
   
-  public function testGo() {
-
-    $go = go('http://someurl.com', 301, false);
-
-    $this->assertEquals('HTTP/1.1 301 Moved Permanently', $go);
-
-    $go = go('http://someurl.com', 302, false);
-
-    $this->assertEquals('HTTP/1.1 302 Found', $go);
-
-    $go = go('http://someurl.com', 303, false);
-
-    $this->assertEquals('HTTP/1.1 303 See Other', $go);
-
-    $go = go('http://someurl.com', 304, false);
-
-    $this->assertFalse($go);
-
-  }  
-
   public function testGet() {
     // already tested in RTest
   }

@@ -69,6 +69,7 @@ $autoloader->aliases = array(
   'password'   => 'Kirby\\Toolkit\\Password',
   'r'          => 'Kirby\\Toolkit\\R',
   'remote'     => 'Kirby\\Toolkit\\Remote',
+  'redirect'   => 'Kirby\\Toolkit\\Redirect',
   'router'     => 'Kirby\\Toolkit\\Router',
   'route'      => 'Kirby\\Toolkit\\Router\\Route',
   's'          => 'Kirby\\Toolkit\\S',
