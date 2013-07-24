@@ -120,9 +120,9 @@ class Content {
     $header = 'Content-type: ' . $mime . '; charset=' . $charset;
 
     if($send) {
-     header($header);
+      header($header);
     } else {
-     return $header;
+      return $header;
     }
 
   }
