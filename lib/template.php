@@ -20,6 +20,9 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  */
 class Template {
 
+  // a global array of data which is shared between all templates
+  static public $globals = array();
+
   // registered filters for views
   static public $filters = array();
 
@@ -112,7 +115,7 @@ class Template {
    * @return array
    */
   public function data() {
-    return $this->data;
+    return array_merge((array)static::$globals, (array)$this->data);
   }
 
   /**
@@ -185,7 +188,7 @@ class Template {
    */
   public function render() {
     $file = $this->file();
-    return is_file($file) ? content::load($file, $this->data) : '';
+    return is_file($file) ? content::load($file, $this->data()) : '';
   }
 
   /**
@@ -196,6 +199,26 @@ class Template {
    */
   static public function filter($file, $callback) {
     static::$filters[$file] = $callback;
+  }
+
+  /**
+   * Getter and setter for global template variables
+   * 
+   * @param mixed $key
+   * @param mixed $value
+   * @return array
+   */
+  static public function globals($key = null, $value = null) {
+    if(is_null($key)) {
+      return static::$globals;
+    } else if(is_array($key)) {
+      return static::$globals = array_merge(static::$globals, $key);
+    } else if(is_null($value)) {
+      return a::get(static::$globals, $key);
+    } else {
+      static::$globals[$key] = $value;
+      return static::$globals;
+    }
   }
 
   /**

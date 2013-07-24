@@ -82,7 +82,6 @@ $autoloader->aliases = array(
   'thumb'      => 'Kirby\\Toolkit\\Thumb',
   'timer'      => 'Kirby\\Toolkit\\Timer',
   'template'   => 'Kirby\\Toolkit\\Template',
-  'tpl'        => 'Kirby\\Toolkit\\Template',
   'txtstore'   => 'Kirby\\Toolkit\\Txtstore',
   'upload'     => 'Kirby\\Toolkit\\Upload',
   'uri'        => 'Kirby\\Toolkit\\URI',
