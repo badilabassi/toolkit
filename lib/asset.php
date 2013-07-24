@@ -355,6 +355,15 @@ class Asset {
   }
 
   /**
+   * Reads the content of the asset and returns it
+   * 
+   * @return mixed
+   */
+  public function read() {
+    return f::read($this->root());
+  }
+
+  /**
    * Returns a full link to this file
    * Perfect for debugging in connection with echo
    * 
