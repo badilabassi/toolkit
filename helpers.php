@@ -206,8 +206,28 @@ function gravatar($email, $size = 256, $default = 'mm') {
  * @param string $message An error message for the exception
  * @param string $exception Exception class 
  */
-function raise($message, $exception = 'Exception') {
-  throw new $exception($message);
+function raise($message, $params = null) {
+
+  // default values for raising exceptions
+  $defaults = array(
+    'code'     => 0,
+    'class'    => 'Kirby\\Toolkit\\Exception',
+    'data'     => null, 
+    'previous' => null
+  );
+
+  if(!is_array($params)) {
+    $params = array(
+      'code' => $params
+    );    
+  }
+
+  $options = array_merge($defaults, $params);
+  $class   = $options['class'];
+
+  // create a new exception then throw it. 
+  throw new $class($message, $options['code'], $options['previous']. $options['data']);
+
 }
 
 /**

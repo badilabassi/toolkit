@@ -27,8 +27,8 @@ class Amazon extends Service {
    */
   public function send() {
 
-    if(!$this->email->options['key'])    raise(l::get('email.error.key', 'Invalid API key'));
-    if(!$this->email->options['secret']) raise(l::get('email.error.secret', 'Invalid API secret'));
+    if(!$this->email->options['key'])    raise('Invalid API key', 'invalid-api-key');
+    if(!$this->email->options['secret']) raise('Invalid API secret', 'invalid-api-secret');
 
     $setup = array(
       'Action'                           => 'SendEmail',
@@ -67,7 +67,7 @@ class Amazon extends Service {
       'headers' => $headers
     ));
 
-    if(!in_array($this->response->code(), array(200, 201, 202, 204))) raise(l::get('email.error', 'The mail could not be sent!'));
+    if(!in_array($this->response->code(), array(200, 201, 202, 204))) raise('The mail could not be sent!', 'send-error');
     
   }
 

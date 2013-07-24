@@ -27,8 +27,8 @@ class Mailgun extends Service {
    */
   public function send() {
 
-    if(!$this->email->options['key'])    raise(l::get('email.error.key', 'Invalid API key')); 
-    if(!$this->email->options['domain']) raise(l::get('email.error.domain', 'Invalid API domain'));
+    if(!$this->email->options['key'])    raise('Invalid API key', 'invalid-api-key'); 
+    if(!$this->email->options['domain']) raise('Invalid API domain', 'invalid-api-domain');
 
     $url  = 'https://api.mailgun.net/v2/' . $this->email->options['domain'] . '/messages';
     $auth = base64_encode('api:' . $this->email->options['key']);
@@ -50,7 +50,7 @@ class Mailgun extends Service {
       'headers' => $headers
     ));
     
-    if($this->response->code() != 200) raise(l::get('email.error', 'The mail could not be sent!'));
+    if($this->response->code() != 200) raise('The mail could not be sent!', 'send-error');
     
   }
 

@@ -18,7 +18,6 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  */
 class Error {
 
-  public $key;
   public $message;
   public $code;
   public $data;
@@ -26,38 +25,26 @@ class Error {
   /**
    * Static handler to create a new error object
    * 
-   * @param string $key
    * @param string $message
+   * @param mixed $code
    * @param mixed $data
-   * @param int $code
    * @return object
    */
-  static public function raise($key, $message, $data = null, $code = null) {
-    return new static($key, $message, $data, $code);
+  static public function raise($message, $code = 0, $data = null) {
+    return new static($message, $code, $data);
   }
 
   /**
    * Constructor
    * 
-   * @param string $key
    * @param string $message
+   * @param mixed $code
    * @param mixed $data
-   * @param int $code
    */
-  public function __construct($key, $message, $data = null, $code = null) {
-    $this->key     = $key;
+  public function __construct($message, $code = 0, $data = null) {
     $this->message = $message;
-    $this->data    = $data;
     $this->code    = $code;
-  }
-
-  /**
-   * Returns the error key
-   * 
-   * @return string
-   */
-  public function key() {
-    return $this->key;
+    $this->data    = $data;
   }
 
   /**
@@ -70,21 +57,21 @@ class Error {
   }
 
   /**
+   * Returns the error code
+   * 
+   * @return mixed
+   */
+  public function code() {
+    return $this->code;
+  }
+
+  /**
    * Returns optional data
    * 
    * @return array
    */
   public function data() {
     return $this->data;
-  }
-
-  /**
-   * Returns the optional error code
-   * 
-   * @return int
-   */
-  public function code() {
-    return $this->code;
   }
 
   /**
@@ -103,7 +90,6 @@ class Error {
    */
   public function toArray() {
     return array(
-      'key'     => $this->key,
       'message' => $this->message,
       'code'    => $this->code,
       'data'    => $this->data,
@@ -148,16 +134,25 @@ class Error {
       503 => 'Service Unavailable'
     ), (array)c::get('error.codes'));
 
-    if(!$this->code) $this->code = 400;
+    $code = (!$this->code or !array_key_exists($this->code, $codes)) ? 400 : $this->code;
 
-    $message  = a::get($codes, $this->code);
+    $message  = a::get($codes, $code, 'Something went wrong');
     $protocol = server::get('SERVER_PROTOCOL', 'HTTP/1.0');
-    $header   = $protocol . ' ' . $this->code . ' ' . $message;
+    $header   = $protocol . ' ' . $code . ' ' . $message;
 
     if(!$send) return $header;
 
     header($header);
 
+  }
+  
+  /**
+   * Converts the error into an Exception, which can be thrown easily. 
+   * 
+   * @return object
+   */
+  public function toException() {
+    return new Exception($this);
   }
 
 }

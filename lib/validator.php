@@ -201,11 +201,11 @@ class Validator {
   /**
    * Returns the error message
    * 
-   * @param string $attribute Optional custom attribute name to overwrite the default attribute
    * @param string $message Optional custom message to overwrite the default message
+   * @param string $attribute Optional custom attribute name to overwrite the default attribute
    * @return string
    */
-  public function message($attribute = null, $message = null) {
+  public function message($message = null, $attribute = null) {
 
     if(!$this->failed()) return null;
 
@@ -253,7 +253,7 @@ class Validator {
    * @return object Error object
    */
   public function error($message = null, $attribute = null) {
-    return error::raise($this->attribute, $this->message($message, $attribute));
+    return error::raise($this->message($message, $attribute), $this->attribute);
   }
 
 }

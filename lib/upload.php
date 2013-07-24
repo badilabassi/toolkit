@@ -210,6 +210,17 @@ class Upload {
   }
 
   /**
+   * Raises a new error
+   * 
+   * @param string $message
+   * @param string $code The internal error code
+   * @return false
+   */
+  public function raise($message, $code) {
+    return $this->error = error::raise($message, $code);
+  }
+
+  /**
    * Returns the error message if available
    * 
    * @return string
@@ -244,23 +255,23 @@ class Upload {
   protected function validate() {
 
     if(is_null($this->source['name']) || is_null($this->source['tmp_name'])) {
-      return $this->raise('missing-file', l::get('upload.errors.missing-file', 'The file has not been found'));
+      return $this->raise('The file has not been found', 'missing-file');
     }
 
     if($this->source['error'] != 0) {
-      return $this->raise('invalid-upload', l::get('upload.errors.invalid-upload', 'The upload failed'));
+      return $this->raise('The upload failed', 'invalid-upload');
     }
 
     if(file_exists($this->file()) && $this->options['overwrite'] === false) {
-      return $this->raise('file-exists', l::get('upload.errors.file-exists', 'The file exists and cannot be overwritten'));
+      return $this->raise('The file exists and cannot be overwritten', 'file-exists');
     }
 
     if($this->size() > $this->maxSize()) {
-      return $this->raise('too-big', l::get('upload.errors.too-big', 'The file is too big'));
+      return $this->raise('The file is too big', 'too-big');
     }
 
     if(is_array($this->allowed()) && !in_array($this->mime(), $this->allowed())) {
-      return $this->raise('invalid-file', l::get('upload.errors.invalid-file', 'The file type is not allowed'));
+      return $this->raise('The file type is not allowed', 'invalid-file');
     }
 
     if(is_callable($this->options['validate'])) {
@@ -269,17 +280,6 @@ class Upload {
 
     return true;
 
-  }
-
-  /**
-   * Raises a new error
-   * 
-   * @param string $message
-   * @return false
-   */
-  public function raise($key, $message) {
-    $this->error = new Error($key, $message);
-    return false;
   }
 
   /**
@@ -294,7 +294,7 @@ class Upload {
 
     // try to move and raise an error if something goes wrong
     if(!f::copy($this->source['tmp_name'], $this->file())) {
-      return $this->raise('move-error', l::get('upload.errors.move-error', 'The file could not be moved to the server'));
+      return $this->raise('The file could not be moved to the server', 'move-error');
     }
 
     return true;

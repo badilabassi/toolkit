@@ -31,19 +31,19 @@ abstract class Driver {
     
   }
 
-	/**
-	 * Write an item to the cache for a given number of minutes.
-	 *
-	 * <code>
-	 *		// Put an item in the cache for 15 minutes
-	 *		Cache::set('value', 'my value', 15);
-	 * </code>
-	 *
-	 * @param  string  $key
-	 * @param  mixed   $value
-	 * @param  int     $minutes
-	 * @return void
-	 */
+  /**
+   * Write an item to the cache for a given number of minutes.
+   *
+   * <code>
+   *   // Put an item in the cache for 15 minutes
+   *   Cache::set('value', 'my value', 15);
+   * </code>
+   *
+   * @param  string  $key
+   * @param  mixed   $value
+   * @param  int     $minutes
+   * @return void
+   */
   abstract function set($key, $value, $minutes = null);
 
   /**
@@ -55,21 +55,21 @@ abstract class Driver {
    */
   abstract function retrieve($key);
 
-	/**
-	 * Get an item from the cache.
-	 *
-	 * <code>
-	 *		// Get an item from the cache driver
-	 *		$value = Cache::get('value');
-	 *
-	 *		// Return a default value if the requested item isn't cached
-	 *		$value = Cache::get('value', 'default value');
-	 * </code>
-	 *
-	 * @param  string  $key
-	 * @param  mixed   $default
-	 * @return mixed
-	 */
+  /**
+   * Get an item from the cache.
+   *
+   * <code>
+   *   // Get an item from the cache driver
+   *   $value = Cache::get('value');
+   *
+   *   // Return a default value if the requested item isn't cached
+   *   $value = Cache::get('value', 'default value');
+   * </code>
+   *
+   * @param  string  $key
+   * @param  mixed   $default
+   * @return mixed
+   */
   public function get($key, $default = null) {
 
     // get the Value
@@ -168,12 +168,12 @@ abstract class Driver {
     return new Value($value, $minutes);
   }
 
-	/**
-	 * Determine if an item exists in the cache.
-	 *
-	 * @param  string  $key
-	 * @return boolean
-	 */
+  /**
+   * Determine if an item exists in the cache.
+   *
+   * @param  string  $key
+   * @return boolean
+   */
   public function exists($key) {
     return !$this->expired($key);
   }

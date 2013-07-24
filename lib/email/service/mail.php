@@ -41,7 +41,7 @@ class Mail extends Service {
     $send = mail($this->email->to, str::utf8($this->email->subject), str::utf8($this->email->body), implode("\r\n", $headers));
     ini_restore('sendmail_from');
 
-    if(!$send) raise(l::get('email.error.service.mail', 'The mail could not be sent!'));
+    if(!$send) raise('The mail could not be sent!', 'send-error');
 
   }
   

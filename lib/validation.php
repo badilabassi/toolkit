@@ -162,7 +162,7 @@ class Validation {
     $message = a::get($this->messages, $method);
     
     // pass custom message and attribute to the validator
-    $error = $validator->error($attributeValue, $message); 
+    $error = $validator->error($message, $attributeValue); 
 
     // store the error in the errors collection
     $this->errors->$attributeName = $error;

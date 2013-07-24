@@ -22,32 +22,31 @@ class Errors extends Collection {
   /**
    * Adds a new error to the collection
    * 
-   * @param mixed $key Either a key for a new error or an existing error object
-   * @param string $message
+   * @param string $message Either an error message or an existing error object
+   * @param mixed $code 
    * @param mixed $data
-   * @param int $code
    */
-  public function raise($key, $message = null, $data = null, $code = null) {
+  public function raise($message = null, $code = 0, $data = null) {
 
     // pass a single error
-    if(is_a($key, 'Kirby\\Toolkit\\Error')) {
-      $this->set($key->key(), $key);
+    if(is_a($message, 'Kirby\\Toolkit\\Error')) {
+      $this->set($message->code(), $message);
     
     // pass an entire errors object
-    } else if(is_a($key, 'Kirby\\Toolkit\\Errors')) {
-      $this->data = array_merge($this->data, $key->get());
+    } else if(is_a($message, 'Kirby\\Toolkit\\Errors')) {
+      $this->data = array_merge($this->data, $message->get());
 
     // pass an entire set of  errors
-    } else if(is_object($key) and method_exists($key, 'errors') and is_a($key->errors(), 'Kirby\\Toolkit\\Errors')) {
-      $this->data = array_merge($this->data, $key->errors()->get());
+    } else if(is_object($message) and method_exists($message, 'errors') and is_a($message->errors(), 'Kirby\\Toolkit\\Errors')) {
+      $this->data = array_merge($this->data, $message->errors()->get());
 
     // raise multiple errors at once    
-    } else if(is_array($key)) {
-      foreach($key as $k => $m) $this->set($k, error::raise($k, $m));
+    } else if(is_array($message)) {
+      foreach($message as $c => $m) $this->set($c, error::raise($m, $c));
 
     // create a new error and add it
     } else if(!is_null($message)) {
-      $this->set($key, error::raise($key, $message, $data, $code));
+      $this->set($code, error::raise($message, $code, $data));
     }
 
   }  
@@ -60,7 +59,7 @@ class Errors extends Collection {
   public function messages() {
     $result = array();
     foreach($this->data as $error) {
-      $result[$error->key()] = $error->message();
+      $result[$error->code()] = $error->message();
     }
     return $result;
   }
@@ -72,8 +71,8 @@ class Errors extends Collection {
    */
   public function toArray() {
     $result = array();
-    foreach(parent::toArray() as $key => $error) {
-      $result[$key] = $error->toArray();
+    foreach(parent::toArray() as $code => $error) {
+      $result[$code] = $error->toArray();
     }
     return $result;
   }

@@ -199,11 +199,11 @@ class Model extends Object {
   /**
    * Adds an error message for the given key to the list of validation errors
    * 
-   * @param mixed $key Pass a string, array or an entire Validation object
-   * @param mixed $message If you pass a string for the key, pass the message for that key here
+   * @param mixed $message Pass a string, array or an entire Validation object
+   * @param mixed $code Pass a unique error code
    */
-  public function raise($key, $message = null) {  
-    $this->errors->raise($key, $message);
+  public function raise($message, $code = null) {  
+    $this->errors->raise($message, $code);
   }
 
   /**
@@ -216,13 +216,13 @@ class Model extends Object {
   }
 
   /**
-   * Returns a specific error for a given key
+   * Returns a specific error for a given code
    * 
-   * @param string $key if not specified the first error will be returned
+   * @param string $code if not specified the first error will be returned
    * @return string
    */
-  public function error($key = null) {
-    return is_null($key) ? $this->errors->first() : $this->errors->get($key);
+  public function error($code = null) {
+    return is_null($code) ? $this->errors->first() : $this->errors->get($code);
   }
   
   /**

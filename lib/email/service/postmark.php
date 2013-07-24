@@ -28,7 +28,7 @@ class Postmark extends Service {
    */
   public function send() {
 
-    if(!$this->email->options['key']) raise(l::get('email.error.key', 'Invalid API key'));
+    if(!$this->email->options['key']) raise('Invalid API key', 'invalid-api-key');
 
     // reset the api key if we are in test mode
     if($this->email->options['test']) $this->email->options['key'] = 'POSTMARK_API_TEST';
@@ -56,7 +56,7 @@ class Postmark extends Service {
       'headers' => $headers
     ));
     
-    if($this->response->code() != 200) raise(l::get('email.error', 'The mail could not be sent!'));
+    if($this->response->code() != 200) raise('The mail could not be sent!', 'send-error');
 
   }
   

@@ -38,7 +38,7 @@ class File extends Driver {
     $this->options = array_merge($defaults, $params);
 
     // check for a valid cache directory
-    if(!is_dir($this->options['root'])) throw new Exception('The cache directory does not exist');
+    if(!is_dir($this->options['root'])) raise('The cache directory does not exist');
 
   }
 

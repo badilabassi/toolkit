@@ -120,13 +120,13 @@ class Email {
     $serviceClass = 'Kirby\\Toolkit\\Email\\Service\\' . $this->service;
 
     // check if the class file exists
-    if(!file_exists($serviceFile)) $this->raise('service', l::get('email.error.service', 'The service is not available'));
+    if(!file_exists($serviceFile)) $this->raise('The service is not available', 'missing-service');
 
     // load the class only for the first time
     require_once($serviceFile);
 
     // check if the service class is available 
-    if(!class_exists($serviceClass)) $this->raise('service', l::get('email.error.service', 'The service is not available'));
+    if(!class_exists($serviceClass)) $this->raise('The service is not available', 'missing-service');
 
     // initiate the service and send the email
     $service = new $serviceClass($this);
@@ -140,7 +140,7 @@ class Email {
       $this->response = $service->response();
 
     } catch(Exception $e) {
-      $this->raise('service', $e->getMessage());
+      $this->raise($e->getMessage(), $e->getCode());
     }
 
     // return true on success and false on error
@@ -154,7 +154,7 @@ class Email {
    */
   public function validate() {
 
-    if(c::get('email.disabled')) $this->raise('disabled', l::get('email.error.disabled', 'Email has been disabled'));
+    if(c::get('email.disabled')) $this->raise('Email has been disabled', 'disabled');
   
     $data = array(
       'to'      => $this->extractAddress($this->to),
@@ -163,8 +163,6 @@ class Email {
       'subject' => $this->subject,
       'body'    => $this->body
     );
-
-    dump($data);
   
     $validation = v($data, array(
       'to'      => array('required', 'email'),
@@ -192,19 +190,19 @@ class Email {
   }
 
   /**
-   * Returns a specific error by key
+   * Returns a specific error by code
    * 
-   * @param string $key
+   * @param string $code
    */
-  public function error($key = null) {
-    return is_null($key) ? $this->errors->first() : $this->errors->get($key);
+  public function error($coded = null) {
+    return is_null($code) ? $this->errors->first() : $this->errors->get($code);
   }
 
   /**
    * Raises an internal error
    */
-  protected function raise($key, $message = null) {
-    $this->errors->raise($key, $message);
+  protected function raise($message, $code = null) {
+    return $this->errors->raise($message, $code);
   }
   
   /**

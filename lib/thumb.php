@@ -459,7 +459,7 @@ class Thumb {
 
       $object->run();
     } catch(Exception $e) {
-      $this->error = new Error('create', $e->getMessage());
+      $this->error = new Error($e->getMessage(), 'create');
     }
 
   }
