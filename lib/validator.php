@@ -2,8 +2,6 @@
 
 namespace Kirby\Toolkit;
 
-use Exception;
-
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
@@ -96,7 +94,7 @@ class Validator {
     $class  = 'Kirby\\Toolkit\\Validator\\' . $method; 
 
     // check for an existing validator
-    if(!file_exists($file)) throw new Exception('invalid validator: ' . $method);
+    if(!file_exists($file)) raise('invalid validator: ' . $method);
 
     require_once($file);
 

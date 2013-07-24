@@ -64,8 +64,11 @@ class Template {
     $this->data    = $this->set($data);
     $this->format  = $this->options['format'];
 
+    // try to resolve objects in the path first
+    if(is_object($this->path)) $this->file();
+
     // call a view filter for this view, if available
-    if(array_key_exists($this->path, static::$filters) and is_callable(static::$filters[$this->path])) {
+    if(!is_object($this->path) and array_key_exists($this->path, static::$filters) and is_callable(static::$filters[$this->path])) {
       call_user_func_array(static::$filters[$this->path], array($this));
     }
 
@@ -91,7 +94,7 @@ class Template {
     if($root and is_file($root)) return $root;
     
     // add the template format if available
-    $path = ($this->format) ? $this->path . '.' . $format : $this->path;
+    $path = ($this->format) ? $this->path . '.' . $this->format : $this->path;
 
     // attach the php extension if not attached yet
     if(!preg_match('!\.php$!i', $path)) {
