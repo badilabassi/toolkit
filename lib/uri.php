@@ -278,6 +278,8 @@ class Uri {
    */
   public function baseurl() {
 
+    if(empty($this->host)) return false;
+
     if(!is_null($this->baseurl)) return $this->baseurl;
 
     // check for a port

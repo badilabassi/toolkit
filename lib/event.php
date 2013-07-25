@@ -9,6 +9,8 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * Event
  * 
  * Attach and trigger events throghout the system
+ * There can only be one callback per event. This is not a full blown event handler, 
+ * which makes it more simple to use but less powerful in some situations. 
  * 
  * @package   Kirby Toolkit 
  * @author    Bastian Allgeier <bastian@getkirby.com>
@@ -19,23 +21,50 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
 class Event {
 
   // array with all collected events
-  static protected $events = array();
+  static public $events = array();
 
   /**
    * Registers a new event. 
    * 
-   * @param string $events The name of the event
+   * @param string $event The name of the event
    * @param func $callback The callback function
    */
   static public function on($event, $callback) {
     if(!isset(static::$events[$event])) static::$events[$event] = array();
-    if(is_array($callback)) {
-      // attach all passed events at once
-      static::$events[$event] = array_merge(static::$events[$event], $callback);
-    } else {
-      // attach a single new event
-      static::$events[$event][] = $callback;
-    }
+    if(is_callable($callback)) static::$events[$event][] = $callback;
+    return static::$events;
+  }
+
+  /**
+   * Remove an event
+   * 
+   * @param string $event If no name is given, all events will be removed
+   */
+  static public function off($event = null) {
+    if(is_null($event)) return static::$events = array();
+    static::$events[$event] = array();
+    return static::$events;
+  }
+
+  /**
+   * Checks if an event is registered
+   * 
+   * @param string $event The name of the event
+   * @return boolean
+   */
+  static public function exists($event) {
+    return !empty(static::$events[$event]);
+  }
+
+  /**
+   * Returns all events
+   * 
+   * @param string $event Pass a name of an event to get all callbacks
+   * @return array
+   */
+  static public function events($event = null) {
+    if(is_null($event)) return static::$events;
+    return a::get(static::$events, $event, array());
   }
 
   /**
@@ -45,15 +74,19 @@ class Event {
    * @param array $arguments An optional array of arguments, which should be passed to the event
    */
   static public function trigger($event, $arguments = array()) {
-    if(empty(static::$events[$event])) return false;
+    
+    if(!static::exists($event)) return false;
 
     // always pass the arguments as array, even if it's just one    
     if(!is_array($arguments)) $arguments = array($arguments);
 
-    foreach(static::$events[$event] as $callback) {
-      if(!is_callable($callback)) continue;
-      call_user_func_array($callback, $arguments);
+    // call the events
+    foreach(static::$events[$event] as $e) {
+      $result = call_user_func_array($e, $arguments);
+      // stop all other events from being executed if the result is false 
+      if($result === false) break;
     }
+
   }
 
 }

@@ -2,8 +2,6 @@
 
 namespace Kirby\Toolkit;
 
-use Exception;
-
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
@@ -453,12 +451,11 @@ class Thumb {
     
     // run the creator
     try {
-
       $class  = '\\Kirby\\Toolkit\\Thumb\\Creator\\' . $this->options['creator'];
       $object = new $class($this); 
 
       $object->run();
-    } catch(Exception $e) {
+    } catch(\Exception $e) {
       $this->error = new Error($e->getMessage(), 'create');
     }
 

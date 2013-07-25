@@ -19,12 +19,6 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  */
 class URL {
     
-  // the home url of our project
-  static public $home = null;
-
-  // optional custom handler for the to() method
-  static public $to = null;
-
   /** 
    * Returns the current URL
    * 
@@ -293,16 +287,6 @@ class URL {
   }
 
   /**
-   * Returns the home url if set
-   * use url::$home = 'http://mydomain.com' to set the home page
-   * 
-   * @return string
-   */
-  static public function home() {
-    return rtrim(static::$home, '/');
-  }
-
-  /**
    * Tries to fix a broken url without protocol
    * 
    * @param string $url
@@ -314,28 +298,52 @@ class URL {
   }
 
   /**
+   * Returns the home url if set
+   * use event::on('kirby.toolkit.url.home', function() {...})
+   * to overwrite the default home url
+   * 
+   * @return string
+   */
+  static public function home() {    
+
+    $url = uri::current()->baseurl();
+
+    if(event::exists('kirby.toolkit.url.home')) {
+      event::trigger('kirby.toolkit.url.home', array(&$url, func_get_args()));
+    } 
+    
+    return $url;
+
+  }
+
+  /**
    * A smart way to build urls
-   * Define your own custom handler for building urls with 
-   * url::$to = function($uri) { ... }
+   * use event::on('kirby.toolkit.url.to', function() {...})
+   * to customize url handling
    * 
    * @param $uri
    * @return string
    */
-  static public function to($uri = '/') {
+  static public function to($url = '/') {
 
     // make sure to not touch absolute urls
-    if(preg_match('!^(https|http|ftp)\:\/\/!i', $uri)) return $uri;
+    if(preg_match('!^(https|http|ftp)\:\/\/!i', $url) or $url == '#') return $url;
 
     // use the custom handler if available
-    if(is_callable(static::$to)) {
-      return call_user_func_array(static::$to, func_get_args());
-    } 
+    if(event::exists('kirby.toolkit.url.to')) {  
+      event::trigger('kirby.toolkit.url.to', array(&$url, func_get_args()));
+      return $url;
+    }
 
     // clean the uri
-    $uri = ltrim($uri, '/');
+    $url  = ltrim($url, '/');
+    $home = static::home();
+
+    // don't do anything if the home url is blank
+    if(empty($home)) return $url;
 
     // return the absolute url for the given uri by prepending the home url
-    return empty($uri) ? static::home() : static::$home . '/' . $uri;
+    return empty($url) ? static::home() : static::home() . '/' . $url;
 
   }
 

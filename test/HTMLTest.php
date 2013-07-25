@@ -38,7 +38,7 @@ class HTMLTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals($expected, html::script('jquery.js'));
     
     $expected = '<script src="jquery.js" async="async"></script>';
-    $this->assertEquals($expected, html::script('jquery.js', true));
+    $this->assertEquals($expected, html::script('jquery.js', array('async' => 'async')));
     
     $expected = '<link rel="shortcut icon" href="favicon.ico" />';
     $this->assertEquals($expected, html::favicon('favicon.ico'));

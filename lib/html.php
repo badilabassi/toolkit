@@ -177,7 +177,7 @@ class Html {
    * @param array $attr Additional attributes for the image tag
    * @return string the generated html
    */
-  static public function img($src, $attr = array()) {
+  static public function img($src, $attr = array()) {    
     $attr = array_merge(array('src' => url::to($src), 'alt' => f::filename($src)), $attr);
     return static::tag('img', null, $attr);
   }
@@ -192,10 +192,17 @@ class Html {
    */
   static public function stylesheet($href, $media = null, $attr = array()) {
 
+    // make it possible to put in an entire array of stylesheets
+    if(is_array($href)) {
+      $result = array();
+      foreach($href as $h) $result[] = static::stylesheet($h);
+      return implode(PHP_EOL, $result);
+    }
+
     try {
     
       // trigger the event if available
-      $event = event::trigger('kirby.toolkit.html.stylesheet', array(&$href, &$media, &$attr));
+      event::trigger('kirby.toolkit.html.stylesheet', array(&$href, &$media, &$attr));
 
       // build all attributes
       $attr = array_merge(array('rel' => 'stylesheet', 'href' => url::to($href), 'media' => $media), $attr);
@@ -218,14 +225,18 @@ class Html {
    * @return string the generated html
    */
   static public function script($src, $attr = array()) {
+
+    // make it possible to put in an entire array of stylesheets
+    if(is_array($src)) {
+      $result = array();
+      foreach($src as $s) $result[] = static::script($s);
+      return implode(PHP_EOL, $result);
+    }
     
     try {
       // trigger the event if available
-      $event = event::trigger('kirby.toolkit.html.script', array(&$src, &$attr));
-      
-      // don't create the tag if the event returns false explicitly
-      if($event === false) return false;
-
+      event::trigger('kirby.toolkit.html.script', array(&$src, &$attr));
+     
       // build all attributes
       $attr = array_merge(array('src' => url::to($src)), $attr);
       

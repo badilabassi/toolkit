@@ -22,5 +22,6 @@ $expected = '<object width="300" height="400">
     
     $expected = '<script src="https://gist.github.com/2924148.js"></script>';
     $this->assertEquals($expected, embed::gist('https://gist.github.com/2924148'));
+
   }
 }
