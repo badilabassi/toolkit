@@ -60,6 +60,7 @@ $autoloader->aliases = array(
   'f'          => 'Kirby\\Toolkit\\F',
   'form'       => 'Kirby\\Toolkit\\Form',
   'g'          => 'Kirby\\Toolkit\\G',
+  'header'     => 'Kirby\\Toolkit\\Header',
   'html'       => 'Kirby\\Toolkit\\Html',
   'l'          => 'Kirby\\Toolkit\\L',
   'model'      => 'Kirby\\Toolkit\\Model',

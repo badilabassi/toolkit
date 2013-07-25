@@ -27,35 +27,7 @@ class Redirect {
    * @param   boolean   $send If true, headers will be sent and redirection will take effect
    */
   static public function send($url = false, $code = false, $send = true) {
-
-    if(empty($url)) $url = c::get('url', '/');
-
-    $header = false;
-
-    // send an appropriate header
-    if($code) {
-      switch($code) {
-        case 301:
-          $header = 'HTTP/1.1 301 Moved Permanently';
-          break;
-        case 302:
-          $header = 'HTTP/1.1 302 Found';
-          break;
-        case 303:
-          $header = 'HTTP/1.1 303 See Other';
-          break;
-      }
-    }
-    
-    if($send) {
-      // send to new page
-      if($header) header($header);
-      header('Location:' . $url);
-      exit();
-    } else {
-      return $header;
-    }
-
+    return header::redirect($url, $code, $send);
   }
 
   /**

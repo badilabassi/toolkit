@@ -346,12 +346,7 @@ class Asset {
    * @return mixed
    */
   public function header($send = true) {
-    $header = 'Content-type: ' . $this->mime();
-    if($send) {
-      header($send);
-    } else {
-      return $header;
-    }
+    return header::type($this->mime(), false, $send);
   }
 
   /**

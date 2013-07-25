@@ -24,16 +24,21 @@ class Response {
   // the format type
   protected $format;
 
+  // the HTTP code
+  protected $code;
+
   /**
    * Constructor
    *
    * @param string $content
    * @param string $format
+   * @param int $code Optional HTTP code
    */
-  public function __construct($content, $format) {
+  public function __construct($content, $format, $code = 200) {
 
     $this->content = $content;
     $this->format  = strtolower($format);
+    $this->code    = $code;
 
     // convert arrays to json
     if(is_array($this->content) and $this->format == 'json') {
@@ -44,9 +49,20 @@ class Response {
 
   /**
    * Sends the correct header for the response
+   * 
+   * @param boolean $send If set to false, the header will be returned
+   * @return mixed
    */
   public function header($send = true) {
-    return content::type($this->format, 'utf-8', $send);
+
+    $status = header::status($this->code, false);
+    $type   = header::type($this->format, 'utf-8', false);
+
+    if(!$send) return $status . PHP_EOL . $type;
+
+    header($status);
+    header($type);
+
   }
 
   /**
@@ -81,7 +97,7 @@ class Response {
       'code'    => $code,
       'message' => $message, 
       'data'    => $data
-    ), 'json');
+    ), 'json', $code);
   }
 
   /**
@@ -111,7 +127,7 @@ class Response {
       'code'    => $code,
       'message' => $message, 
       'data'    => $data
-    ), 'json');
+    ), 'json', $code);
 
   }
 
@@ -121,8 +137,8 @@ class Response {
    * @param array $data
    * @return object
    */
-  static public function json($data) {
-    return new static($data, 'json');
+  static public function json($data, $code = 200) {
+    return new static($data, 'json', $code);
   }
 
   /**
