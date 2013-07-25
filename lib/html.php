@@ -115,8 +115,7 @@ class Html {
    * @return string the generated html
    */
   static public function a($href, $text = null, $attr = array()) {
-    $href = url::to($href);
-    $attr = array_merge(array('href' => $href), $attr);
+    $attr = array_merge(array('href' => url::to($href)), $attr);
     if(empty($text)) $text = $href;
     return static::tag('a', $text, $attr);
   }
@@ -179,7 +178,7 @@ class Html {
    * @return string the generated html
    */
   static public function img($src, $attr = array()) {
-    $attr = array_merge(array('src' => $src, 'alt' => f::filename($src)), $attr);
+    $attr = array_merge(array('src' => url::to($src), 'alt' => f::filename($src)), $attr);
     return static::tag('img', null, $attr);
   }
 
@@ -192,8 +191,22 @@ class Html {
    * @return string the generated html
    */
   static public function stylesheet($href, $media = null, $attr = array()) {
-    $attr = array_merge(array('rel' => 'stylesheet', 'href' => $href, 'media' => $media), $attr);
-    return static::tag('link', null, $attr);
+
+    try {
+    
+      // trigger the event if available
+      $event = event::trigger('kirby.toolkit.html.stylesheet', array(&$href, &$media, &$attr));
+
+      // build all attributes
+      $attr = array_merge(array('rel' => 'stylesheet', 'href' => url::to($href), 'media' => $media), $attr);
+      
+      // create the final tag
+      return static::tag('link', null, $attr);
+
+    } catch(Exception $e) {
+      return null;
+    }
+  
   }
 
   /**
@@ -204,9 +217,24 @@ class Html {
    * @param array $attr Additional attributes for the script tag
    * @return string the generated html
    */
-  static public function script($src, $async = false, $attr = array()) {
-    $attr = array_merge(array('src' => $src, 'async' => r($async, 'async')), $attr);
-    return static::tag('script', '', $attr);
+  static public function script($src, $attr = array()) {
+    
+    try {
+      // trigger the event if available
+      $event = event::trigger('kirby.toolkit.html.script', array(&$src, &$attr));
+      
+      // don't create the tag if the event returns false explicitly
+      if($event === false) return false;
+
+      // build all attributes
+      $attr = array_merge(array('src' => url::to($src)), $attr);
+      
+      // create the final tag
+      return static::tag('script', '', $attr);
+    } catch(Exception $e) {
+      return null;
+    }
+  
   }
 
   /**
@@ -217,7 +245,7 @@ class Html {
    * @return string the generated html
    */
   static public function favicon($href, $attr = array()) {
-    $attr = array_merge(array('rel' => 'shortcut icon', 'href' => $href), $attr);
+    $attr = array_merge(array('rel' => 'shortcut icon', 'href' => url::to($href)), $attr);
     return static::tag('link', null, $attr);
 
   }
@@ -231,7 +259,7 @@ class Html {
    * @return string the generated html
    */
   static public function iframe($src, $attr = array(), $placeholder = '') {
-    $attr = array_merge(array('src' => $src), $attr);    
+    $attr = array_merge(array('src' => url::to($src)), $attr);    
     return static::tag('iframe', $placeholder, $attr);
   }
 
@@ -262,7 +290,7 @@ class Html {
    * @return string the generated html
    */
   static public function canonical($href, $attr = array()) {
-    $attr = array_merge(array('href' => $href, 'rel' => 'canonical'), $attr);    
+    $attr = array_merge(array('href' => url::to($href), 'rel' => 'canonical'), $attr);    
     return static::tag('link', null, $attr);
   }
 

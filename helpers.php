@@ -334,3 +334,17 @@ function url() {
 function u() {
   return call_user_func_array(array('url', 'to'), func_get_args());  
 }
+
+/**
+ * Shortcut to embed stylesheets
+ */
+function css() {
+  return call_user_func_array(array('html', 'stylesheet'), func_get_args());
+}
+
+/**
+ * Shortcut to embed js files
+ */
+function js() {
+  return call_user_func_array(array('html', 'script'), func_get_args());
+}

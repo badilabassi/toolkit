@@ -2,8 +2,6 @@
 
 namespace Kirby\Toolkit;
 
-use Exception;
-
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
@@ -131,7 +129,7 @@ class Object {
    */
   public function write($key, $value) {    
     // check for allowed keys
-    if(is_array($this->allowedKeys) && !in_array($key, $this->allowedKeys)) throw new Exception('The following key is not allowed in the object: ' . $key);
+    if(is_array($this->allowedKeys) && !in_array($key, $this->allowedKeys)) raise('The following key is not allowed in the object: ' . $key);
     
     // store the old value
     if(isset($this->data[$key])) {
