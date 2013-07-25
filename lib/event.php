@@ -29,8 +29,8 @@ class Event {
    * @param string $event The name of the event
    * @param func $callback The callback function
    */
-  static public function on($event, $callback) {
-    if(!isset(static::$events[$event])) static::$events[$event] = array();
+  static public function on($event, $callback, $overwrite = false) {
+    if(!isset(static::$events[$event]) or $overwrite) static::$events[$event] = array();
     if(is_callable($callback)) static::$events[$event][] = $callback;
     return static::$events;
   }
