@@ -2,6 +2,9 @@
 
 namespace Kirby\Toolkit;
 
+use Kirby\Toolkit\Exif\Camera;
+use Kirby\Toolkit\Exif\Location;
+
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
@@ -80,7 +83,7 @@ class Exif {
     if(!is_array($this->data)) return null;
 
     // initialize and return it
-    return $this->camera = new ExifCamera($this->data);
+    return $this->camera = new Camera($this->data);
 
   }
 
@@ -97,7 +100,7 @@ class Exif {
     if(!is_array($this->data)) return null;
 
     // initialize and return it
-    return $this->location = new ExifLocation($this->data);
+    return $this->location = new Location($this->data);
   
   }
 

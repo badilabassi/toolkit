@@ -739,6 +739,24 @@ class Str {
   }
 
   /**
+   * Forces a download of the string as text file
+   * 
+   * @param string $string
+   * @param string $name Optional name for the downloaded file
+   */
+  static public function download($string, $name = null) {
+
+    header::download(array(
+      'name' => $name ? $name : 'text.txt',
+      'size' => str::length($string),
+      'mime' => 'text/plain',
+    ));
+
+    die($string);
+
+  }
+
+  /**
    * Get a character pool with various possible combinations
    *
    * @param  string  $type

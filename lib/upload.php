@@ -46,6 +46,42 @@ class Upload {
   protected $error = null;
 
   /**
+   * Multiple file upload
+   */
+  static public function multiple($key, $file, $params = array()) {
+
+    $source = a::get($_FILES, 'file');
+
+    if(!$source) raise('No files found');
+
+    $count  = count($source['type']);
+    $files  = array();
+    $result = array();
+
+    for($x = 0; $x < $count; $x++) {
+
+      $source = $_FILES[$key];
+      $id     = uniqid();
+      $name   = $source['name'][$x];
+
+      $_FILES[$id] = array(
+        'name'     => $source['name'][$x],
+        'type'     => $source['type'][$x],
+        'tmp_name' => $source['tmp_name'][$x],
+        'error'    => $source['error'][$x],
+        'size'     => $source['size'][$x],
+      );
+
+      $result[$name] = new static($id, $file, $params);
+
+    }
+
+    return $result;
+
+  }
+
+
+  /**
    * Constructor
    * 
    * @param string $key

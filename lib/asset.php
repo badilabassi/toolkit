@@ -359,6 +359,15 @@ class Asset {
   }
 
   /**
+   * Forces a download of the current asset
+   * 
+   * @param string $name Optional name for the downloaded file
+   */
+  public function download($name = null) {
+    return f::download($this->root(), $name);
+  }
+
+  /**
    * Returns a full link to this file
    * Perfect for debugging in connection with echo
    * 
