@@ -44,6 +44,7 @@ $autoloader->aliases = array(
   'autoloader' => 'Kirby\\Toolkit\\Autoloader',
   'c'          => 'Kirby\\Toolkit\\C',
   'cache'      => 'Kirby\\Toolkit\\Cache',
+  'crypt'      => 'Kirby\\Toolkit\\Crypt',
   'collection' => 'Kirby\\Toolkit\\Collection',
   'content'    => 'Kirby\\Toolkit\\Content',
   'cookie'     => 'Kirby\\Toolkit\\Cookie',

@@ -217,7 +217,7 @@ class A {
       $output = print_r($array, true) . PHP_EOL;
     } else {
       $output  = '<pre>';
-      $output .=  htmlspecialchars(print_r($array, true));
+      $output .=  print_r($array, true);
       $output .= '</pre>';
     }
     if($echo == true) echo $output;

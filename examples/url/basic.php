@@ -3,24 +3,27 @@
 // include the toolkit
 require('../../bootstrap.php');
 
-url::$home = 'http://mydomain.com';
-url::$to   = function($uri = '/', $params = array()) { 
+event::on('kirby.toolkit.url.home', function(&$url) {
+  $url = 'http://mydomain.com';
+});
+
+event::on('kirby.toolkit.url.to', function(&$url, $arguments = array()) {
 
   // url shortcuts
-  switch($uri) {
+  switch($url) {
     case '@google':
-      return 'http://google.com';
+      return $url = 'http://google.com';
     case '@facebook':
-      return 'http://facebook.com';
+      return $url = 'http://facebook.com';
     case '@apple':
-      return 'http://apple.com';
+      return $url = 'http://apple.com';
   } 
 
   // build the full url
-  $uri = ltrim($uri, '/');
-  return (empty($uri)) ? url::home() : url::home() . '/' . $uri;
+  $url = ltrim($url, '/');
+  $url = (empty($url)) ? url::home() : url::home() . '/' . $url;
 
-};
+});
 
 dump(url::to('@google'));
 dump(url::to('@facebook'));

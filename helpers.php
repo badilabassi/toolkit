@@ -92,14 +92,12 @@ function l($key = null, $default = null) {
  * @see a::show()
  * @param mixed $variable Whatever you like to inspect
  */ 
-function dump($variable) {
-
+function dump($variable, $echo = true) {
   if(is_object($variable) and method_exists($variable, '__toDump')) {
-    a::show($variable->__toDump());
+    return a::show($variable->__toDump(), $echo);
   } else {
-    a::show($variable);    
+    return a::show($variable, $echo);    
   }
-
 }
 
 /**

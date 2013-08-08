@@ -52,12 +52,12 @@ class F {
    * </code>
    * 
    * @param  string  $file The path for the new file
-   * @param  mixed   $content Either a string or an array. Arrays will be converted to JSON. 
+   * @param  mixed   $content Either a string, an object or an array. Arrays and objects will be serialized. 
    * @param  boolean $append true: append the content to an exisiting file if available. false: overwrite. 
    * @return boolean 
    */  
   static public function write($file, $content, $append = false) {
-    if(is_array($content)) $content = a::json($content);
+    if(is_array($content) or is_object($content)) $content = serialize($content);
     $mode = ($append) ? FILE_APPEND | LOCK_EX : LOCK_EX;
     return (@file_put_contents($file, $content, $mode)) ? true : false;
   }
@@ -488,6 +488,36 @@ class F {
    */
   static public function readable($file) {
     return is_readable($file);
+  }
+
+  /**
+   * Reads an unencrypted file, encrypts its content and saves the result
+   * 
+   * @param string $file 
+   * @param string $content
+   * @param string $key
+   * @param string $mode
+   * @return mixed False on failure, the encrypted content if everything went fine
+   */
+  static public function encrypt($file, $content, $key = null, $mode = 'blowfish') {
+    if(is_array($content) or is_object($content)) $content = serialize($content);  
+    $content = crypt::encode($content, $key, $mode);
+    if(!f::write($file, $content)) return false;
+    return $content;
+  }
+
+  /**
+   * Reads an encrypted file and returns its content unencrypted
+   * 
+   * @param string $file 
+   * @param string $key
+   * @param string $mode
+   * @return boolean
+   */
+  static public function decrypt($file, $key, $mode = 'blowfish') {
+    $content = f::read($file);
+    $content = crypt::decode($content, $key, $mode);
+    return $content;
   }
 
 }
