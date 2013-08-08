@@ -363,8 +363,8 @@ class Thumb {
    * @return boolean
    */
   public function isWritable() {  
-    if($this->exists()) return f::writable($this->root());
-    return f::writable(dirname($this->root()));
+    if($this->exists()) return is_writable($this->root());
+    return is_writable(dirname($this->root()));
   }
 
   /**
@@ -373,7 +373,7 @@ class Thumb {
    * @return boolean
    */
   public function isReadable() {
-    return f::readable($this->root());  
+    return is_readable($this->root());  
   }
 
   /**

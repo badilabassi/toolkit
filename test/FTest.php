@@ -110,11 +110,11 @@ class FTest extends PHPUnit_Framework_TestCase {
   } 
 
   public function testWritable() {
-    $this->assertEquals(is_writable($this->contentFile), f::writable($this->contentFile));
+    $this->assertEquals(is_writable($this->contentFile), f::isWritable($this->contentFile));
   }
 
   public function testReadable() {
-    $this->assertEquals(is_readable($this->contentFile), f::readable($this->contentFile));
+    $this->assertEquals(is_readable($this->contentFile), f::isReadable($this->contentFile));
   }
 
 }

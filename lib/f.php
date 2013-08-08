@@ -476,7 +476,7 @@ class F {
    * @param string $file
    * @return boolean
    */
-  static public function writable($file) {
+  static public function isWritable($file) {
     return is_writable($file);
   }
 
@@ -486,7 +486,7 @@ class F {
    * @param string $file
    * @return boolean
    */
-  static public function readable($file) {
+  static public function isReadable($file) {
     return is_readable($file);
   }
 
@@ -519,7 +519,7 @@ class F {
     $content = crypt::decode($content, $key, $mode);
     return $content;
   }
-  
+
   /*
    * Automatically sends all needed headers for the file to be downloaded
    * and echos the file's content
