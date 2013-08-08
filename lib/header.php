@@ -203,4 +203,33 @@ class Header {
 
   }
 
+  /**
+   * Sends download headers for anything that is downloadable 
+   * 
+   * @param array $params Check out the defaults array for available parameters
+   */
+  static public function download($params = array()) {
+
+    $defaults = array(
+      'name'     => 'download',
+      'size'     => false,
+      'mime'     => 'application/force-download',
+      'modified' => time()
+    );
+
+    $options = array_merge($defaults, $params);
+
+    header('Pragma: public'); 
+    header('Expires: 0'); 
+    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+    header('Last-Modified: '. gmdate('D, d M Y H:i:s', $options['modified']) . ' GMT');
+    header('Cache-Control: private', false);
+    static::contentType($options['mime']);
+    header('Content-Disposition: attachment; filename="' . $options['name'] . '"'); 
+    header('Content-Transfer-Encoding: binary');
+    if($options['size']) header('Content-Length: ' . $options['size']);
+    header('Connection: close');
+
+  }
+
 }

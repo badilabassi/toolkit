@@ -519,5 +519,28 @@ class F {
     $content = crypt::decode($content, $key, $mode);
     return $content;
   }
+  
+  /*
+   * Automatically sends all needed headers for the file to be downloaded
+   * and echos the file's content
+   * 
+   * @param string $file The root to the file
+   * @param string $name Optional filename for the download
+   */
+  static public function download($file, $name = null) {
+
+    // stop the download if the file does not exist or is not readable
+    if(!is_file($file) or !is_readable($file)) return false;
+
+    header::download(array(
+      'name'     => $name ? $name : f::filename($file),
+      'size'     => f::size($file),
+      'mime'     => f::mime($file), 
+      'modified' => f::modified($file)
+    ));
+
+    die(f::read($file));
+
+  }
 
 }

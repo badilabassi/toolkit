@@ -277,6 +277,15 @@ class Thumb {
   }
   
   /**
+   * Forces the thumbnail to be downloaded
+   * 
+   * @param string $name Optional filename for the download
+   */
+  public function download($name = null) {
+    f::download($this->root());
+  }
+
+  /**
    * Returns the directory where the thumb is located
    * 
    * @return string

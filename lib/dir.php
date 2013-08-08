@@ -200,4 +200,30 @@ class Dir {
     return is_readable($dir);
   }
 
+  /**
+   * Copy a file, or recursively copy a folder and its contents
+   * 
+   * @param string $source Source path
+   * @param string $dest Destination path
+   */
+  static function copy($source, $dest) {
+
+    // Check for symlinks
+    if(is_link($source)) return symlink(readlink($source), $dest);
+
+    // Simple copy for a file
+    if(is_file($source)) return f::copy($source, $dest);
+
+    // Make destination directory
+    if(!static::make($dest)) return false;
+
+    // Loop through all subfiles and folders
+    foreach(dir::read($source) as $entry) {
+      if(!static::copy($source . DS . $entry, $dest . DS . $entry)) return false;
+    }
+
+    return true;
+  
+  }  
+
 }
