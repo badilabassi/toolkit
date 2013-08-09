@@ -467,8 +467,12 @@ class Str {
   static public function random($length = false, $type = 'alphaNum') {
     $length = ($length) ? $length : rand(5,10);
     $pool   = a::shuffle(static::pool($type));
-    $pool   = ($length) ? array_slice($pool, 0, $length) : $pool;
-    return implode('', $pool);
+    $size   = count($pool) - 1;
+    $hash   = '';
+    for($x=0; $x < $length; $x++) {
+      $hash .= $pool[rand(0, $size)];
+    }
+    return $hash;
   }
 
   /**

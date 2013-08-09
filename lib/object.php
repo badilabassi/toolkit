@@ -91,7 +91,7 @@ class Object {
    * @param mixed $value The optional value for the given key. 
    * @return object Returns the same object so set methods are chainable
    */
-  public function set($key, $value=null) {
+  public function set($key, $value = false) {
 
     if(is_array($key)) {
       foreach($key as $key => $value) {
@@ -127,10 +127,17 @@ class Object {
    * @param string $key The name for the key in the $data array
    * @param mixed $value Can be anything
    */
-  public function write($key, $value) {    
+  public function write($key, $value = false) {    
     // check for allowed keys
     if(is_array($this->allowedKeys) && !in_array($key, $this->allowedKeys)) raise('The following key is not allowed in the object: ' . $key);
     
+    // unset variables when null is passed as value
+    if(is_null($value)) {
+      unset($this->data[$key]);
+      unset($this->old[$key]);
+      return true;
+    }
+
     // store the old value
     if(isset($this->data[$key])) {
       $this->old[$key] = $this->data[$key];
