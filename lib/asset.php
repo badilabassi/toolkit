@@ -368,6 +368,45 @@ class Asset {
   }
 
   /**
+   * Deletes the asset from the server if possible
+   * 
+   * @return boolean 
+   */
+  public function delete() {
+    return f::remove($this->root());
+  }
+
+  /**
+   * Shortcut to generate a thumbnail for an asset
+   * Only applicable for appropriate image formats
+   * 
+   * @return mixed Thumb object for images, false for others.
+   */
+  public function thumb($params) {
+
+    // only generate thumbnails for appropriate image formats
+    if(!in_array($this->mime(), array('image/gif', 'image/png', 'image/jpeg'))) return false;
+
+    // check if the file exists at all
+    if(!$this->exists()) return false;
+
+    // return the Thumbnail object
+    return new Thumb($this, $params);
+  
+  }
+
+  /**
+   * Shortcut to upload and replace this asset
+   * 
+   * @param array $params Optional params for the upload class
+   * @param string $field Name of the upload field (default: file)
+   * @return object
+   */
+  public function upload($params = array(), $field = 'file') {
+    return new Upload($field, $this->dir() . DS . $this->name() . '.{extension}', $params);
+  }
+
+  /**
    * Returns a full link to this file
    * Perfect for debugging in connection with echo
    * 

@@ -609,6 +609,19 @@ class Collection implements Iterator {
     }
   } 
 
+  /**
+   * Sorts all items in this collection by one of its fields
+   *
+   * @param string $field
+   * @param string $direction
+   * @param mixed $method
+   * @return object Collection
+   */
+  public function sortBy($field, $direction = 'asc', $method = SORT_REGULAR) {
+    $items = a::sort($this->data, $field, $direction, $method);
+    return new static($items);
+  }
+
   // Conversion Helpers
   
   /**
@@ -691,7 +704,7 @@ class Collection implements Iterator {
 
       if(!isset($groups[$value])) {
         // create a new entry for the group if it does not exist yet      
-        $groups[$value] = new Collection(array($key => $item));
+        $groups[$value] = new static(array($key => $item));
       } else {
         // add the item to an existing group
         $groups[$value]->$key = $item;

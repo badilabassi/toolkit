@@ -41,17 +41,28 @@ class Thumb {
    * Constructor
    * 
    * @param mixed $image The image (Asset) object
-   * @param array $options Options for the final thumbnail
+   * @param array $params Options for the final thumbnail
    */
-  public function __construct($image, $options = array()) {
+  public function __construct($image, $params = array()) {
 
     if(!is_object($image)) {
       if(!f::exists($image)) raise('The given image does not exist');
       $image = new Asset($image);
     } 
 
+    // enable string shortcuts like: 
+    // 200|300|crop
+    if(is_string($params)) {
+      $rawParams = str::split($params, '|');
+      $params    = array();
+
+      if(isset($rawParams[0])) $params['width']  = intval($rawParams[0]);
+      if(isset($rawParams[1])) $params['height'] = intval($rawParams[1]);
+      if(isset($rawParams[2])) $params['crop']   = true;
+    }
+
     $this->image   = $image;
-    $this->options = array_merge($this->defaults(), $options); 
+    $this->options = array_merge($this->defaults(), $params); 
     $this->source  = new Dimensions($image->width(), $image->height());
     $this->tmp     = clone $this->source;
     $this->result  = clone $this->source;
