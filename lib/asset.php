@@ -77,7 +77,7 @@ class Asset {
    * @param string $url
    */
   public function __construct($root, $url = null) {
-    $this->root = realpath($root);
+    $this->root = $root;
     $this->url  = $url;
   }
 
@@ -374,25 +374,6 @@ class Asset {
    */
   public function delete() {
     return f::remove($this->root());
-  }
-
-  /**
-   * Shortcut to generate a thumbnail for an asset
-   * Only applicable for appropriate image formats
-   * 
-   * @return mixed Thumb object for images, false for others.
-   */
-  public function thumb($params) {
-
-    // only generate thumbnails for appropriate image formats
-    if(!in_array($this->mime(), array('image/gif', 'image/png', 'image/jpeg'))) return false;
-
-    // check if the file exists at all
-    if(!$this->exists()) return false;
-
-    // return the Thumbnail object
-    return new Thumb($this, $params);
-  
   }
 
   /**

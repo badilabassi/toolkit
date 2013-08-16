@@ -34,7 +34,7 @@ class Response {
    * @param string $format
    * @param int $code Optional HTTP code
    */
-  public function __construct($content, $format, $code = 200) {
+  public function __construct($content, $format = 'html', $code = 200) {
 
     $this->content = $content;
     $this->format  = strtolower($format);

@@ -48,7 +48,7 @@ class URL {
       'fragment' => null
     );
 
-    $data = parse_url($url);
+    $data = parse_url(static::fix($url));
     
     if(!$data) return false;
 
@@ -130,7 +130,7 @@ class URL {
    * @return string
    */
   static public function path($url, $default = null) {
-    return a::get(static::parse($url), 'path', $default); 
+    return ltrim(a::get(static::parse($url), 'path', $default), '/'); 
   }
 
   /**

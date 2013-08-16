@@ -40,7 +40,35 @@ class UrlTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testPath() {
-    $this->assertEquals('/super/path/', url::path($this->full));
+
+    $this->assertEquals('super/path/', url::path($this->full));
+
+    $url = array();
+
+    $url[] = 'http://127.0.0.1';
+    $url[] = 'http://localhost/kirbycms';
+    $url[] = 'https://google.com';
+    $url[] = 'http://getkirby.com/docs/getting-started';
+    $url[] = 'apple.com/shop';
+    $url[] = 'http://new.getkirby.com/sites/getkirby.com/test.php';    
+
+    $result = array();
+
+    foreach($url as $u) {
+      $result[] = url::path($u);
+    }
+
+    $excepted = array(
+      '',
+      'kirbycms',
+      '',
+      'docs/getting-started',
+      'shop',
+      'sites/getkirby.com/test.php'
+    );
+
+    $this->assertEquals($excepted, $result);
+
   }
 
   public function testParams() {
