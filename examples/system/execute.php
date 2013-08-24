@@ -22,7 +22,7 @@ try {
 
 // you can also define what return value you want to have
 // This only works for [2] and [3]!
-var_dump(Kirby\Toolkit\System::execute($task, array('Hello World', 'Another argument'), 'all'));
+print_r(Kirby\Toolkit\System::execute($task, array('Hello World', 'Another argument'), 'all'));
 var_dump(Kirby\Toolkit\System::execute($task, array('Hello World', 'Another argument'), 'output'));
 var_dump(Kirby\Toolkit\System::execute($task, array('Hello World', 'Another argument'), 'status'));
 var_dump(Kirby\Toolkit\System::execute($task, array('Hello World', 'Another argument'), 'success'));
