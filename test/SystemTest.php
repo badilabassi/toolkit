@@ -72,10 +72,18 @@ class SystemTest extends PHPUnit_Framework_TestCase {
   }
   
   public function testRealpath() {
+    // basic stuff
     $this->assertEquals('/bin/bash', Kirby\Toolkit\System::realpath('bash'));
     $this->assertEquals(false, Kirby\Toolkit\System::realpath('notexistingforsure'));
     
+    // executable file
     $this->assertEquals(realpath(TEST_ROOT_ETC . '/system/executable.sh'), Kirby\Toolkit\System::realpath(TEST_ROOT_ETC . '/system/executable.sh'));
+    
+    // not executable file
+    $this->assertFileExists(TEST_ROOT_ETC . '/system/nonexecutable.sh');
+    $this->assertEquals(false, Kirby\Toolkit\System::realpath(TEST_ROOT_ETC . '/system/nonexecutable.sh'));
+    
+    // not existing file
     $this->assertEquals(false, Kirby\Toolkit\System::realpath(TEST_ROOT_ETC . '/system/notexisting.sh'));
   }
 }
