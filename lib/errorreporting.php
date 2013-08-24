@@ -60,7 +60,7 @@ class ErrorReporting {
     }
     
     $value = ($current)? $current : static::get();
-    return ($value & $level) !== 0;
+    return bitmask::includes($level, $value);
   }
 
   /**
@@ -74,9 +74,10 @@ class ErrorReporting {
     if(static::includes($level)) return false;
     
     $old = static::get();
-    $new = static::set($old | $level);
+    $newExpected = bitmask::add($level, $old);
+    $newActual = static::set($newExpected);
     
-    return $new === ($old | $level);
+    return $newActual === $newExpected;
   }
   
   /**
@@ -90,8 +91,9 @@ class ErrorReporting {
     if(!static::includes($level)) return false;
     
     $old = static::get();
-    $new = static::set($old ^ $level);
+    $newExpected = bitmask::remove($level, $old);
+    $newActual = static::set($newExpected);
     
-    return $new === ($old ^ $level);
+    return $newActual === $newExpected;
   }
 }
