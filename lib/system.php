@@ -38,15 +38,31 @@ class System {
     // check if everything we need is available
     if(!static::available()) raise('The exec() function is not available on this system. Probably, safe_mode is on (shame!).');
     
-    // use only the actual command
+    // only use the actual command
     list($command) = explode(' ', $command);
     
-    // check if it is executable (only works for paths)
-    if(is_executable($command)) return true;
+    // get the path to the executable and check if it exists
+    $path = static::realpath($command);
+    return $path !== false;
+  }
+  
+  /**
+   * Returns the path to a specific executable
+   * 
+   * @param  string  $command Name or path of the command
+   * @return mixed
+   */  
+  static public function realpath($command) {
+    // check if everything we need is available
+    if(!static::available()) raise('The exec() function is not available on this system. Probably, safe_mode is on (shame!).');
+    
+    // if this is actually a file, we don't need to search for it any longer
+    if(file_exists($command)) return (is_executable($command))? realpath($command) : false;
     
     // let the shell search for it
     // depends on the operating system
     $exists = false; // does the command exist?
+    $result = '';    // where is it located?
     if (\strtolower(\substr(PHP_OS, 0, 3)) === 'win') {
       // Windows
       // run the "where" command
@@ -63,7 +79,7 @@ class System {
       $exists = !empty($result);
     }
     
-    return $exists;
+    return ($exists)? trim($result) : false;
   }
   
   /**
