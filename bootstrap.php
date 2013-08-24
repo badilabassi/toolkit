@@ -79,6 +79,7 @@ $autoloader->aliases = array(
   's'          => 'Kirby\\Toolkit\\S',
   'search'     => 'Kirby\\Toolkit\\Search',
   'server'     => 'Kirby\\Toolkit\\Server',
+  'system'     => 'Kirby\\Toolkit\\System',
   'sql'        => 'Kirby\\Toolkit\\SQL',
   'str'        => 'Kirby\\Toolkit\\Str',
   'thumb'      => 'Kirby\\Toolkit\\Thumb',
