@@ -549,6 +549,7 @@ class Uri {
   public function __toDump() {
 
     return array(
+      'original'  => $this->original(),
       'scheme'    => $this->scheme(),
       'host'      => $this->host(),
       'baseurl'   => $this->baseurl(),
