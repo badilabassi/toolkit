@@ -206,7 +206,7 @@ class Db {
       // store the final sql to add it to the trace later
       static::$lastQuery = static::$statement->queryString;
 
-    } catch(Exception $e) {
+    } catch(\Exception $e) {
 
       // store the error
       static::$affected  = 0;
