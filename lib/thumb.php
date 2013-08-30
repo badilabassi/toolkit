@@ -461,6 +461,15 @@ class Thumb {
    * @return array
    */
   protected function create() {
+
+    // try to use the original if resizing is not necessary
+    if($this->result->width() >= $this->source->width() and 
+       $this->result->height() >= $this->source->height() and 
+       $this->options['crop'] == false and 
+       $this->options['upscale'] == false) {
+      $this->thumb = $this->image;
+      return true;
+    }
     
     // if the thumb already exists and the source hasn't been updated 
     // we don't need to generate a new thumbnail
