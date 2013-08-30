@@ -3,7 +3,6 @@
 namespace Kirby\Toolkit;
 
 use PDO;
-use Exception;
 use Kirby\Toolkit\DB\Connector;
 use Kirby\Toolkit\DB\Query;
 

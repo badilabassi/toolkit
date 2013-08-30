@@ -2,8 +2,6 @@
 
 namespace Kirby\Toolkit;
 
-use Exception;
-
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
