@@ -71,6 +71,7 @@ $autoloader->aliases = array(
   'object'         => 'Kirby\\Toolkit\\Object',
   'pagination'     => 'Kirby\\Toolkit\\Pagination',
   'password'       => 'Kirby\\Toolkit\\Password',
+  'phpstore'       => 'Kirby\\Toolkit\\PHPStore',
   'r'              => 'Kirby\\Toolkit\\R',
   'redirect'       => 'Kirby\\Toolkit\\Redirect',
   'remote'         => 'Kirby\\Toolkit\\Remote',
